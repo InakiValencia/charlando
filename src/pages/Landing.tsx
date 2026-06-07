@@ -7,14 +7,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Puzzle,
   ArrowRight,
-  Zap,
   Star,
   ChevronUp,
   ChevronDown,
-  Sparkles,
-  PieChart,
   BarChart2,
-  UserCheck,
+  Mic,
+  Plus,
+  Minus,
 } from "lucide-react";
 
 import eventChill from "@/assets/event-chill-code-workshop.jpg";
@@ -29,28 +28,23 @@ import avatarPriya from "@/assets/avatar-priya.jpg";
 
 const features = [
   {
-    title: "Pages in minutes",
-    description: "Beautiful registration pages that make your event shine — no design skills needed.",
-    illustrationColor: "bg-[hsl(340,75%,95%)]",
+    title: "Estrategia y conceptos",
+    description: "Entendemos tu marca, tu audiencia y tu objetivo. Diseñamos preguntas, hooks y ángulos creativos para que cada entrevista tenga intención.",
   },
   {
-    title: "Understand everything",
-    description: "Live dashboards that show where attendees come from, drop off, and convert.",
-    illustrationColor: "bg-[hsl(170,60%,92%)]",
+    title: "Grabación en la calle",
+    description: "Salimos con hosts y equipo de video para capturar respuestas reales de personas reales, en locaciones alineadas con tu público objetivo.",
   },
   {
-    title: "Integrate with everything",
-    description: "Connect Zoom, HubSpot, Mailchimp, and 20+ tools in a few clicks.",
-    illustrationColor: "bg-[hsl(45,90%,92%)]",
+    title: "Edición para redes",
+    description: "Convertimos el material crudo en videos verticales con ritmo, subtítulos, hooks, cortes dinámicos y llamados a la acción.",
   },
   {
-    title: "One hub for everyone",
-    description: "Manage, message, and track every attendee from a single beautiful dashboard.",
-    illustrationColor: "bg-[hsl(250,60%,94%)]",
+    title: "Assets listos para escalar",
+    description: "Entregamos variaciones para TikTok, Instagram Reels, YouTube Shorts, Meta Ads, TikTok Ads y contenido orgánico.",
   },
 ];
 
-// Real avatar URLs
 const AVATAR_URLS = [
   "https://i.pravatar.cc/150?img=1",
   "https://i.pravatar.cc/150?img=5",
@@ -60,14 +54,13 @@ const AVATAR_URLS = [
   "https://i.pravatar.cc/150?img=16",
 ];
 
-// Logo URLs from CDN
 const LOGO_URLS = [
-  { src: "https://cdn.jsdelivr.net/gh/gilbarbara/logos@main/logos/slack-icon.svg", name: "Slack" },
-  { src: "https://cdn.jsdelivr.net/gh/gilbarbara/logos@main/logos/zoom-icon.svg", name: "Zoom" },
-  { src: "https://cdn.jsdelivr.net/gh/gilbarbara/logos@main/logos/hubspot.svg", name: "HubSpot" },
-  { src: "https://cdn.jsdelivr.net/gh/gilbarbara/logos@main/logos/mailchimp-freddie.svg", name: "Mailchimp" },
-  { src: "https://cdn.jsdelivr.net/gh/gilbarbara/logos@main/logos/google-calendar.svg", name: "Calendar" },
-  { src: "https://cdn.jsdelivr.net/gh/gilbarbara/logos@main/logos/stripe.svg", name: "Stripe" },
+  { src: "https://cdn.jsdelivr.net/gh/gilbarbara/logos@main/logos/tiktok-icon.svg", name: "TikTok" },
+  { src: "https://cdn.jsdelivr.net/gh/gilbarbara/logos@main/logos/instagram-icon.svg", name: "Instagram" },
+  { src: "https://cdn.jsdelivr.net/gh/gilbarbara/logos@main/logos/youtube-icon.svg", name: "YouTube" },
+  { src: "https://cdn.jsdelivr.net/gh/gilbarbara/logos@main/logos/meta-icon.svg", name: "Meta" },
+  { src: "https://cdn.jsdelivr.net/gh/gilbarbara/logos@main/logos/facebook.svg", name: "Facebook" },
+  { src: "https://cdn.jsdelivr.net/gh/gilbarbara/logos@main/logos/snapchat.svg", name: "Snapchat" },
 ];
 
 type BentoAccents = { integrationCircle: string; attendeeBorder: string; analyticsBars: string; analyticsAccent: string; pageButton: string };
@@ -75,27 +68,23 @@ type BentoAccents = { integrationCircle: string; attendeeBorder: string; analyti
 function IllustrationPages({ accents }: { accents: BentoAccents }) {
   return (
     <div className="relative w-full h-full flex items-center justify-center p-6">
-      <div className="w-[85%] bg-white/80 rounded-xl shadow-lg overflow-hidden">
-        <img src={eventSummit} alt="Event page preview" className="w-full h-28 object-cover" />
-        <div className="p-3 space-y-2.5">
-          <h4 className="text-[11px] font-bold text-foreground truncate">Vibe coding summit 2026</h4>
-          <div className="flex items-center gap-2 text-[9px] text-muted-foreground">
-            <span>📅 Apr 19, 2026</span>
-            <span>📍 San Francisco</span>
+      <div className="w-[70%] bg-white rounded-2xl shadow-lg overflow-hidden border border-border">
+        <div className="relative">
+          <img src={eventSummit} alt="Video vertical" className="w-full h-36 object-cover" />
+          <div className="absolute top-2 left-2 bg-foreground text-background text-[9px] font-bold px-2 py-0.5 rounded-full">REAL</div>
+        </div>
+        <div className="p-3 space-y-2">
+          <div className="flex items-center gap-1.5">
+            <span className="text-[9px] font-bold uppercase tracking-wide" style={{ color: accents.analyticsAccent }}>Hook</span>
+            <span className="h-1 flex-1 rounded-full bg-muted" />
           </div>
-          <div className="space-y-1.5">
-            <div className="flex items-center gap-2">
-              <span className="text-[9px] text-muted-foreground w-12">Name</span>
-              <div className="h-5 bg-muted rounded-md flex-1" />
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-[9px] text-muted-foreground w-12">Email</span>
-              <div className="h-5 bg-muted rounded-md flex-1" />
-            </div>
+          <div className="space-y-1">
+            <div className="h-1.5 w-full rounded-full bg-muted" />
+            <div className="h-1.5 w-3/4 rounded-full bg-muted" />
           </div>
-          <div className="flex gap-2 pt-1">
-            <div className="h-7 rounded-full flex-1 flex items-center justify-center" style={{ backgroundColor: accents.pageButton }}>
-              <span className="text-[9px] text-white font-semibold">Register now</span>
+          <div className="flex gap-1.5 pt-1">
+            <div className="h-6 rounded-full flex-1 flex items-center justify-center" style={{ backgroundColor: accents.pageButton }}>
+              <span className="text-[9px] text-white font-semibold">Llamado a la acción</span>
             </div>
           </div>
         </div>
@@ -107,22 +96,19 @@ function IllustrationPages({ accents }: { accents: BentoAccents }) {
 function IllustrationAnalytics({ accents }: { accents: BentoAccents }) {
   return (
     <div className="relative w-full h-full flex items-center justify-center p-6">
-      <div className="w-[85%] bg-white/80 rounded-xl shadow-lg p-4">
+      <div className="w-[85%] bg-white rounded-2xl shadow-lg p-4 border border-border">
         <div className="flex items-center gap-2 mb-3">
-          <BarChart2 className="w-4 h-4" style={{ color: accents.analyticsAccent }} />
-          <span className="text-[10px] font-bold" style={{ color: accents.analyticsAccent }}>Live</span>
+          <Mic className="w-4 h-4" style={{ color: accents.analyticsAccent }} />
+          <span className="text-[10px] font-bold" style={{ color: accents.analyticsAccent }}>REC</span>
           <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: accents.analyticsBars }} />
+          <span className="ml-auto text-[9px] text-muted-foreground">00:24</span>
         </div>
-        <div className="flex items-end gap-1.5 h-20">
-          {[40, 65, 30, 55, 80, 45, 70].map((h, i) => (
-            <div key={i} className="flex-1 rounded-t-md" style={{ height: `${h}%`, backgroundColor: accents.analyticsBars }} />
+        <div className="flex items-end gap-1 h-20">
+          {[30, 60, 45, 80, 55, 70, 40, 65, 35, 75, 50, 60, 40, 55].map((h, i) => (
+            <div key={i} className="flex-1 rounded-full" style={{ height: `${h}%`, backgroundColor: accents.analyticsBars }} />
           ))}
         </div>
-        <div className="flex justify-between mt-2">
-          {['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d => (
-            <span key={d} className="text-[7px] text-muted-foreground flex-1 text-center">{d}</span>
-          ))}
-        </div>
+        <p className="text-[8px] text-muted-foreground mt-2 text-center">Entrevista en curso · Persona real</p>
       </div>
     </div>
   );
@@ -138,7 +124,7 @@ function IllustrationIntegrations({ accents }: { accents: BentoAccents }) {
         const angle = (i * 60 - 90) * Math.PI / 180;
         const r = 85;
         return (
-          <div key={i} className="absolute w-14 h-14 rounded-xl bg-white/80 shadow-md flex items-center justify-center" style={{ left: `calc(50% + ${Math.cos(angle) * r}px - 28px)`, top: `calc(50% + ${Math.sin(angle) * r}px - 28px)` }}>
+          <div key={i} className="absolute w-14 h-14 rounded-xl bg-white shadow-md flex items-center justify-center border border-border" style={{ left: `calc(50% + ${Math.cos(angle) * r}px - 28px)`, top: `calc(50% + ${Math.sin(angle) * r}px - 28px)` }}>
             <img src={logo.src} alt={logo.name} className="w-8 h-8" />
           </div>
         );
@@ -153,7 +139,7 @@ function IllustrationAttendees({ accents }: { accents: BentoAccents }) {
       <div className="grid grid-cols-3 gap-4">
         {AVATAR_URLS.map((url, i) => (
           <div key={i} className="w-16 h-16 rounded-full overflow-hidden shadow-md border-[3px]" style={{ borderColor: accents.attendeeBorder }}>
-            <img src={url} alt={`Attendee ${i + 1}`} className="w-full h-full object-cover" />
+            <img src={url} alt={`Persona real ${i + 1}`} className="w-full h-full object-cover" />
           </div>
         ))}
       </div>
@@ -163,7 +149,7 @@ function IllustrationAttendees({ accents }: { accents: BentoAccents }) {
 
 const ILLUSTRATIONS = [IllustrationPages, IllustrationAnalytics, IllustrationIntegrations, IllustrationAttendees];
 
-const rotatingWords = ["events.", "experiences.", "communities.", "connections."];
+const rotatingWords = ["TikTok.", "Reels.", "Shorts.", "marcas."];
 
 const fontWeightOptions = [
   { label: "Medium (500)", value: 500 },
@@ -172,12 +158,10 @@ const fontWeightOptions = [
   { label: "Extrabold (800)", value: 800 },
 ];
 
-const CONFETTI_COLORS = ["#FF6B6B", "#FFD93D", "#6BCB77", "#4D96FF", "#FF6BCB", "#FF9F43"];
+const CONFETTI_COLORS = ["#24b5cf", "#0A0A0A", "#1698ad", "#9CA3AF", "#24b5cf", "#0A0A0A"];
 const CONFETTI_SHAPES = ["circle", "square", "triangle", "line"] as const;
 
-// Seeded positions for each corner cluster
 const cornerSeeds = [
-  // top-left
   [
     { x: -40, y: -20, shape: 0, color: 0, rot: 12, baseSize: 12 },
     { x: 220, y: -30, shape: 1, color: 1, rot: 45, baseSize: 8 },
@@ -188,7 +172,6 @@ const cornerSeeds = [
     { x: 100, y: -35, shape: 0, color: 5, rot: 0, baseSize: 7 },
     { x: -45, y: 150, shape: 2, color: 0, rot: 55, baseSize: 9 },
   ],
-  // bottom-left
   [
     { x: 230, y: -20, shape: 1, color: 1, rot: 22, baseSize: 7 },
     { x: -35, y: 40, shape: 2, color: 3, rot: 15, baseSize: 12 },
@@ -199,7 +182,6 @@ const cornerSeeds = [
     { x: -50, y: 120, shape: 2, color: 1, rot: 35, baseSize: 11 },
     { x: 250, y: 80, shape: 3, color: 0, rot: -15, baseSize: 9 },
   ],
-  // top-right
   [
     { x: 230, y: -25, shape: 0, color: 4, rot: 0, baseSize: 10 },
     { x: -35, y: 70, shape: 1, color: 1, rot: 35, baseSize: 7 },
@@ -210,7 +192,6 @@ const cornerSeeds = [
     { x: -50, y: 140, shape: 0, color: 4, rot: 0, baseSize: 6 },
     { x: 250, y: 60, shape: 2, color: 2, rot: -50, baseSize: 11 },
   ],
-  // bottom-right
   [
     { x: -40, y: 30, shape: 1, color: 3, rot: 18, baseSize: 8 },
     { x: 230, y: -25, shape: 2, color: 1, rot: -30, baseSize: 14 },
@@ -276,7 +257,6 @@ function ConfettiLayer({ size, opacity, count, spread }: { size: number; opacity
           if (shape === "line") {
             return <motion.div key={`${ci}-${si}`} {...sharedMotion} style={{ ...posStyle, width: s, height: s * 0.25, borderRadius: 99, backgroundColor: color }} />;
           }
-          // triangle
           const half = s / 2;
           return (
             <motion.div
@@ -299,6 +279,67 @@ function ConfettiLayer({ size, opacity, count, spread }: { size: number; opacity
   );
 }
 
+const NAV_LINKS = [
+  { label: "Inicio", href: "#top" },
+  { label: "Videos", href: "#videos" },
+  { label: "Proceso", href: "#proceso" },
+  { label: "Servicios", href: "#features" },
+  { label: "Hosts", href: "#hosts" },
+  { label: "Preguntas", href: "#faq" },
+  { label: "Contacto", href: "#cta" },
+];
+
+const FAQS = [
+  {
+    q: "¿Qué hace exactamente OpenMicMedia?",
+    a: "Creamos entrevistas callejeras para marcas. Nos encargamos de pensar el concepto, diseñar las preguntas, grabar con personas reales y entregar videos editados para redes y campañas digitales.",
+  },
+  {
+    q: "¿Qué diferencia a OpenMicMedia de una agencia tradicional?",
+    a: "No hacemos publicidad que parece publicidad. Creamos conversaciones reales que se sienten nativas en redes. La marca aparece dentro de una interacción humana, no como un anuncio forzado.",
+  },
+  {
+    q: "¿Los videos sirven para pauta o solo orgánico?",
+    a: "Sirven para ambas cosas. Podemos editar piezas para TikTok Ads, Meta Ads, Instagram Reels, YouTube Shorts, Stories y contenido orgánico.",
+  },
+  {
+    q: "¿Las personas entrevistadas firman autorización?",
+    a: "Sí. Las personas que aparecen en los videos deben autorizar el uso de su imagen y voz. Lo manejamos mediante formulario digital o QR para dejar el proceso ordenado.",
+  },
+  {
+    q: "¿Aceptan proyectos puntuales?",
+    a: "Sí. Podemos hacer una primera jornada de contenido o un paquete inicial. Si la marca necesita volumen constante, también trabajamos con planes mensuales.",
+  },
+  {
+    q: "¿Qué tipo de marcas pueden trabajar con OpenMicMedia?",
+    a: "Marcas de consumo, moda, belleza, wellness, alimentos, bebidas, tecnología, apps, retail, eventos, entretenimiento y servicios. El formato funciona especialmente bien cuando el producto necesita explicación, reacción o prueba social.",
+  },
+  {
+    q: "¿Las respuestas son guionadas?",
+    a: "No. Las respuestas son reales. Lo que sí hacemos es guiar la conversación con preguntas pensadas estratégicamente para que el contenido tenga dirección y sea útil para la marca.",
+  },
+  {
+    q: "¿Pueden entrevistar públicos específicos?",
+    a: "Sí. Podemos adaptar locaciones, horarios, tono, preguntas y hosts según el público objetivo: jóvenes, adultos, familias, estudiantes, profesionales, consumidores premium o nichos específicos.",
+  },
+];
+
+const PROCESS_STEPS = [
+  { n: "01", title: "Brief", text: "Entendemos tu producto, tu audiencia, el objetivo de campaña y el mensaje que querés instalar." },
+  { n: "02", title: "Concepto", text: "Diseñamos preguntas, hooks y ángulos para generar respuestas naturales, útiles y entretenidas." },
+  { n: "03", title: "Producción", text: "Grabamos entrevistas callejeras con personas reales, cuidando energía, sonido, encuadre y contexto." },
+  { n: "04", title: "Edición", text: "Creamos piezas verticales optimizadas para retención, claridad y conversión." },
+  { n: "05", title: "Entrega", text: "Recibís videos listos para publicar, pautar y testear en diferentes plataformas." },
+];
+
+const HOSTS = [
+  { label: "Host urbano", avatar: AVATAR_URLS[0] },
+  { label: "Host lifestyle", avatar: AVATAR_URLS[1] },
+  { label: "Host producto", avatar: AVATAR_URLS[2] },
+  { label: "Host retail", avatar: AVATAR_URLS[3] },
+  { label: "Host eventos", avatar: AVATAR_URLS[4] },
+];
+
 const Landing = () => {
   const [wordIndex, setWordIndex] = useState(0);
   const [navVisible, setNavVisible] = useState(false);
@@ -309,26 +350,36 @@ const Landing = () => {
   const [confettiCount, setConfettiCount] = useState(8);
   const [confettiSpread, setConfettiSpread] = useState(1.0);
   const [bentoStyle, setBentoStyle] = useState(0);
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
 
-  // Bento color presets
   const bentoPresets = [
     {
-      label: "Playful",
-      cardBg: "bg-muted/50",
-      colors: ["bg-[hsl(340,75%,95%)]", "bg-[hsl(170,60%,92%)]", "bg-[hsl(45,90%,92%)]", "bg-[hsl(250,60%,94%)]"],
-      accents: { integrationCircle: "hsl(45,80%,45%)", attendeeBorder: "hsl(250,60%,80%)", analyticsBars: "hsl(170,60%,50%)", analyticsAccent: "hsl(170,60%,40%)", pageButton: "hsl(340,75%,58%)" },
+      label: "Clean",
+      cardBg: "bg-muted/40",
+      colors: [
+        "bg-[hsl(189,70%,96%)]",
+        "bg-[hsl(0,0%,97%)]",
+        "bg-[hsl(189,70%,96%)]",
+        "bg-[hsl(0,0%,97%)]",
+      ],
+      accents: { integrationCircle: "hsl(189,70%,48%)", attendeeBorder: "hsl(189,70%,48%)", analyticsBars: "hsl(189,70%,48%)", analyticsAccent: "hsl(189,70%,38%)", pageButton: "hsl(0,0%,4%)" },
     },
     {
       label: "Neutral",
       cardBg: "bg-background",
       colors: ["bg-background", "bg-background", "bg-background", "bg-background"],
-      accents: { integrationCircle: "hsl(45,90%,50%)", attendeeBorder: "hsl(250,65%,65%)", analyticsBars: "hsl(170,65%,45%)", analyticsAccent: "hsl(170,65%,35%)", pageButton: "hsl(340,80%,55%)" },
+      accents: { integrationCircle: "hsl(0,0%,4%)", attendeeBorder: "hsl(189,70%,48%)", analyticsBars: "hsl(189,70%,48%)", analyticsAccent: "hsl(0,0%,4%)", pageButton: "hsl(189,70%,48%)" },
     },
     {
-      label: "Vivid",
-      cardBg: "bg-muted/50",
-      colors: ["bg-[hsl(340,75%,90%)]", "bg-[hsl(170,60%,86%)]", "bg-[hsl(45,90%,86%)]", "bg-[hsl(250,60%,90%)]"],
-      accents: { integrationCircle: "hsl(45,90%,50%)", attendeeBorder: "hsl(250,65%,65%)", analyticsBars: "hsl(170,65%,45%)", analyticsAccent: "hsl(170,65%,35%)", pageButton: "hsl(340,80%,55%)" },
+      label: "Bold",
+      cardBg: "bg-muted/40",
+      colors: [
+        "bg-[hsl(189,70%,92%)]",
+        "bg-[hsl(189,70%,96%)]",
+        "bg-[hsl(0,0%,95%)]",
+        "bg-[hsl(189,70%,92%)]",
+      ],
+      accents: { integrationCircle: "hsl(189,70%,48%)", attendeeBorder: "hsl(0,0%,4%)", analyticsBars: "hsl(189,70%,48%)", analyticsAccent: "hsl(189,70%,38%)", pageButton: "hsl(189,70%,48%)" },
     },
   ];
   const currentPreset = bentoPresets[bentoStyle] ?? bentoPresets[0];
@@ -348,7 +399,6 @@ const Landing = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Apply title weight globally
   useEffect(() => {
     document.querySelectorAll<HTMLElement>("h1,h2,h3,h4,h5,h6,.font-display").forEach((el) => {
       el.style.fontWeight = String(titleWeight);
@@ -356,7 +406,7 @@ const Landing = () => {
   }, [titleWeight]);
 
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden">
+    <div id="top" className="min-h-screen bg-background overflow-x-hidden">
       {/* Navbar — hidden until scroll */}
       <motion.nav
         className="fixed top-0 w-full z-50 bg-background/90 backdrop-blur-md"
@@ -368,12 +418,16 @@ const Landing = () => {
           <Link to="/">
             <Logo size="md" />
           </Link>
+          <div className="hidden lg:flex items-center gap-1">
+            {NAV_LINKS.map((l) => (
+              <a key={l.label} href={l.href} className="text-sm font-medium text-foreground/80 hover:text-primary px-3 py-2 rounded-full transition-colors">
+                {l.label}
+              </a>
+            ))}
+          </div>
           <div className="flex items-center gap-3">
-            <Button variant="ghost" className="text-sm font-medium" asChild>
-              <Link to="/auth">Log in</Link>
-            </Button>
-            <Button className="hidden sm:inline-flex text-sm font-semibold" asChild>
-              <Link to="/auth">Sign up</Link>
+            <Button className="text-sm font-semibold bg-foreground text-background hover:bg-primary hover:text-background" asChild>
+              <a href="#cta">Agendar llamada</a>
             </Button>
           </div>
         </div>
@@ -384,8 +438,8 @@ const Landing = () => {
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-20 lg:py-28">
           <div className="relative min-h-[580px] flex items-center justify-center">
 
-            {/* Confetti shapes behind cards — dynamic */}
             <ConfettiLayer size={confettiSize} opacity={confettiOpacity} count={confettiCount} spread={confettiSpread} />
+
             {/* Top-left card */}
             <motion.div
               className="hidden md:block absolute left-[-100px] lg:left-[-40px] top-[20px] w-[200px] lg:w-[260px]"
@@ -393,10 +447,10 @@ const Landing = () => {
               animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
               transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.2 }}
             >
-              <div className="rounded-2xl overflow-hidden shadow-lg rotate-[6deg]">
-                <img src={eventChill} alt="Chill code workshop" className="w-full h-[150px] object-cover" />
+              <div className="rounded-2xl overflow-hidden shadow-lg rotate-[6deg] bg-card">
+                <img src={eventChill} alt="Entrevista callejera" className="w-full h-[150px] object-cover" />
                 <div className="bg-card px-3 py-2">
-                  <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">Workshop</span>
+                  <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">Street Interview</span>
                 </div>
               </div>
             </motion.div>
@@ -408,10 +462,10 @@ const Landing = () => {
               animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
               transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.35 }}
             >
-              <div className="rounded-2xl overflow-hidden shadow-lg rotate-[-5deg]">
-                <img src={eventJam} alt="Late night jam" className="w-full h-[150px] object-cover" />
+              <div className="rounded-2xl overflow-hidden shadow-lg rotate-[-5deg] bg-card">
+                <img src={eventJam} alt="Reacciones reales" className="w-full h-[150px] object-cover" />
                 <div className="bg-card px-3 py-2">
-                  <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">Social</span>
+                  <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">Real Opinions</span>
                 </div>
               </div>
             </motion.div>
@@ -423,10 +477,10 @@ const Landing = () => {
               animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
               transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.25 }}
             >
-              <div className="rounded-2xl overflow-hidden shadow-lg rotate-[-6deg]">
-                <img src={eventStartup} alt="Startup weekend" className="w-full h-[150px] object-cover" />
+              <div className="rounded-2xl overflow-hidden shadow-lg rotate-[-6deg] bg-card">
+                <img src={eventStartup} alt="Reacción a producto" className="w-full h-[150px] object-cover" />
                 <div className="bg-card px-3 py-2">
-                  <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">Hackathon</span>
+                  <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">Product Reaction</span>
                 </div>
               </div>
             </motion.div>
@@ -438,10 +492,10 @@ const Landing = () => {
               animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
               transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.4 }}
             >
-              <div className="rounded-2xl overflow-hidden shadow-lg rotate-[5deg]">
-                <img src={eventSummit} alt="Vibe coding summit" className="w-full h-[150px] object-cover" />
+              <div className="rounded-2xl overflow-hidden shadow-lg rotate-[5deg] bg-card">
+                <img src={eventSummit} alt="Lanzamiento de marca" className="w-full h-[150px] object-cover" />
                 <div className="bg-card px-3 py-2">
-                  <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">Conference</span>
+                  <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">Brand Launch</span>
                 </div>
               </div>
             </motion.div>
@@ -456,10 +510,14 @@ const Landing = () => {
               <div className="flex items-center justify-center mb-6">
                 <Logo size="lg" />
               </div>
+              <div className="inline-flex items-center gap-2 text-xs font-semibold text-primary bg-primary/10 px-3 py-1 rounded-full mb-5">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                Personas reales · Reacciones reales
+              </div>
               <h1 className="text-4xl sm:text-5xl lg:text-[44px] 2xl:text-[56px] font-display tracking-tight leading-[1.15] text-foreground mb-6" style={{ fontWeight: titleWeight }}>
-                The event platform
+                Conversaciones que
                 <br />
-                where ideas become{" "}
+                convierten en{" "}
                 <span className="inline-block relative" style={{ minWidth: "7ch" }}>
                   <AnimatePresence mode="wait">
                     <motion.span
@@ -468,44 +526,48 @@ const Landing = () => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -16 }}
                       transition={{ duration: 0.35 }}
-                      className="text-foreground inline-block"
+                      className="text-primary inline-block"
                     >
                       {rotatingWords[wordIndex]}
                     </motion.span>
                   </AnimatePresence>
-                  {/* Invisible longest word to reserve space */}
-                  <span className="invisible block h-0 overflow-hidden" aria-hidden="true">communities.</span>
+                  <span className="invisible block h-0 overflow-hidden" aria-hidden="true">Shorts.</span>
                 </span>
               </h1>
               <p className="text-lg text-muted-foreground max-w-lg mx-auto mb-8 leading-relaxed">
-                Whatever your event — from workshops to conferences — build branded
-                registration pages, track attendees, and grow your community. No code required.
+                Creamos entrevistas callejeras con personas reales y transformamos esas reacciones en videos verticales listos para redes, pauta y lanzamientos de marca.
               </p>
-              <Button size="lg" className="text-base font-semibold px-8 h-12" asChild>
-                <Link to="/auth">Get started <ArrowRight className="ml-2 w-4 h-4" /></Link>
-              </Button>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                <Button size="lg" className="text-base font-semibold px-8 h-12 bg-foreground text-background hover:bg-primary hover:text-background" asChild>
+                  <a href="#cta">Agendar llamada <ArrowRight className="ml-2 w-4 h-4" /></a>
+                </Button>
+                <Button size="lg" variant="outline" className="text-base font-semibold px-8 h-12 border-foreground/15" asChild>
+                  <a href="#videos">Ver videos</a>
+                </Button>
+              </div>
+              <p className="text-xs text-muted-foreground mt-4">Para marcas que quieren contenido real, nativo y diseñado para captar atención.</p>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Upcoming events showcase */}
-      <section className="py-12 lg:py-16 pb-20 lg:pb-28">
+      {/* Videos destacados */}
+      <section id="videos" className="py-12 lg:py-16 pb-20 lg:pb-28">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between mb-10">
             <h2 className="text-2xl sm:text-3xl font-display text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
-              Popular events on eventspark
+              Videos destacados de OpenMicMedia
             </h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { img: eventHackathon, title: "AI hackathon", tag: "Free", date: "Sat, Mar 28" },
-              { img: eventChill, title: "Chill code workshop", tag: "Free", date: "Thu, Apr 3" },
-              { img: eventStartup, title: "Startup weekend", tag: "$25", date: "Fri, Apr 11" },
-              { img: eventSummit, title: "Vibe coding summit", tag: "Free", date: "Sat, Apr 19" },
-            ].map((event, i) => (
+              { img: eventHackathon, title: "Reacción real a producto", tag: "Paid Ad", date: "TikTok · Reels · Ads" },
+              { img: eventChill, title: "Entrevista callejera de marca", tag: "Organic", date: "Contenido orgánico" },
+              { img: eventStartup, title: "Lanzamiento en la calle", tag: "Launch", date: "Campaña de producto" },
+              { img: eventSummit, title: "Prueba de producto real", tag: "UGC-style", date: "Brand awareness" },
+            ].map((video, i) => (
               <motion.div
-                key={event.title}
+                key={video.title}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -514,16 +576,16 @@ const Landing = () => {
                 <div className="group cursor-pointer">
                   <div className="relative rounded-xl overflow-hidden mb-3">
                     <img
-                      src={event.img}
-                      alt={event.title}
+                      src={video.img}
+                      alt={video.title}
                       className="w-full h-[180px] object-cover group-hover:scale-105 transition-transform duration-300"
                     />
-                    <span className="absolute top-3 left-3 bg-card text-foreground text-xs font-semibold px-2.5 py-1 rounded-full shadow-sm">
-                      {event.tag}
+                    <span className="absolute top-3 left-3 bg-foreground text-background text-xs font-semibold px-2.5 py-1 rounded-full shadow-sm">
+                      {video.tag}
                     </span>
                   </div>
-                  <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide mb-1">{event.date}</p>
-                  <h3 className="font-display font-semibold text-foreground group-hover:text-primary transition-colors tracking-[-0.01em]">{event.title}</h3>
+                  <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide mb-1">{video.date}</p>
+                  <h3 className="font-display font-semibold text-foreground group-hover:text-primary transition-colors tracking-[-0.01em]">{video.title}</h3>
                 </div>
               </motion.div>
             ))}
@@ -542,16 +604,14 @@ const Landing = () => {
             transition={{ duration: 0.6 }}
           >
             <h2 className="text-3xl sm:text-4xl font-display mb-4 text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
-              Everything you need to run amazing events
+              Todo lo que necesitás para convertir una idea en contenido real.
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              From page creation to post-event analytics, eventspark has you covered.
+              Desde la estrategia creativa hasta la edición final, nos ocupamos de transformar conversaciones espontáneas en piezas listas para publicar, pautar y testear.
             </p>
           </motion.div>
 
-          {/* Bento grid — 2 equal top, wider+narrower bottom */}
           <div className="space-y-6">
-            {/* Top row — 2 equal cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {features.slice(0, 2).map((feature, i) => {
                 const Illust = ILLUSTRATIONS[i];
@@ -576,7 +636,6 @@ const Landing = () => {
                 );
               })}
             </div>
-            {/* Bottom row — wider left, narrower right, equal height */}
             <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
               {features.slice(2).map((feature, rawI) => {
                 const i = rawI + 2;
@@ -608,7 +667,83 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* Social proof */}
+      {/* Proceso */}
+      <section id="proceso" className="py-20 lg:py-28">
+        <div className="max-w-6xl mx-auto px-6 lg:px-8">
+          <motion.div
+            className="text-center mb-14"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-3xl sm:text-4xl font-display mb-4 text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
+              Cómo trabajamos
+            </h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              Un proceso simple: pensamos la conversación, salimos a grabar y entregamos contenido listo para usar.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            {PROCESS_STEPS.map((step, i) => (
+              <motion.div
+                key={step.n}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.08 }}
+                className="rounded-2xl bg-card p-6"
+              >
+                <div className="text-xs font-bold text-primary mb-3 tracking-widest">{step.n}</div>
+                <h3 className="font-display font-bold text-lg mb-2 text-foreground tracking-[-0.01em]">{step.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{step.text}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Beneficios */}
+      <section className="py-20 lg:py-28 bg-card">
+        <div className="max-w-6xl mx-auto px-6 lg:px-8">
+          <motion.div
+            className="text-center mb-14"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-3xl sm:text-4xl font-display mb-4 text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
+              Por qué funciona
+            </h2>
+          </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              { title: "Genera confianza", text: "Tu audiencia ve a personas reales reaccionando, opinando y haciendo preguntas. Eso se siente más creíble que una marca hablando sola." },
+              { title: "Despierta curiosidad", text: "Una buena entrevista hace que el producto se entienda sin explicarlo de forma pesada. La conversación abre interés y mantiene atención." },
+              { title: "Impulsa conversión", text: "El contenido puede trabajar todo el funnel: presenta la marca, educa, genera consideración y termina con un llamado a la acción claro." },
+            ].map((b, i) => (
+              <motion.div
+                key={b.title}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.1 }}
+                className="rounded-3xl bg-background p-8"
+              >
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                  <span className="text-primary font-bold">{i + 1}</span>
+                </div>
+                <h3 className="font-display font-bold text-xl mb-3 text-foreground tracking-[-0.01em]">{b.title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{b.text}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Casos de uso (ex testimonios) */}
       <section className="py-20 lg:py-28">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <motion.div
@@ -619,40 +754,43 @@ const Landing = () => {
             transition={{ duration: 0.6 }}
           >
             <h2 className="text-3xl sm:text-4xl font-display mb-4 text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
-              Loved by organizers
+              Pensado para marcas que quieren contenido más humano.
             </h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              OpenMicMedia ayuda a convertir productos, servicios e ideas en conversaciones que la gente sí quiere mirar.
+            </p>
           </motion.div>
 
           <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
             {[
               {
-                quote: "eventspark cut our setup time by 80%. We went from spending hours on registration to minutes.",
-                name: "Sarah Chen",
-                role: "Community manager",
+                quote: "Necesitábamos explicar el producto sin hacer un anuncio tradicional. El formato de entrevista permitió mostrar reacciones reales y generar más confianza.",
+                name: "Marca de consumo",
+                role: "Lanzamiento de producto",
                 avatar: avatarSarah,
               },
               {
-                quote: "The analytics alone are worth it. We finally know where our attendees are coming from.",
-                name: "Marcus Williams",
-                role: "Event coordinator",
+                quote: "El contenido se sintió nativo para redes. No parecía una pieza publicitaria más, y eso ayudó a captar atención desde los primeros segundos.",
+                name: "Marca de moda",
+                role: "Campaña orgánica y paid",
                 avatar: avatarMarcus,
               },
               {
-                quote: "Clean, professional, and easy to use. Our attendees always compliment the registration experience.",
-                name: "Priya Patel",
-                role: "Startup founder",
+                quote: "Las preguntas ayudaron a explicar el problema de forma simple, con personas reales hablando como habla nuestra audiencia.",
+                name: "App / servicio digital",
+                role: "Awareness y consideración",
                 avatar: avatarPriya,
               },
               {
-                quote: "We switched from three different tools to just eventspark. Everything in one place is a game changer.",
-                name: "James Liu",
-                role: "Tech meetup organizer",
+                quote: "El formato funcionó muy bien para mostrar la experiencia en persona y convertirla en contenido reutilizable.",
+                name: "Retail / experiencia",
+                role: "Activación de marca",
                 avatar: "https://i.pravatar.cc/300?img=33",
               },
               {
-                quote: "Our registrations doubled after switching. The pages just look so much more professional.",
-                name: "Amara Osei",
-                role: "Conference director",
+                quote: "Las reacciones al probar el producto hicieron que el contenido se sintiera más auténtico que una producción tradicional.",
+                name: "Food & beverage",
+                role: "Prueba de producto",
                 avatar: "https://i.pravatar.cc/300?img=47",
               },
             ].map((testimonial, i) => (
@@ -686,8 +824,105 @@ const Landing = () => {
         </div>
       </section>
 
+      {/* Hosts */}
+      <section id="hosts" className="py-20 lg:py-28 bg-card">
+        <div className="max-w-6xl mx-auto px-6 lg:px-8">
+          <motion.div
+            className="text-center mb-14"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-3xl sm:text-4xl font-display mb-4 text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
+              Nuestros hosts
+            </h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              Personas con calle, energía y timing para convertir una pregunta simple en una conversación que engancha.
+            </p>
+          </motion.div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5">
+            {HOSTS.map((host, i) => (
+              <motion.div
+                key={host.label}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.05 }}
+                className="text-center"
+              >
+                <div className="aspect-square rounded-2xl overflow-hidden mb-3 bg-muted">
+                  <img src={host.avatar} alt={host.label} className="w-full h-full object-cover" />
+                </div>
+                <p className="text-sm font-semibold text-foreground">{host.label}</p>
+              </motion.div>
+            ))}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.3 }}
+              className="text-center"
+            >
+              <div className="aspect-square rounded-2xl overflow-hidden mb-3 bg-foreground text-background flex flex-col items-center justify-center p-4">
+                <Mic className="w-6 h-6 mb-2 text-primary" />
+                <p className="text-xs leading-tight">¿Tenés energía para entrevistar gente en la calle?</p>
+              </div>
+              <Button size="sm" variant="outline" className="text-xs border-foreground/15">Quiero ser host</Button>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section id="faq" className="py-20 lg:py-28">
+        <div className="max-w-3xl mx-auto px-6 lg:px-8">
+          <motion.div
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-3xl sm:text-4xl font-display mb-4 text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
+              Preguntas frecuentes
+            </h2>
+          </motion.div>
+          <div className="space-y-3">
+            {FAQS.map((faq, i) => {
+              const open = openFaq === i;
+              return (
+                <div key={faq.q} className="rounded-2xl bg-card overflow-hidden">
+                  <button
+                    onClick={() => setOpenFaq(open ? null : i)}
+                    className="w-full flex items-center justify-between text-left p-5 gap-4"
+                  >
+                    <span className="font-display font-semibold text-foreground text-base">{faq.q}</span>
+                    <span className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
+                      {open ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+                    </span>
+                  </button>
+                  <AnimatePresence initial={false}>
+                    {open && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.25 }}
+                      >
+                        <div className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed">{faq.a}</div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
-      <section className="pt-10 lg:pt-16 pb-12 lg:pb-16 relative">
+      <section id="cta" className="pt-10 lg:pt-16 pb-12 lg:pb-16 relative">
         <div className="max-w-4xl mx-auto px-6 lg:px-8">
           <div className="relative pt-20 lg:pt-24">
             <div className="absolute inset-x-0 top-0 z-20 flex justify-center pointer-events-none" aria-hidden="true">
@@ -696,54 +931,33 @@ const Landing = () => {
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, type: "spring", stiffness: 220, damping: 18 }}
-                className="drop-shadow-[0_18px_40px_hsl(240_30%_14%_/_0.18)]"
+                className="drop-shadow-[0_18px_40px_rgba(0,0,0,0.18)]"
               >
-                <svg width="130" height="158" viewBox="0 0 130 158" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  {/* Calendar body */}
-                  <rect x="10" y="28" width="110" height="120" rx="16" fill="hsl(var(--card))" />
-                  {/* Header bar */}
-                  <rect x="10" y="28" width="110" height="32" rx="16" fill="hsl(var(--primary))" />
-                  <rect x="10" y="44" width="110" height="16" fill="hsl(var(--primary))" />
-                  {/* Binding rings */}
-                  <rect x="38" y="14" width="10" height="28" rx="5" fill="hsl(var(--foreground))" />
-                  <rect x="82" y="14" width="10" height="28" rx="5" fill="hsl(var(--foreground))" />
-                  {/* Day grid - 5 cols x 4 rows, centered */}
-                  {[0, 1, 2, 3, 4].map((col) =>
-                    [0, 1, 2, 3].map((row) => (
-                      <rect
-                        key={`${col}-${row}`}
-                        x={21 + col * 19}
-                        y={72 + row * 18}
-                        width="12"
-                        height="10"
-                        rx="2.5"
-                        fill={col === 3 && row === 2 ? "hsl(var(--primary))" : "hsl(var(--border))"}
-                      />
-                    )),
-                  )}
-                  {/* Checkmark on highlighted day */}
-                  <path d="M75 100L78 103L84 96" stroke="hsl(var(--primary-foreground))" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
+                <div className="w-[130px] h-[140px] flex items-center justify-center">
+                  <div className="w-[110px] h-[110px] rounded-full bg-primary flex items-center justify-center shadow-xl">
+                    <Mic className="w-14 h-14 text-white" strokeWidth={2.5} />
+                  </div>
+                </div>
               </motion.div>
             </div>
 
             <div className="bg-foreground rounded-[2rem] relative overflow-hidden px-6 pt-24 pb-20 lg:px-10 lg:pt-28 lg:pb-24">
               <div className="absolute inset-x-0 top-5 flex justify-center pointer-events-none" aria-hidden="true">
                 {[
-                  { x: -110, y: 20, size: 14, color: "hsl(2 100% 70%)", shape: "circle", rot: 0 },
-                  { x: -72, y: 42, size: 10, color: "hsl(48 100% 62%)", shape: "square", rot: 35 },
-                  { x: -38, y: 12, size: 16, color: "hsl(122 48% 61%)", shape: "circle", rot: 0 },
-                  { x: -18, y: 48, size: 8, color: "hsl(217 90% 63%)", shape: "square", rot: -20 },
-                  { x: 0, y: 10, size: 12, color: "hsl(319 84% 69%)", shape: "triangle", rot: 15 },
-                  { x: 22, y: 46, size: 10, color: "hsl(31 100% 63%)", shape: "circle", rot: 0 },
-                  { x: 56, y: 14, size: 14, color: "hsl(48 100% 62%)", shape: "square", rot: 50 },
-                  { x: 78, y: 38, size: 8, color: "hsl(2 100% 70%)", shape: "circle", rot: 0 },
-                  { x: 104, y: 20, size: 12, color: "hsl(122 48% 61%)", shape: "triangle", rot: -30 },
-                  { x: -132, y: 54, size: 6, color: "hsl(217 90% 63%)", shape: "circle", rot: 0 },
-                  { x: 126, y: 48, size: 10, color: "hsl(319 84% 69%)", shape: "square", rot: 22 },
-                  { x: -146, y: 28, size: 8, color: "hsl(31 100% 63%)", shape: "triangle", rot: 40 },
-                  { x: 146, y: 24, size: 12, color: "hsl(48 100% 62%)", shape: "circle", rot: 0 },
-                  { x: -54, y: 58, size: 6, color: "hsl(122 48% 61%)", shape: "square", rot: -45 },
+                  { x: -110, y: 20, size: 14, color: "hsl(189 70% 48%)", shape: "circle", rot: 0 },
+                  { x: -72, y: 42, size: 10, color: "hsl(0 0% 100%)", shape: "square", rot: 35 },
+                  { x: -38, y: 12, size: 16, color: "hsl(189 70% 48%)", shape: "circle", rot: 0 },
+                  { x: -18, y: 48, size: 8, color: "hsl(0 0% 80%)", shape: "square", rot: -20 },
+                  { x: 0, y: 10, size: 12, color: "hsl(189 70% 60%)", shape: "triangle", rot: 15 },
+                  { x: 22, y: 46, size: 10, color: "hsl(0 0% 100%)", shape: "circle", rot: 0 },
+                  { x: 56, y: 14, size: 14, color: "hsl(189 70% 48%)", shape: "square", rot: 50 },
+                  { x: 78, y: 38, size: 8, color: "hsl(0 0% 100%)", shape: "circle", rot: 0 },
+                  { x: 104, y: 20, size: 12, color: "hsl(189 70% 60%)", shape: "triangle", rot: -30 },
+                  { x: -132, y: 54, size: 6, color: "hsl(189 70% 48%)", shape: "circle", rot: 0 },
+                  { x: 126, y: 48, size: 10, color: "hsl(0 0% 100%)", shape: "square", rot: 22 },
+                  { x: -146, y: 28, size: 8, color: "hsl(189 70% 60%)", shape: "triangle", rot: 40 },
+                  { x: 146, y: 24, size: 12, color: "hsl(189 70% 48%)", shape: "circle", rot: 0 },
+                  { x: -54, y: 58, size: 6, color: "hsl(0 0% 80%)", shape: "square", rot: -45 },
                 ].map((p, i) => (
                   <motion.div
                     key={i}
@@ -775,14 +989,19 @@ const Landing = () => {
                   transition={{ duration: 0.6 }}
                 >
                   <h2 className="text-3xl sm:text-4xl font-display mb-4 text-background tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
-                    Ready to create your next event?
+                    ¿Listo para crear contenido que la gente sí quiera mirar?
                   </h2>
                   <p className="text-background/70 text-lg mb-8 max-w-lg mx-auto text-balance">
-                    Join thousands of organizers who use eventspark to build better events.
+                    Agendemos una llamada y veamos cómo convertir tu producto, servicio o campaña en entrevistas reales para redes y pauta.
                   </p>
-                  <Button size="lg" className="text-base font-semibold px-8 h-12 bg-primary text-primary-foreground hover:bg-primary/90" asChild>
-                    <Link to="/auth">Get started for free <ArrowRight className="ml-2 w-4 h-4" /></Link>
-                  </Button>
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                    <Button size="lg" className="text-base font-semibold px-8 h-12 bg-primary text-white hover:bg-primary/90" asChild>
+                      <a href="mailto:hola@openmicmedia.com">Agendar llamada <ArrowRight className="ml-2 w-4 h-4" /></a>
+                    </Button>
+                    <Button size="lg" variant="outline" className="text-base font-semibold px-8 h-12 bg-transparent text-background border-background/30 hover:bg-background/10 hover:text-background" asChild>
+                      <a href="#videos">Ver ejemplos</a>
+                    </Button>
+                  </div>
                 </motion.div>
               </div>
             </div>
@@ -791,10 +1010,56 @@ const Landing = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <Logo size="md" />
-          <p className="text-sm text-muted-foreground">© 2026 eventspark. All rights reserved.</p>
+      <footer className="py-16 px-6 lg:px-8 border-t border-border">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-10 mb-10">
+            <div className="md:col-span-2">
+              <Logo size="md" />
+              <p className="text-sm text-muted-foreground mt-4 max-w-xs leading-relaxed">
+                Entrevistas callejeras para marcas que quieren generar atención, confianza y conversación real.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-display font-bold text-sm mb-4 text-foreground">Compañía</h4>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><a href="#top" className="hover:text-primary">Inicio</a></li>
+                <li><a href="#videos" className="hover:text-primary">Videos</a></li>
+                <li><a href="#proceso" className="hover:text-primary">Proceso</a></li>
+                <li><a href="#features" className="hover:text-primary">Servicios</a></li>
+                <li><a href="#hosts" className="hover:text-primary">Hosts</a></li>
+                <li><a href="#cta" className="hover:text-primary">Contacto</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-display font-bold text-sm mb-4 text-foreground">Servicios</h4>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li>Entrevistas callejeras</li>
+                <li>Videos para Reels</li>
+                <li>TikTok Ads</li>
+                <li>Meta Ads</li>
+                <li>Activaciones de marca</li>
+                <li>Lanzamientos</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-display font-bold text-sm mb-4 text-foreground">Redes</h4>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><a href="#" className="hover:text-primary">Instagram</a></li>
+                <li><a href="#" className="hover:text-primary">TikTok</a></li>
+                <li><a href="#" className="hover:text-primary">LinkedIn</a></li>
+                <li><a href="#" className="hover:text-primary">YouTube</a></li>
+              </ul>
+              <h4 className="font-display font-bold text-sm mb-3 mt-6 text-foreground">Legal</h4>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><a href="#" className="hover:text-primary">Términos y condiciones</a></li>
+                <li><a href="#" className="hover:text-primary">Política de privacidad</a></li>
+              </ul>
+            </div>
+          </div>
+          <div className="pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
+            <p className="text-sm text-muted-foreground">© 2026 OpenMicMedia. Todos los derechos reservados.</p>
+            <p className="text-xs text-muted-foreground">De la calle a la pantalla.</p>
+          </div>
         </div>
       </footer>
 
@@ -846,19 +1111,19 @@ const Landing = () => {
                   <span className="text-[11px] text-muted-foreground w-8 text-right">{confettiSize.toFixed(1)}</span>
                 </div>
                 <input type="range" min="0.3" max="2.5" step="0.1" value={confettiSize} onChange={(e) => setConfettiSize(Number(e.target.value))} className="w-full h-1.5 accent-primary" />
-                
+
                 <div className="flex items-center justify-between">
                   <span className="text-[11px] text-muted-foreground">Boldness</span>
                   <span className="text-[11px] text-muted-foreground w-8 text-right">{Math.round(confettiOpacity * 100)}%</span>
                 </div>
                 <input type="range" min="0.1" max="1" step="0.05" value={confettiOpacity} onChange={(e) => setConfettiOpacity(Number(e.target.value))} className="w-full h-1.5 accent-primary" />
-                
+
                 <div className="flex items-center justify-between">
                   <span className="text-[11px] text-muted-foreground">Amount</span>
                   <span className="text-[11px] text-muted-foreground w-8 text-right">{confettiCount}</span>
                 </div>
                 <input type="range" min="1" max="8" step="1" value={confettiCount} onChange={(e) => setConfettiCount(Number(e.target.value))} className="w-full h-1.5 accent-primary" />
-                
+
                 <div className="flex items-center justify-between">
                   <span className="text-[11px] text-muted-foreground">Spread</span>
                   <span className="text-[11px] text-muted-foreground w-8 text-right">{confettiSpread.toFixed(1)}</span>
