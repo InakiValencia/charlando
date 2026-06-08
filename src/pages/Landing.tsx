@@ -284,7 +284,6 @@ const NAV_LINKS = [
   { label: "Videos", href: "#videos" },
   { label: "Proceso", href: "#proceso" },
   { label: "Servicios", href: "#features" },
-  { label: "Hosts", href: "#hosts" },
   { label: "Preguntas", href: "#faq" },
   { label: "Contacto", href: "#cta" },
 ];
@@ -435,7 +434,7 @@ const Landing = () => {
 
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-20 lg:py-28">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12 lg:py-20">
           <div className="relative min-h-[580px] flex items-center justify-center">
 
             <ConfettiLayer size={confettiSize} opacity={confettiOpacity} count={confettiCount} spread={confettiSpread} />
@@ -552,40 +551,32 @@ const Landing = () => {
       </section>
 
       {/* Videos destacados */}
-      <section id="videos" className="py-12 lg:py-16 pb-20 lg:pb-28">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-10">
+      <section id="videos" className="py-10 lg:py-14">
+        <div className="max-w-6xl mx-auto px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl sm:text-3xl font-display text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
               Videos destacados de OpenMicMedia
             </h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { img: eventHackathon, title: "Reacción real a producto", tag: "Paid Ad", date: "TikTok · Reels · Ads" },
-              { img: eventChill, title: "Entrevista callejera de marca", tag: "Organic", date: "Contenido orgánico" },
-              { img: eventStartup, title: "Lanzamiento en la calle", tag: "Launch", date: "Campaña de producto" },
-              { img: eventSummit, title: "Prueba de producto real", tag: "UGC-style", date: "Brand awareness" },
-            ].map((video, i) => (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
+            {[1, 2, 3].map((n, i) => (
               <motion.div
-                key={video.title}
+                key={n}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
               >
                 <div className="group cursor-pointer">
-                  <div className="relative rounded-xl overflow-hidden mb-3">
-                    <img
-                      src={video.img}
-                      alt={video.title}
-                      className="w-full h-[180px] object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <span className="absolute top-3 left-3 bg-foreground text-background text-xs font-semibold px-2.5 py-1 rounded-full shadow-sm">
-                      {video.tag}
-                    </span>
+                  <div className="relative rounded-2xl overflow-hidden bg-muted aspect-[9/16] flex items-center justify-center border-2 border-dashed border-border">
+                    <div className="text-center px-4">
+                      <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3">
+                        <Mic className="w-6 h-6 text-primary" />
+                      </div>
+                      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Video {n}</p>
+                      <p className="text-[11px] text-muted-foreground/70 mt-1">Placeholder vertical 9:16</p>
+                    </div>
                   </div>
-                  <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide mb-1">{video.date}</p>
-                  <h3 className="font-display font-semibold text-foreground group-hover:text-primary transition-colors tracking-[-0.01em]">{video.title}</h3>
                 </div>
               </motion.div>
             ))}
@@ -593,18 +584,71 @@ const Landing = () => {
         </div>
       </section>
 
+      {/* Proceso — moderno */}
+      <section id="proceso" className="py-12 lg:py-20 bg-card">
+        <div className="max-w-6xl mx-auto px-6 lg:px-8">
+          <motion.div
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="inline-flex items-center gap-2 text-xs font-semibold text-primary bg-primary/10 px-3 py-1 rounded-full mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+              Cómo trabajamos
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display mb-4 text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
+              De la idea al video viral en 5 pasos.
+            </h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              Un proceso simple: pensamos la conversación, salimos a grabar y entregamos contenido listo para usar.
+            </p>
+          </motion.div>
+
+          <div className="relative">
+            <div className="hidden lg:block absolute top-8 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" aria-hidden="true" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-3">
+              {PROCESS_STEPS.map((step, i) => (
+                <motion.div
+                  key={step.n}
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: i * 0.08 }}
+                  className="group relative"
+                >
+                  <div className="relative bg-background rounded-3xl p-6 h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5">
+                    <div className="flex items-center justify-between mb-5">
+                      <div className="w-16 h-16 rounded-2xl bg-foreground text-background flex items-center justify-center font-display font-bold text-xl shadow-md group-hover:bg-primary transition-colors">
+                        {step.n}
+                      </div>
+                      {i < PROCESS_STEPS.length - 1 && (
+                        <ArrowRight className="hidden lg:block w-5 h-5 text-primary/40 group-hover:text-primary transition-colors" />
+                      )}
+                    </div>
+                    <h3 className="font-display font-bold text-lg mb-2 text-foreground tracking-[-0.01em]">{step.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{step.text}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Features */}
-      <section id="features" className="py-20 lg:py-28 bg-card">
+      <section id="features" className="py-12 lg:py-20">
         <div className="max-w-5xl mx-auto px-6 lg:px-8">
           <motion.div
-            className="text-center mb-14"
+            className="text-center mb-12"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
             <h2 className="text-3xl sm:text-4xl font-display mb-4 text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
-              Todo lo que necesitás para convertir una idea en contenido real.
+              Todo lo que necesitás para viralizar tu producto orgánicamente
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               Desde la estrategia creativa hasta la edición final, nos ocupamos de transformar conversaciones espontáneas en piezas listas para publicar, pautar y testear.
@@ -667,45 +711,9 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* Proceso */}
-      <section id="proceso" className="py-20 lg:py-28">
-        <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <motion.div
-            className="text-center mb-14"
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="text-3xl sm:text-4xl font-display mb-4 text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
-              Cómo trabajamos
-            </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Un proceso simple: pensamos la conversación, salimos a grabar y entregamos contenido listo para usar.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            {PROCESS_STEPS.map((step, i) => (
-              <motion.div
-                key={step.n}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.08 }}
-                className="rounded-2xl bg-card p-6"
-              >
-                <div className="text-xs font-bold text-primary mb-3 tracking-widest">{step.n}</div>
-                <h3 className="font-display font-bold text-lg mb-2 text-foreground tracking-[-0.01em]">{step.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{step.text}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Beneficios */}
-      <section className="py-20 lg:py-28 bg-card">
+      <section className="py-12 lg:py-20 bg-card">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <motion.div
             className="text-center mb-14"
@@ -744,7 +752,7 @@ const Landing = () => {
       </section>
 
       {/* Casos de uso (ex testimonios) */}
-      <section className="py-20 lg:py-28">
+      <section className="py-12 lg:py-20">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <motion.div
             className="text-center mb-14"
@@ -824,58 +832,9 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* Hosts */}
-      <section id="hosts" className="py-20 lg:py-28 bg-card">
-        <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <motion.div
-            className="text-center mb-14"
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="text-3xl sm:text-4xl font-display mb-4 text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
-              Nuestros hosts
-            </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Personas con calle, energía y timing para convertir una pregunta simple en una conversación que engancha.
-            </p>
-          </motion.div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5">
-            {HOSTS.map((host, i) => (
-              <motion.div
-                key={host.label}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.05 }}
-                className="text-center"
-              >
-                <div className="aspect-square rounded-2xl overflow-hidden mb-3 bg-muted">
-                  <img src={host.avatar} alt={host.label} className="w-full h-full object-cover" />
-                </div>
-                <p className="text-sm font-semibold text-foreground">{host.label}</p>
-              </motion.div>
-            ))}
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: 0.3 }}
-              className="text-center"
-            >
-              <div className="aspect-square rounded-2xl overflow-hidden mb-3 bg-foreground text-background flex flex-col items-center justify-center p-4">
-                <Mic className="w-6 h-6 mb-2 text-primary" />
-                <p className="text-xs leading-tight">¿Tenés energía para entrevistar gente en la calle?</p>
-              </div>
-              <Button size="sm" variant="outline" className="text-xs border-foreground/15">Quiero ser host</Button>
-            </motion.div>
-          </div>
-        </div>
-      </section>
 
       {/* FAQ */}
-      <section id="faq" className="py-20 lg:py-28">
+      <section id="faq" className="py-12 lg:py-20">
         <div className="max-w-3xl mx-auto px-6 lg:px-8">
           <motion.div
             className="text-center mb-12"
@@ -1012,7 +971,7 @@ const Landing = () => {
       {/* Footer */}
       <footer className="py-16 px-6 lg:px-8 border-t border-border">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-10 mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
             <div className="md:col-span-2">
               <Logo size="md" />
               <p className="text-sm text-muted-foreground mt-4 max-w-xs leading-relaxed">
@@ -1026,19 +985,7 @@ const Landing = () => {
                 <li><a href="#videos" className="hover:text-primary">Videos</a></li>
                 <li><a href="#proceso" className="hover:text-primary">Proceso</a></li>
                 <li><a href="#features" className="hover:text-primary">Servicios</a></li>
-                <li><a href="#hosts" className="hover:text-primary">Hosts</a></li>
                 <li><a href="#cta" className="hover:text-primary">Contacto</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-display font-bold text-sm mb-4 text-foreground">Servicios</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>Entrevistas callejeras</li>
-                <li>Videos para Reels</li>
-                <li>TikTok Ads</li>
-                <li>Meta Ads</li>
-                <li>Activaciones de marca</li>
-                <li>Lanzamientos</li>
               </ul>
             </div>
             <div>
