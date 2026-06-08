@@ -544,7 +544,8 @@ const Landing = () => {
                   <a href="#videos">Ver videos</a>
                 </Button>
               </div>
-              <p className="text-xs text-muted-foreground mt-4">Para marcas que quieren contenido real, nativo y diseñado para captar atención.</p>
+              <p className="text-xs text-muted-foreground mt-4">Para marcas que quieren contenido que realmente capte atención.</p>
+              <p className="text-sm font-semibold text-primary mt-1">+4M views en 1 mes</p>
             </motion.div>
           </div>
         </div>
