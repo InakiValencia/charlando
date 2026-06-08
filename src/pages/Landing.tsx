@@ -971,7 +971,7 @@ const Landing = () => {
       {/* Footer */}
       <footer className="py-16 px-6 lg:px-8 border-t border-border">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-10 mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
             <div className="md:col-span-2">
               <Logo size="md" />
               <p className="text-sm text-muted-foreground mt-4 max-w-xs leading-relaxed">
