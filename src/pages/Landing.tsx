@@ -441,60 +441,60 @@ const Landing = () => {
 
             {/* Top-left card */}
             <motion.div
-              className="hidden md:block absolute left-[-100px] lg:left-[-40px] top-[20px] w-[200px] lg:w-[260px]"
+              className="hidden md:block absolute left-[-80px] lg:left-[-20px] top-[10px] w-[140px] lg:w-[170px]"
               initial={{ opacity: 0, scale: 0.3, x: -80, y: -60 }}
               animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
               transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.2 }}
             >
-              <div className="rounded-2xl overflow-hidden shadow-lg rotate-[6deg] bg-card">
-                <img src={eventChill} alt="Entrevista callejera" className="w-full h-[150px] object-cover" />
-                <div className="bg-card px-3 py-2">
-                  <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">Street Interview</span>
+              <div className="rounded-2xl overflow-hidden shadow-lg rotate-[6deg] bg-card aspect-[9/16] relative">
+                <img src={eventChill} alt="Entrevista callejera" className="w-full h-full object-cover" />
+                <div className="absolute bottom-2 left-2">
+                  <span className="text-[10px] font-semibold text-primary bg-white/90 backdrop-blur px-2 py-0.5 rounded-full">Street Interview</span>
                 </div>
               </div>
             </motion.div>
 
             {/* Bottom-left card */}
             <motion.div
-              className="hidden md:block absolute left-[-120px] lg:left-[-60px] bottom-[20px] w-[200px] lg:w-[260px]"
+              className="hidden md:block absolute left-[-100px] lg:left-[-40px] bottom-[10px] w-[140px] lg:w-[170px]"
               initial={{ opacity: 0, scale: 0.3, x: -80, y: 60 }}
               animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
               transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.35 }}
             >
-              <div className="rounded-2xl overflow-hidden shadow-lg rotate-[-5deg] bg-card">
-                <img src={eventJam} alt="Reacciones reales" className="w-full h-[150px] object-cover" />
-                <div className="bg-card px-3 py-2">
-                  <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">Real Opinions</span>
+              <div className="rounded-2xl overflow-hidden shadow-lg rotate-[-5deg] bg-card aspect-[9/16] relative">
+                <img src={eventJam} alt="Reacciones reales" className="w-full h-full object-cover" />
+                <div className="absolute bottom-2 left-2">
+                  <span className="text-[10px] font-semibold text-primary bg-white/90 backdrop-blur px-2 py-0.5 rounded-full">Real Opinions</span>
                 </div>
               </div>
             </motion.div>
 
             {/* Top-right card */}
             <motion.div
-              className="hidden md:block absolute right-[-100px] lg:right-[-40px] top-[20px] w-[200px] lg:w-[260px]"
+              className="hidden md:block absolute right-[-80px] lg:right-[-20px] top-[10px] w-[140px] lg:w-[170px]"
               initial={{ opacity: 0, scale: 0.3, x: 80, y: -60 }}
               animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
               transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.25 }}
             >
-              <div className="rounded-2xl overflow-hidden shadow-lg rotate-[-6deg] bg-card">
-                <img src={eventStartup} alt="Reacción a producto" className="w-full h-[150px] object-cover" />
-                <div className="bg-card px-3 py-2">
-                  <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">Product Reaction</span>
+              <div className="rounded-2xl overflow-hidden shadow-lg rotate-[-6deg] bg-card aspect-[9/16] relative">
+                <img src={eventStartup} alt="Reacción a producto" className="w-full h-full object-cover" />
+                <div className="absolute bottom-2 left-2">
+                  <span className="text-[10px] font-semibold text-primary bg-white/90 backdrop-blur px-2 py-0.5 rounded-full">Product Reaction</span>
                 </div>
               </div>
             </motion.div>
 
             {/* Bottom-right card */}
             <motion.div
-              className="hidden md:block absolute right-[-120px] lg:right-[-60px] bottom-[20px] w-[200px] lg:w-[260px]"
+              className="hidden md:block absolute right-[-100px] lg:right-[-40px] bottom-[10px] w-[140px] lg:w-[170px]"
               initial={{ opacity: 0, scale: 0.3, x: 80, y: 60 }}
               animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
               transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.4 }}
             >
-              <div className="rounded-2xl overflow-hidden shadow-lg rotate-[5deg] bg-card">
-                <img src={eventSummit} alt="Lanzamiento de marca" className="w-full h-[150px] object-cover" />
-                <div className="bg-card px-3 py-2">
-                  <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">Brand Launch</span>
+              <div className="rounded-2xl overflow-hidden shadow-lg rotate-[5deg] bg-card aspect-[9/16] relative">
+                <img src={eventSummit} alt="Lanzamiento de marca" className="w-full h-full object-cover" />
+                <div className="absolute bottom-2 left-2">
+                  <span className="text-[10px] font-semibold text-primary bg-white/90 backdrop-blur px-2 py-0.5 rounded-full">Brand Launch</span>
                 </div>
               </div>
             </motion.div>
@@ -544,7 +544,8 @@ const Landing = () => {
                   <a href="#videos">Ver videos</a>
                 </Button>
               </div>
-              <p className="text-xs text-muted-foreground mt-4">Para marcas que quieren contenido real, nativo y diseñado para captar atención.</p>
+              <p className="text-xs text-muted-foreground mt-4">Para marcas que quieren contenido que realmente capte atención.</p>
+              <p className="text-sm font-semibold text-primary mt-1">+4M views en 1 mes</p>
             </motion.div>
           </div>
         </div>
@@ -553,12 +554,12 @@ const Landing = () => {
       {/* Videos destacados */}
       <section id="videos" className="py-10 lg:py-14">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl sm:text-3xl font-display text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
+          <div className="flex items-center justify-center mb-8">
+            <h2 className="text-2xl sm:text-3xl font-display text-foreground tracking-[-0.02em] text-center" style={{ fontWeight: titleWeight }}>
               Videos destacados de OpenMicMedia
             </h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          <div className="grid grid-cols-3 gap-3 sm:gap-6 max-w-4xl mx-auto px-6 sm:px-0">
             {[1, 2, 3].map((n, i) => (
               <motion.div
                 key={n}
@@ -569,12 +570,12 @@ const Landing = () => {
               >
                 <div className="group cursor-pointer">
                   <div className="relative rounded-2xl overflow-hidden bg-muted aspect-[9/16] flex items-center justify-center border-2 border-dashed border-border">
-                    <div className="text-center px-4">
-                      <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3">
-                        <Mic className="w-6 h-6 text-primary" />
+                    <div className="text-center px-2">
+                      <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                        <Mic className="w-4 h-4 sm:w-6 sm:h-6 text-primary" />
                       </div>
-                      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Video {n}</p>
-                      <p className="text-[11px] text-muted-foreground/70 mt-1">Placeholder vertical 9:16</p>
+                      <p className="text-[10px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-wide">Video {n}</p>
+                      <p className="hidden sm:block text-[11px] text-muted-foreground/70 mt-1">Placeholder vertical 9:16</p>
                     </div>
                   </div>
                 </div>
@@ -745,87 +746,6 @@ const Landing = () => {
                 </div>
                 <h3 className="font-display font-bold text-xl mb-3 text-foreground tracking-[-0.01em]">{b.title}</h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">{b.text}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Casos de uso (ex testimonios) */}
-      <section className="py-12 lg:py-20">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <motion.div
-            className="text-center mb-14"
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="text-3xl sm:text-4xl font-display mb-4 text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
-              Pensado para marcas que quieren contenido más humano.
-            </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              OpenMicMedia ayuda a convertir productos, servicios e ideas en conversaciones que la gente sí quiere mirar.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
-            {[
-              {
-                quote: "Necesitábamos explicar el producto sin hacer un anuncio tradicional. El formato de entrevista permitió mostrar reacciones reales y generar más confianza.",
-                name: "Marca de consumo",
-                role: "Lanzamiento de producto",
-                avatar: avatarSarah,
-              },
-              {
-                quote: "El contenido se sintió nativo para redes. No parecía una pieza publicitaria más, y eso ayudó a captar atención desde los primeros segundos.",
-                name: "Marca de moda",
-                role: "Campaña orgánica y paid",
-                avatar: avatarMarcus,
-              },
-              {
-                quote: "Las preguntas ayudaron a explicar el problema de forma simple, con personas reales hablando como habla nuestra audiencia.",
-                name: "App / servicio digital",
-                role: "Awareness y consideración",
-                avatar: avatarPriya,
-              },
-              {
-                quote: "El formato funcionó muy bien para mostrar la experiencia en persona y convertirla en contenido reutilizable.",
-                name: "Retail / experiencia",
-                role: "Activación de marca",
-                avatar: "https://i.pravatar.cc/300?img=33",
-              },
-              {
-                quote: "Las reacciones al probar el producto hicieron que el contenido se sintiera más auténtico que una producción tradicional.",
-                name: "Food & beverage",
-                role: "Prueba de producto",
-                avatar: "https://i.pravatar.cc/300?img=47",
-              },
-            ].map((testimonial, i) => (
-              <motion.div
-                key={testimonial.name}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.1 }}
-              >
-                <Card className="h-full border-0 shadow-sm overflow-hidden rounded-2xl">
-                  <div className="h-[180px] overflow-hidden">
-                    <img src={testimonial.avatar} alt={testimonial.name} className="w-full h-full object-cover object-center" />
-                  </div>
-                  <CardContent className="p-6">
-                    <div className="flex gap-0.5 mb-4">
-                      {[...Array(5)].map((_, j) => (
-                        <Star key={j} className="w-4 h-4 fill-primary text-primary" />
-                      ))}
-                    </div>
-                    <p className="text-foreground text-sm leading-relaxed mb-5">"{testimonial.quote}"</p>
-                    <div>
-                      <p className="font-display font-semibold text-sm text-foreground">{testimonial.name}</p>
-                      <p className="text-xs text-muted-foreground">{testimonial.role}</p>
-                    </div>
-                  </CardContent>
-                </Card>
               </motion.div>
             ))}
           </div>
