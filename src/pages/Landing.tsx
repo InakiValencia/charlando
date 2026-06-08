@@ -284,7 +284,6 @@ const NAV_LINKS = [
   { label: "Videos", href: "#videos" },
   { label: "Proceso", href: "#proceso" },
   { label: "Servicios", href: "#features" },
-  { label: "Hosts", href: "#hosts" },
   { label: "Preguntas", href: "#faq" },
   { label: "Contacto", href: "#cta" },
 ];
