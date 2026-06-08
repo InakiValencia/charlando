@@ -554,7 +554,6 @@ const Landing = () => {
       {/* Videos destacados */}
       <section id="videos" className="py-10 lg:py-14">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-8">
           <div className="flex items-center justify-center mb-8">
             <h2 className="text-2xl sm:text-3xl font-display text-foreground tracking-[-0.02em] text-center" style={{ fontWeight: titleWeight }}>
               Videos destacados de OpenMicMedia
