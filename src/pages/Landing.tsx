@@ -832,55 +832,6 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* Hosts */}
-      <section id="hosts" className="py-20 lg:py-28 bg-card">
-        <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <motion.div
-            className="text-center mb-14"
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="text-3xl sm:text-4xl font-display mb-4 text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
-              Nuestros hosts
-            </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Personas con calle, energía y timing para convertir una pregunta simple en una conversación que engancha.
-            </p>
-          </motion.div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5">
-            {HOSTS.map((host, i) => (
-              <motion.div
-                key={host.label}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.05 }}
-                className="text-center"
-              >
-                <div className="aspect-square rounded-2xl overflow-hidden mb-3 bg-muted">
-                  <img src={host.avatar} alt={host.label} className="w-full h-full object-cover" />
-                </div>
-                <p className="text-sm font-semibold text-foreground">{host.label}</p>
-              </motion.div>
-            ))}
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: 0.3 }}
-              className="text-center"
-            >
-              <div className="aspect-square rounded-2xl overflow-hidden mb-3 bg-foreground text-background flex flex-col items-center justify-center p-4">
-                <Mic className="w-6 h-6 mb-2 text-primary" />
-                <p className="text-xs leading-tight">¿Tenés energía para entrevistar gente en la calle?</p>
-              </div>
-              <Button size="sm" variant="outline" className="text-xs border-foreground/15">Quiero ser host</Button>
-            </motion.div>
-          </div>
-        </div>
-      </section>
 
       {/* FAQ */}
       <section id="faq" className="py-20 lg:py-28">
