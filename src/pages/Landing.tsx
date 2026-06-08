@@ -434,7 +434,7 @@ const Landing = () => {
 
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-20 lg:py-28">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12 lg:py-20">
           <div className="relative min-h-[580px] flex items-center justify-center">
 
             <ConfettiLayer size={confettiSize} opacity={confettiOpacity} count={confettiCount} spread={confettiSpread} />
@@ -713,7 +713,7 @@ const Landing = () => {
 
 
       {/* Beneficios */}
-      <section className="py-20 lg:py-28 bg-card">
+      <section className="py-12 lg:py-20 bg-card">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <motion.div
             className="text-center mb-14"
@@ -752,7 +752,7 @@ const Landing = () => {
       </section>
 
       {/* Casos de uso (ex testimonios) */}
-      <section className="py-20 lg:py-28">
+      <section className="py-12 lg:py-20">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <motion.div
             className="text-center mb-14"
@@ -834,7 +834,7 @@ const Landing = () => {
 
 
       {/* FAQ */}
-      <section id="faq" className="py-20 lg:py-28">
+      <section id="faq" className="py-12 lg:py-20">
         <div className="max-w-3xl mx-auto px-6 lg:px-8">
           <motion.div
             className="text-center mb-12"
