@@ -985,19 +985,7 @@ const Landing = () => {
                 <li><a href="#videos" className="hover:text-primary">Videos</a></li>
                 <li><a href="#proceso" className="hover:text-primary">Proceso</a></li>
                 <li><a href="#features" className="hover:text-primary">Servicios</a></li>
-                <li><a href="#hosts" className="hover:text-primary">Hosts</a></li>
                 <li><a href="#cta" className="hover:text-primary">Contacto</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-display font-bold text-sm mb-4 text-foreground">Servicios</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>Entrevistas callejeras</li>
-                <li>Videos para Reels</li>
-                <li>TikTok Ads</li>
-                <li>Meta Ads</li>
-                <li>Activaciones de marca</li>
-                <li>Lanzamientos</li>
               </ul>
             </div>
             <div>
