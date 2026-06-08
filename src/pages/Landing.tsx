@@ -584,18 +584,71 @@ const Landing = () => {
         </div>
       </section>
 
+      {/* Proceso — moderno */}
+      <section id="proceso" className="py-12 lg:py-20 bg-card">
+        <div className="max-w-6xl mx-auto px-6 lg:px-8">
+          <motion.div
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="inline-flex items-center gap-2 text-xs font-semibold text-primary bg-primary/10 px-3 py-1 rounded-full mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+              Cómo trabajamos
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display mb-4 text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
+              De la idea al video viral en 5 pasos.
+            </h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              Un proceso simple: pensamos la conversación, salimos a grabar y entregamos contenido listo para usar.
+            </p>
+          </motion.div>
+
+          <div className="relative">
+            <div className="hidden lg:block absolute top-8 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" aria-hidden="true" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-3">
+              {PROCESS_STEPS.map((step, i) => (
+                <motion.div
+                  key={step.n}
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: i * 0.08 }}
+                  className="group relative"
+                >
+                  <div className="relative bg-background rounded-3xl p-6 h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5">
+                    <div className="flex items-center justify-between mb-5">
+                      <div className="w-16 h-16 rounded-2xl bg-foreground text-background flex items-center justify-center font-display font-bold text-xl shadow-md group-hover:bg-primary transition-colors">
+                        {step.n}
+                      </div>
+                      {i < PROCESS_STEPS.length - 1 && (
+                        <ArrowRight className="hidden lg:block w-5 h-5 text-primary/40 group-hover:text-primary transition-colors" />
+                      )}
+                    </div>
+                    <h3 className="font-display font-bold text-lg mb-2 text-foreground tracking-[-0.01em]">{step.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{step.text}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Features */}
-      <section id="features" className="py-20 lg:py-28 bg-card">
+      <section id="features" className="py-12 lg:py-20">
         <div className="max-w-5xl mx-auto px-6 lg:px-8">
           <motion.div
-            className="text-center mb-14"
+            className="text-center mb-12"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
             <h2 className="text-3xl sm:text-4xl font-display mb-4 text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
-              Todo lo que necesitás para convertir una idea en contenido real.
+              Todo lo que necesitás para viralizar tu producto orgánicamente
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               Desde la estrategia creativa hasta la edición final, nos ocupamos de transformar conversaciones espontáneas en piezas listas para publicar, pautar y testear.
@@ -658,42 +711,6 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* Proceso */}
-      <section id="proceso" className="py-20 lg:py-28">
-        <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <motion.div
-            className="text-center mb-14"
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="text-3xl sm:text-4xl font-display mb-4 text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
-              Cómo trabajamos
-            </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Un proceso simple: pensamos la conversación, salimos a grabar y entregamos contenido listo para usar.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            {PROCESS_STEPS.map((step, i) => (
-              <motion.div
-                key={step.n}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.08 }}
-                className="rounded-2xl bg-card p-6"
-              >
-                <div className="text-xs font-bold text-primary mb-3 tracking-widest">{step.n}</div>
-                <h3 className="font-display font-bold text-lg mb-2 text-foreground tracking-[-0.01em]">{step.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{step.text}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Beneficios */}
       <section className="py-20 lg:py-28 bg-card">
