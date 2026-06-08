@@ -551,40 +551,32 @@ const Landing = () => {
       </section>
 
       {/* Videos destacados */}
-      <section id="videos" className="py-12 lg:py-16 pb-20 lg:pb-28">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-10">
+      <section id="videos" className="py-10 lg:py-14">
+        <div className="max-w-6xl mx-auto px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl sm:text-3xl font-display text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
               Videos destacados de OpenMicMedia
             </h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { img: eventHackathon, title: "Reacción real a producto", tag: "Paid Ad", date: "TikTok · Reels · Ads" },
-              { img: eventChill, title: "Entrevista callejera de marca", tag: "Organic", date: "Contenido orgánico" },
-              { img: eventStartup, title: "Lanzamiento en la calle", tag: "Launch", date: "Campaña de producto" },
-              { img: eventSummit, title: "Prueba de producto real", tag: "UGC-style", date: "Brand awareness" },
-            ].map((video, i) => (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
+            {[1, 2, 3].map((n, i) => (
               <motion.div
-                key={video.title}
+                key={n}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
               >
                 <div className="group cursor-pointer">
-                  <div className="relative rounded-xl overflow-hidden mb-3">
-                    <img
-                      src={video.img}
-                      alt={video.title}
-                      className="w-full h-[180px] object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <span className="absolute top-3 left-3 bg-foreground text-background text-xs font-semibold px-2.5 py-1 rounded-full shadow-sm">
-                      {video.tag}
-                    </span>
+                  <div className="relative rounded-2xl overflow-hidden bg-muted aspect-[9/16] flex items-center justify-center border-2 border-dashed border-border">
+                    <div className="text-center px-4">
+                      <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3">
+                        <Mic className="w-6 h-6 text-primary" />
+                      </div>
+                      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Video {n}</p>
+                      <p className="text-[11px] text-muted-foreground/70 mt-1">Placeholder vertical 9:16</p>
+                    </div>
                   </div>
-                  <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide mb-1">{video.date}</p>
-                  <h3 className="font-display font-semibold text-foreground group-hover:text-primary transition-colors tracking-[-0.01em]">{video.title}</h3>
                 </div>
               </motion.div>
             ))}
