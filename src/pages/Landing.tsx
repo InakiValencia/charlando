@@ -441,60 +441,60 @@ const Landing = () => {
 
             {/* Top-left card */}
             <motion.div
-              className="hidden md:block absolute left-[-100px] lg:left-[-40px] top-[20px] w-[200px] lg:w-[260px]"
+              className="hidden md:block absolute left-[-80px] lg:left-[-20px] top-[10px] w-[140px] lg:w-[170px]"
               initial={{ opacity: 0, scale: 0.3, x: -80, y: -60 }}
               animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
               transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.2 }}
             >
-              <div className="rounded-2xl overflow-hidden shadow-lg rotate-[6deg] bg-card">
-                <img src={eventChill} alt="Entrevista callejera" className="w-full h-[150px] object-cover" />
-                <div className="bg-card px-3 py-2">
-                  <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">Street Interview</span>
+              <div className="rounded-2xl overflow-hidden shadow-lg rotate-[6deg] bg-card aspect-[9/16] relative">
+                <img src={eventChill} alt="Entrevista callejera" className="w-full h-full object-cover" />
+                <div className="absolute bottom-2 left-2">
+                  <span className="text-[10px] font-semibold text-primary bg-white/90 backdrop-blur px-2 py-0.5 rounded-full">Street Interview</span>
                 </div>
               </div>
             </motion.div>
 
             {/* Bottom-left card */}
             <motion.div
-              className="hidden md:block absolute left-[-120px] lg:left-[-60px] bottom-[20px] w-[200px] lg:w-[260px]"
+              className="hidden md:block absolute left-[-100px] lg:left-[-40px] bottom-[10px] w-[140px] lg:w-[170px]"
               initial={{ opacity: 0, scale: 0.3, x: -80, y: 60 }}
               animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
               transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.35 }}
             >
-              <div className="rounded-2xl overflow-hidden shadow-lg rotate-[-5deg] bg-card">
-                <img src={eventJam} alt="Reacciones reales" className="w-full h-[150px] object-cover" />
-                <div className="bg-card px-3 py-2">
-                  <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">Real Opinions</span>
+              <div className="rounded-2xl overflow-hidden shadow-lg rotate-[-5deg] bg-card aspect-[9/16] relative">
+                <img src={eventJam} alt="Reacciones reales" className="w-full h-full object-cover" />
+                <div className="absolute bottom-2 left-2">
+                  <span className="text-[10px] font-semibold text-primary bg-white/90 backdrop-blur px-2 py-0.5 rounded-full">Real Opinions</span>
                 </div>
               </div>
             </motion.div>
 
             {/* Top-right card */}
             <motion.div
-              className="hidden md:block absolute right-[-100px] lg:right-[-40px] top-[20px] w-[200px] lg:w-[260px]"
+              className="hidden md:block absolute right-[-80px] lg:right-[-20px] top-[10px] w-[140px] lg:w-[170px]"
               initial={{ opacity: 0, scale: 0.3, x: 80, y: -60 }}
               animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
               transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.25 }}
             >
-              <div className="rounded-2xl overflow-hidden shadow-lg rotate-[-6deg] bg-card">
-                <img src={eventStartup} alt="Reacción a producto" className="w-full h-[150px] object-cover" />
-                <div className="bg-card px-3 py-2">
-                  <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">Product Reaction</span>
+              <div className="rounded-2xl overflow-hidden shadow-lg rotate-[-6deg] bg-card aspect-[9/16] relative">
+                <img src={eventStartup} alt="Reacción a producto" className="w-full h-full object-cover" />
+                <div className="absolute bottom-2 left-2">
+                  <span className="text-[10px] font-semibold text-primary bg-white/90 backdrop-blur px-2 py-0.5 rounded-full">Product Reaction</span>
                 </div>
               </div>
             </motion.div>
 
             {/* Bottom-right card */}
             <motion.div
-              className="hidden md:block absolute right-[-120px] lg:right-[-60px] bottom-[20px] w-[200px] lg:w-[260px]"
+              className="hidden md:block absolute right-[-100px] lg:right-[-40px] bottom-[10px] w-[140px] lg:w-[170px]"
               initial={{ opacity: 0, scale: 0.3, x: 80, y: 60 }}
               animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
               transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.4 }}
             >
-              <div className="rounded-2xl overflow-hidden shadow-lg rotate-[5deg] bg-card">
-                <img src={eventSummit} alt="Lanzamiento de marca" className="w-full h-[150px] object-cover" />
-                <div className="bg-card px-3 py-2">
-                  <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">Brand Launch</span>
+              <div className="rounded-2xl overflow-hidden shadow-lg rotate-[5deg] bg-card aspect-[9/16] relative">
+                <img src={eventSummit} alt="Lanzamiento de marca" className="w-full h-full object-cover" />
+                <div className="absolute bottom-2 left-2">
+                  <span className="text-[10px] font-semibold text-primary bg-white/90 backdrop-blur px-2 py-0.5 rounded-full">Brand Launch</span>
                 </div>
               </div>
             </motion.div>
