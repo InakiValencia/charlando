@@ -555,11 +555,12 @@ const Landing = () => {
       <section id="videos" className="py-10 lg:py-14">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl sm:text-3xl font-display text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
+          <div className="flex items-center justify-center mb-8">
+            <h2 className="text-2xl sm:text-3xl font-display text-foreground tracking-[-0.02em] text-center" style={{ fontWeight: titleWeight }}>
               Videos destacados de OpenMicMedia
             </h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          <div className="grid grid-cols-3 gap-3 sm:gap-6 max-w-4xl mx-auto px-6 sm:px-0">
             {[1, 2, 3].map((n, i) => (
               <motion.div
                 key={n}
@@ -570,12 +571,12 @@ const Landing = () => {
               >
                 <div className="group cursor-pointer">
                   <div className="relative rounded-2xl overflow-hidden bg-muted aspect-[9/16] flex items-center justify-center border-2 border-dashed border-border">
-                    <div className="text-center px-4">
-                      <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3">
-                        <Mic className="w-6 h-6 text-primary" />
+                    <div className="text-center px-2">
+                      <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                        <Mic className="w-4 h-4 sm:w-6 sm:h-6 text-primary" />
                       </div>
-                      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Video {n}</p>
-                      <p className="text-[11px] text-muted-foreground/70 mt-1">Placeholder vertical 9:16</p>
+                      <p className="text-[10px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-wide">Video {n}</p>
+                      <p className="hidden sm:block text-[11px] text-muted-foreground/70 mt-1">Placeholder vertical 9:16</p>
                     </div>
                   </div>
                 </div>
