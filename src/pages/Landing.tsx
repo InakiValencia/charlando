@@ -16,10 +16,7 @@ import {
   Minus,
 } from "lucide-react";
 
-import eventChill from "@/assets/event-chill-code-workshop.jpg";
 import eventHackathon from "@/assets/event-hackathon-ai.jpg";
-import eventJam from "@/assets/event-late-night-jam.jpg";
-import eventStartup from "@/assets/event-startup-weekend.jpg";
 import eventSummit from "@/assets/event-vibe-coding-summit.jpg";
 import avatarSarah from "@/assets/avatar-sarah.jpg";
 import avatarMarcus from "@/assets/avatar-marcus.jpg";
@@ -60,7 +57,7 @@ const LOGO_URLS = [
   { src: "https://cdn.jsdelivr.net/gh/gilbarbara/logos@main/logos/youtube-icon.svg", name: "YouTube" },
   { src: "https://cdn.jsdelivr.net/gh/gilbarbara/logos@main/logos/meta-icon.svg", name: "Meta" },
   { src: "https://cdn.jsdelivr.net/gh/gilbarbara/logos@main/logos/facebook.svg", name: "Facebook" },
-  { src: "https://cdn.jsdelivr.net/gh/gilbarbara/logos@main/logos/snapchat.svg", name: "Snapchat" },
+  { src: "https://cdn.simpleicons.org/snapchat/000000", name: "Snapchat" },
 ];
 
 type BentoAccents = { integrationCircle: string; attendeeBorder: string; analyticsBars: string; analyticsAccent: string; pageButton: string };
@@ -150,6 +147,20 @@ function IllustrationAttendees({ accents }: { accents: BentoAccents }) {
 const ILLUSTRATIONS = [IllustrationPages, IllustrationAnalytics, IllustrationIntegrations, IllustrationAttendees];
 
 const rotatingWords = ["TikTok.", "Reels.", "Shorts.", "marcas."];
+
+const FEATURED_VIDEOS = [
+  "/featured-video-1.png",
+  "/featured-video-2.png",
+  "/featured-video-3.jpg",
+  "/featured-video-4.jpg",
+];
+
+const HERO_IMAGES = [
+  "/hero-card-1.jpg",
+  "/hero-card-2.jpg",
+  "/hero-card-3.png",
+  "/hero-card-4.png",
+];
 
 const fontWeightOptions = [
   { label: "Medium (500)", value: 500 },
@@ -324,11 +335,10 @@ const FAQS = [
 ];
 
 const PROCESS_STEPS = [
-  { n: "01", title: "Brief", text: "Entendemos tu producto, tu audiencia, el objetivo de campaña y el mensaje que querés instalar." },
-  { n: "02", title: "Concepto", text: "Diseñamos preguntas, hooks y ángulos para generar respuestas naturales, útiles y entretenidas." },
-  { n: "03", title: "Producción", text: "Grabamos entrevistas callejeras con personas reales, cuidando energía, sonido, encuadre y contexto." },
-  { n: "04", title: "Edición", text: "Creamos piezas verticales optimizadas para retención, claridad y conversión." },
-  { n: "05", title: "Entrega", text: "Recibís videos listos para publicar, pautar y testear en diferentes plataformas." },
+  { n: "01", title: "Concepto", text: "Entendemos tu producto y marca. En base a eso diseñamos preguntas, hooks y ángulos para generar respuestas naturales y transmitir tu mensaje." },
+  { n: "02", title: "Producción", text: "Grabamos entrevistas callejeras con personas reales, cuidando energía, sonido, encuadre y contexto." },
+  { n: "03", title: "Edición", text: "Creamos piezas verticales optimizadas para retención, claridad y conversión." },
+  { n: "04", title: "Entrega", text: "Recibís videos listos para publicar, pautar y testear en diferentes plataformas." },
 ];
 
 const HOSTS = [
@@ -434,7 +444,7 @@ const Landing = () => {
 
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12 lg:py-20">
+        <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-12 lg:py-20">
           <div className="relative min-h-[580px] flex items-center justify-center">
 
             <ConfettiLayer size={confettiSize} opacity={confettiOpacity} count={confettiCount} spread={confettiSpread} />
@@ -447,7 +457,7 @@ const Landing = () => {
               transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.2 }}
             >
               <div className="rounded-2xl overflow-hidden shadow-lg rotate-[6deg] bg-card aspect-[9/16] relative">
-                <img src={eventChill} alt="Entrevista callejera" className="w-full h-full object-cover" />
+                <img src={HERO_IMAGES[0]} alt="Entrevista callejera" className="w-full h-full object-cover" />
                 <div className="absolute bottom-2 left-2">
                   <span className="text-[10px] font-semibold text-primary bg-white/90 backdrop-blur px-2 py-0.5 rounded-full">Street Interview</span>
                 </div>
@@ -462,10 +472,7 @@ const Landing = () => {
               transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.35 }}
             >
               <div className="rounded-2xl overflow-hidden shadow-lg rotate-[-5deg] bg-card aspect-[9/16] relative">
-                <img src={eventJam} alt="Reacciones reales" className="w-full h-full object-cover" />
-                <div className="absolute bottom-2 left-2">
-                  <span className="text-[10px] font-semibold text-primary bg-white/90 backdrop-blur px-2 py-0.5 rounded-full">Real Opinions</span>
-                </div>
+                <img src={HERO_IMAGES[1]} alt="Reacciones reales" className="w-full h-full object-cover" />
               </div>
             </motion.div>
 
@@ -477,7 +484,7 @@ const Landing = () => {
               transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.25 }}
             >
               <div className="rounded-2xl overflow-hidden shadow-lg rotate-[-6deg] bg-card aspect-[9/16] relative">
-                <img src={eventStartup} alt="Reacción a producto" className="w-full h-full object-cover" />
+                <img src={HERO_IMAGES[2]} alt="Reacción a producto" className="w-full h-full object-cover" />
                 <div className="absolute bottom-2 left-2">
                   <span className="text-[10px] font-semibold text-primary bg-white/90 backdrop-blur px-2 py-0.5 rounded-full">Product Reaction</span>
                 </div>
@@ -492,10 +499,7 @@ const Landing = () => {
               transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.4 }}
             >
               <div className="rounded-2xl overflow-hidden shadow-lg rotate-[5deg] bg-card aspect-[9/16] relative">
-                <img src={eventSummit} alt="Lanzamiento de marca" className="w-full h-full object-cover" />
-                <div className="absolute bottom-2 left-2">
-                  <span className="text-[10px] font-semibold text-primary bg-white/90 backdrop-blur px-2 py-0.5 rounded-full">Brand Launch</span>
-                </div>
+                <img src={HERO_IMAGES[3]} alt="Lanzamiento de marca" className="w-full h-full object-cover" />
               </div>
             </motion.div>
 
@@ -513,26 +517,43 @@ const Landing = () => {
                 <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
                 Personas reales · Reacciones reales
               </div>
-              <h1 className="text-4xl sm:text-5xl lg:text-[44px] 2xl:text-[56px] font-display tracking-tight leading-[1.15] text-foreground mb-6" style={{ fontWeight: titleWeight }}>
+              <h1 className="text-[28px] min-[360px]:text-[31px] sm:text-5xl lg:text-[44px] 2xl:text-[56px] font-display tracking-tight leading-[1.15] text-foreground mb-6" style={{ fontWeight: titleWeight }}>
                 Conversaciones que
                 <br />
-                convierten en{" "}
-                <span className="inline-block relative" style={{ minWidth: "7ch" }}>
-                  <AnimatePresence mode="wait">
-                    <motion.span
-                      key={rotatingWords[wordIndex]}
-                      initial={{ opacity: 0, y: 16 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -16 }}
-                      transition={{ duration: 0.35 }}
-                      className="text-primary inline-block"
-                    >
-                      {rotatingWords[wordIndex]}
-                    </motion.span>
-                  </AnimatePresence>
-                  <span className="invisible block h-0 overflow-hidden" aria-hidden="true">Shorts.</span>
+                <span className="whitespace-nowrap">
+                  convierten en{" "}
+                  <span className="inline-block relative" style={{ minWidth: "7ch" }}>
+                    <AnimatePresence mode="wait">
+                      <motion.span
+                        key={rotatingWords[wordIndex]}
+                        initial={{ opacity: 0, y: 16 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -16 }}
+                        transition={{ duration: 0.35 }}
+                        className="text-primary inline-block"
+                      >
+                        {rotatingWords[wordIndex]}
+                      </motion.span>
+                    </AnimatePresence>
+                    <span className="invisible block h-0 overflow-hidden" aria-hidden="true">Shorts.</span>
+                  </span>
                 </span>
               </h1>
+              <div className="md:hidden grid grid-cols-4 gap-2 max-w-[350px] mx-auto mb-7 px-2">
+                {HERO_IMAGES.map((image, i) => (
+                  <motion.div
+                    key={image}
+                    initial={{ opacity: 0, y: 18, rotate: 0 }}
+                    animate={{ opacity: 1, y: 0, rotate: i === 0 ? -5 : i === 3 ? 5 : 0 }}
+                    transition={{ type: "spring", stiffness: 220, damping: 20, delay: 0.2 + i * 0.1 }}
+                    className={`relative overflow-hidden rounded-xl bg-card shadow-lg aspect-[9/16] ${i === 1 || i === 2 ? "-translate-y-2" : ""}`}
+                  >
+                    <img src={image} alt="Ejemplo de video vertical" className="h-full w-full object-cover" />
+                    <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/55 to-transparent" />
+                    <span className="absolute bottom-2 left-2 text-[8px] font-semibold text-white">VIDEO 0{i + 1}</span>
+                  </motion.div>
+                ))}
+              </div>
               <p className="text-lg text-muted-foreground max-w-lg mx-auto mb-8 leading-relaxed">
                 Creamos entrevistas callejeras con personas reales y transformamos esas reacciones en videos verticales listos para redes, pauta y lanzamientos de marca.
               </p>
@@ -559,24 +580,23 @@ const Landing = () => {
               Videos destacados de OpenMicMedia
             </h2>
           </div>
-          <div className="grid grid-cols-3 gap-3 sm:gap-6 max-w-4xl mx-auto px-6 sm:px-0">
-            {[1, 2, 3].map((n, i) => (
+          <div className="flex sm:grid sm:grid-cols-4 gap-4 sm:gap-5 max-w-6xl mx-auto overflow-x-auto sm:overflow-visible snap-x snap-mandatory px-1 pb-4 sm:px-0 sm:pb-0">
+            {FEATURED_VIDEOS.map((video, i) => (
               <motion.div
-                key={n}
+                key={video}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
+                className="min-w-[68vw] max-w-[270px] sm:min-w-0 sm:max-w-none snap-center"
               >
                 <div className="group cursor-pointer">
-                  <div className="relative rounded-2xl overflow-hidden bg-muted aspect-[9/16] flex items-center justify-center border-2 border-dashed border-border">
-                    <div className="text-center px-2">
-                      <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-2 sm:mb-3">
-                        <Mic className="w-4 h-4 sm:w-6 sm:h-6 text-primary" />
-                      </div>
-                      <p className="text-[10px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-wide">Video {n}</p>
-                      <p className="hidden sm:block text-[11px] text-muted-foreground/70 mt-1">Placeholder vertical 9:16</p>
-                    </div>
+                  <div className="relative rounded-2xl overflow-hidden bg-muted aspect-[9/16] shadow-sm transition-transform duration-300 group-hover:-translate-y-1">
+                    <img
+                      src={video}
+                      alt={`Video destacado de OpenMicMedia ${i + 1}`}
+                      className="h-full w-full object-cover"
+                    />
                   </div>
                 </div>
               </motion.div>
@@ -600,7 +620,7 @@ const Landing = () => {
               Cómo trabajamos
             </div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display mb-4 text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
-              De la idea al video viral en 5 pasos.
+              De la idea al video viral en 4 pasos.
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               Un proceso simple: pensamos la conversación, salimos a grabar y entregamos contenido listo para usar.
@@ -609,7 +629,7 @@ const Landing = () => {
 
           <div className="relative">
             <div className="hidden lg:block absolute top-8 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" aria-hidden="true" />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-3">
               {PROCESS_STEPS.map((step, i) => (
                 <motion.div
                   key={step.n}
