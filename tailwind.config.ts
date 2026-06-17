@@ -16,6 +16,13 @@ export default {
       fontFamily: {
         sans: ['"DM Sans"', "system-ui", "sans-serif"],
         display: ['"Bricolage Grotesque"', "system-ui", "sans-serif"],
+        geist: ['"Geist Sans"', "system-ui", "sans-serif"],
+        "geist-mono": ['"Geist Mono"', "ui-monospace", "monospace"],
+        "geist-pixel-square": ['"Geist Pixel Square"', '"Geist Mono"', "ui-monospace", "monospace"],
+        "geist-pixel-grid": ['"Geist Pixel Grid"', '"Geist Mono"', "ui-monospace", "monospace"],
+        "geist-pixel-circle": ['"Geist Pixel Circle"', '"Geist Mono"', "ui-monospace", "monospace"],
+        "geist-pixel-triangle": ['"Geist Pixel Triangle"', '"Geist Mono"', "ui-monospace", "monospace"],
+        "geist-pixel-line": ['"Geist Pixel Line"', '"Geist Mono"', "ui-monospace", "monospace"],
       },
       colors: {
         border: "hsl(var(--border))",

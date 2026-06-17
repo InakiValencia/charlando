@@ -158,6 +158,9 @@ const HERO_IMAGES = [
   "/hero-card-4.png",
 ];
 
+const CREATIVE_STRATEGY_IMAGE = "/creative-strategy.png";
+const STREET_RECORDING_IMAGE = "/street-recording.png";
+
 const fontWeightOptions = [
   { label: "Medium (500)", value: 500 },
   { label: "Semibold (600)", value: 600 },
@@ -597,11 +600,36 @@ const Landing = () => {
               </motion.div>
             ))}
           </div>
+
+          <motion.div
+            className="mt-12 text-center"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <h3 className="text-2xl sm:text-3xl font-display text-foreground tracking-[-0.02em] mb-6" style={{ fontWeight: titleWeight }}>
+              Resultados de empresas siguiendo esta estrategia
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
+              {[
+                { value: "2X", label: "View rate de 6 segundos" },
+                { value: "+50%", label: "hook rate" },
+              ].map((result) => (
+                <div key={result.label} className="rounded-3xl bg-card p-6">
+                  <p className="font-display text-4xl sm:text-5xl text-primary tracking-[-0.03em]" style={{ fontWeight: titleWeight }}>
+                    {result.value}
+                  </p>
+                  <p className="text-sm sm:text-base text-muted-foreground mt-2">{result.label}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Proceso — moderno */}
-      <section id="proceso" className="py-12 lg:py-20 bg-card">
+      <section id="proceso" className="pt-6 lg:pt-10 pb-12 lg:pb-20 bg-card">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <motion.div
             className="text-center mb-12"
@@ -654,7 +682,7 @@ const Landing = () => {
       </section>
 
       {/* Features */}
-      <section id="features" className="py-12 lg:py-20">
+      <section id="features" className="pt-6 lg:pt-10 pb-12 lg:pb-20">
         <div className="max-w-5xl mx-auto px-6 lg:px-8">
           <motion.div
             className="text-center mb-12"
@@ -671,66 +699,50 @@ const Landing = () => {
             </p>
           </motion.div>
 
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {features.slice(0, 2).map((feature, i) => {
-                const Illust = ILLUSTRATIONS[i];
-                return (
-                  <motion.div
-                    key={feature.title}
-                    initial={{ opacity: 0, y: 24 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: i * 0.1 }}
-                  >
-                    <div className={`h-full rounded-3xl overflow-hidden ${currentPreset.cardBg} flex flex-col`}>
-                      <div className={`${currentPreset.colors[i]} aspect-[4/3] flex items-center justify-center`}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {features.map((feature, i) => {
+              const Illust = ILLUSTRATIONS[i];
+              return (
+                <motion.div
+                  key={feature.title}
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: i * 0.1 }}
+                >
+                  <div className={`h-full md:aspect-square rounded-3xl overflow-hidden ${currentPreset.cardBg} flex flex-col`}>
+                    <div className={`${currentPreset.colors[i]} aspect-[4/3] md:h-[46%] md:aspect-auto flex items-center justify-center overflow-hidden`}>
+                      {i === 0 ? (
+                        <img
+                          src={CREATIVE_STRATEGY_IMAGE}
+                          alt="Estrategia creativa"
+                          className="h-full w-full object-cover"
+                        />
+                      ) : i === 1 ? (
+                        <img
+                          src={STREET_RECORDING_IMAGE}
+                          alt="Grabación en la calle"
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
                         <Illust accents={currentPreset.accents} />
-                      </div>
-                      <div className="p-6">
-                        <h3 className="font-display font-bold text-xl mb-2 text-foreground tracking-[-0.01em]">{feature.title}</h3>
-                        <p className="text-muted-foreground text-sm leading-relaxed">{feature.description}</p>
-                      </div>
+                      )}
                     </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-            <div className={`grid grid-cols-1 gap-6 ${features.slice(2).length > 1 ? 'md:grid-cols-5' : ''}`}>
-              {features.slice(2).map((feature, rawI) => {
-                const i = rawI + 2;
-                const Illust = ILLUSTRATIONS[i];
-                const isWide = rawI === 0;
-                const remainingCount = features.slice(2).length;
-                return (
-                  <motion.div
-                    key={feature.title}
-                    className={remainingCount === 1 ? "" : (isWide ? "md:col-span-3" : "md:col-span-2")}
-                    initial={{ opacity: 0, y: 24 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: i * 0.1 }}
-                  >
-                    <div className={`h-full rounded-3xl overflow-hidden ${currentPreset.cardBg} flex ${isWide ? "flex-col sm:flex-row" : "flex-col"}`}>
-                      <div className={`${currentPreset.colors[i]} ${isWide ? "sm:w-1/2 aspect-[4/3] sm:aspect-auto" : "aspect-[4/3]"} flex items-center justify-center relative flex-shrink-0`}>
-                        <Illust accents={currentPreset.accents} />
-                      </div>
-                      <div className="p-6 flex flex-col justify-center">
-                        <h3 className="font-display font-bold text-xl mb-2 text-foreground tracking-[-0.01em]">{feature.title}</h3>
-                        <p className="text-muted-foreground text-sm leading-relaxed">{feature.description}</p>
-                      </div>
+                    <div className="p-6 md:p-5 flex-1">
+                      <h3 className="font-display font-bold text-xl mb-2 text-foreground tracking-[-0.01em]">{feature.title}</h3>
+                      <p className="text-muted-foreground text-sm md:text-[13px] leading-relaxed md:leading-snug">{feature.description}</p>
                     </div>
-                  </motion.div>
-                );
-              })}
-            </div>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
 
 
       {/* Beneficios */}
-      <section className="py-12 lg:py-20 bg-card">
+      <section className="pt-6 lg:pt-10 pb-12 lg:pb-20 bg-card">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <motion.div
             className="text-center mb-14"
@@ -765,6 +777,44 @@ const Landing = () => {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+
+      {/* Quienes somos */}
+      <section className="pt-6 lg:pt-10 pb-12 lg:pb-20">
+        <div className="max-w-6xl mx-auto px-6 lg:px-8">
+          <motion.div
+            className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-8 lg:gap-12 items-center"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="relative overflow-hidden rounded-3xl bg-card border-2 border-dashed border-border aspect-[4/3] flex items-center justify-center">
+              <div className="text-center px-6">
+                <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                  <Mic className="w-6 h-6 text-primary" />
+                </div>
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Placeholder de imagen</p>
+                <p className="text-[11px] text-muted-foreground/70 mt-1">Imagen rectangular</p>
+              </div>
+            </div>
+
+            <div>
+              <p className="text-xs font-semibold text-primary bg-primary/10 px-3 py-1 rounded-full inline-flex mb-4">
+                Quienes somos
+              </p>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display mb-5 text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
+                Imanol Valencia
+              </h2>
+              <div className="space-y-3 text-lg text-muted-foreground leading-relaxed">
+                <p className="font-semibold text-foreground">Co-Founder @SwapStyle</p>
+                <p>Director Creativo</p>
+                <p>Marcas con las que colaboré: Arcor, SAO medialunas, Ogham.</p>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
@@ -817,7 +867,7 @@ const Landing = () => {
       </section>
 
       {/* CTA */}
-      <section id="cta" className="pt-10 lg:pt-16 pb-12 lg:pb-16 relative">
+      <section id="cta" className="pt-6 lg:pt-8 pb-12 lg:pb-16 relative">
         <div className="max-w-4xl mx-auto px-6 lg:px-8">
           <div className="relative pt-20 lg:pt-24">
             <div className="absolute inset-x-0 top-0 z-20 flex justify-center pointer-events-none" aria-hidden="true">
