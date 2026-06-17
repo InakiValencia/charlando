@@ -25,20 +25,16 @@ import avatarPriya from "@/assets/avatar-priya.jpg";
 
 const features = [
   {
-    title: "Estrategia y conceptos",
+    title: "Estrategia Creativa",
     description: "Entendemos tu marca, tu audiencia y tu objetivo. Diseñamos preguntas, hooks y ángulos creativos para que cada entrevista tenga intención.",
   },
   {
     title: "Grabación en la calle",
-    description: "Salimos con hosts y equipo de video para capturar respuestas reales de personas reales, en locaciones alineadas con tu público objetivo.",
+    description: "Salimos con hosts y equipo de video para capturar respuestas reales de personas reales, en ubicaciones alineadas con tu público objetivo.",
   },
   {
-    title: "Edición para redes",
-    description: "Convertimos el material crudo en videos verticales con ritmo, subtítulos, hooks, cortes dinámicos y llamados a la acción.",
-  },
-  {
-    title: "Assets listos para escalar",
-    description: "Entregamos variaciones para TikTok, Instagram Reels, YouTube Shorts, Meta Ads, TikTok Ads y contenido orgánico.",
+    title: "Listo para viralizar",
+    description: "Convertimos el material crudo en videos verticales con ritmo, subtítulos, hooks, cortes dinámicos y CTAs",
   },
 ];
 
@@ -423,8 +419,8 @@ const Landing = () => {
         animate={{ y: navVisible ? 0 : -100 }}
         transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
       >
-        <div className="max-w-7xl mx-auto flex items-center justify-between h-[72px] px-6 lg:px-8">
-          <Link to="/">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 h-[72px] px-6 lg:px-8">
+          <Link to="/" className="shrink-0">
             <Logo size="md" />
           </Link>
           <div className="hidden lg:flex items-center gap-1">
@@ -434,9 +430,9 @@ const Landing = () => {
               </a>
             ))}
           </div>
-          <div className="flex items-center gap-3">
-            <Button className="text-sm font-semibold bg-foreground text-background hover:bg-primary hover:text-background" asChild>
-              <a href="#cta">Agendar llamada</a>
+          <div className="flex items-center gap-3 shrink-0">
+            <Button className="text-xs sm:text-sm font-semibold bg-foreground text-background hover:bg-primary hover:text-background px-3 sm:px-4" asChild>
+              <a href="https://calendar.app.google/Pm3VmXyedj7Qx4R89" target="_blank" rel="noopener noreferrer">Agendar llamada</a>
             </Button>
           </div>
         </div>
@@ -558,7 +554,7 @@ const Landing = () => {
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                 <Button size="lg" className="text-base font-semibold px-8 h-12 bg-foreground text-background hover:bg-primary hover:text-background" asChild>
-                  <a href="#cta">Agendar llamada <ArrowRight className="ml-2 w-4 h-4" /></a>
+                  <a href="https://calendar.app.google/Pm3VmXyedj7Qx4R89" target="_blank" rel="noopener noreferrer">Agendar llamada <ArrowRight className="ml-2 w-4 h-4" /></a>
                 </Button>
                 <Button size="lg" variant="outline" className="text-base font-semibold px-8 h-12 border-foreground/15" asChild>
                   <a href="#videos">Ver videos</a>
@@ -700,15 +696,16 @@ const Landing = () => {
                 );
               })}
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+            <div className={`grid grid-cols-1 gap-6 ${features.slice(2).length > 1 ? 'md:grid-cols-5' : ''}`}>
               {features.slice(2).map((feature, rawI) => {
                 const i = rawI + 2;
                 const Illust = ILLUSTRATIONS[i];
                 const isWide = rawI === 0;
+                const remainingCount = features.slice(2).length;
                 return (
                   <motion.div
                     key={feature.title}
-                    className={isWide ? "md:col-span-3" : "md:col-span-2"}
+                    className={remainingCount === 1 ? "" : (isWide ? "md:col-span-3" : "md:col-span-2")}
                     initial={{ opacity: 0, y: 24 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -748,8 +745,8 @@ const Landing = () => {
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              { title: "Genera confianza", text: "Tu audiencia ve a personas reales reaccionando, opinando y haciendo preguntas. Eso se siente más creíble que una marca hablando sola." },
-              { title: "Despierta curiosidad", text: "Una buena entrevista hace que el producto se entienda sin explicarlo de forma pesada. La conversación abre interés y mantiene atención." },
+              { title: "Sin videos AI, generás confianza", text: "Tu audiencia ve a personas reales reaccionando, opinando y haciendo preguntas. Eso se siente más creíble que una marca hablando sola." },
+              { title: "Detiene el scroll", text: "Los videos reales llaman la atención de la gente. Termina haciendo que el producto se entienda sin explicarlo de forma pesada. La conversación abre el interés y mantiene la atención." },
               { title: "Impulsa conversión", text: "El contenido puede trabajar todo el funnel: presenta la marca, educa, genera consideración y termina con un llamado a la acción claro." },
             ].map((b, i) => (
               <motion.div
@@ -894,7 +891,7 @@ const Landing = () => {
                   </p>
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                     <Button size="lg" className="text-base font-semibold px-8 h-12 bg-primary text-white hover:bg-primary/90" asChild>
-                      <a href="mailto:hola@openmicmedia.com">Agendar llamada <ArrowRight className="ml-2 w-4 h-4" /></a>
+                      <a href="https://calendar.app.google/Pm3VmXyedj7Qx4R89" target="_blank" rel="noopener noreferrer">Agendar llamada <ArrowRight className="ml-2 w-4 h-4" /></a>
                     </Button>
                     <Button size="lg" variant="outline" className="text-base font-semibold px-8 h-12 bg-transparent text-background border-background/30 hover:bg-background/10 hover:text-background" asChild>
                       <a href="#videos">Ver ejemplos</a>
