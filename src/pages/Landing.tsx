@@ -550,12 +550,11 @@ const Landing = () => {
                   >
                     <img src={image} alt="Ejemplo de video vertical" className="h-full w-full object-cover" />
                     <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/55 to-transparent" />
-                    <span className="absolute bottom-2 left-2 text-[8px] font-semibold text-white">VIDEO 0{i + 1}</span>
                   </motion.div>
                 ))}
               </div>
-              <p className="text-lg text-muted-foreground max-w-lg mx-auto mb-8 leading-relaxed">
-                Creamos entrevistas callejeras con personas reales y transformamos esas reacciones en videos verticales listos para redes, pauta y lanzamientos de marca.
+              <p className="text-base text-muted-foreground max-w-lg mx-auto mb-8 leading-relaxed">
+                Hacemos entrevistas en la calle con personas reales y transformamos esas reacciones en videos listos para contenido orgánico y ads, para viralizar tu marca.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                 <Button size="lg" className="text-base font-semibold px-8 h-12 bg-foreground text-background hover:bg-primary hover:text-background" asChild>
