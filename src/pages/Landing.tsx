@@ -664,7 +664,7 @@ const Landing = () => {
             transition={{ duration: 0.6 }}
           >
             <h2 className="text-3xl sm:text-4xl font-display mb-4 text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
-              Todo lo que necesitás para viralizar tu producto orgánicamente
+              Todo lo que necesitás para viralizar tu producto
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               Desde la estrategia creativa hasta la edición final, nos ocupamos de transformar conversaciones espontáneas en piezas listas para publicar, pautar y testear.
