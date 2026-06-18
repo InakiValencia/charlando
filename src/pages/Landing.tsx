@@ -7,10 +7,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Puzzle,
   ArrowRight,
-  Star,
-  ChevronUp,
-  ChevronDown,
-  BarChart2,
   Mic,
   Plus,
   Minus,
@@ -160,13 +156,6 @@ const HERO_IMAGES = [
 
 const CREATIVE_STRATEGY_IMAGE = "/creative-strategy.png";
 const STREET_RECORDING_IMAGE = "/street-recording.png";
-
-const fontWeightOptions = [
-  { label: "Medium (500)", value: 500 },
-  { label: "Semibold (600)", value: 600 },
-  { label: "Bold (700)", value: 700 },
-  { label: "Extrabold (800)", value: 800 },
-];
 
 const CONFETTI_COLORS = ["#24b5cf", "#0A0A0A", "#1698ad", "#9CA3AF", "#24b5cf", "#0A0A0A"];
 const CONFETTI_SHAPES = ["circle", "square", "triangle", "line"] as const;
@@ -351,14 +340,12 @@ const HOSTS = [
 const Landing = () => {
   const [wordIndex, setWordIndex] = useState(0);
   const [navVisible, setNavVisible] = useState(false);
-  const [devOpen, setDevOpen] = useState(false);
-  const [titleWeight, setTitleWeight] = useState(700);
-  const [confettiSize, setConfettiSize] = useState(2.5);
-  const [confettiOpacity, setConfettiOpacity] = useState(0.8);
-  const [confettiCount, setConfettiCount] = useState(8);
-  const [confettiSpread, setConfettiSpread] = useState(1.0);
-  const [bentoStyle, setBentoStyle] = useState(0);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const titleWeight = 700;
+  const confettiSize = 2.5;
+  const confettiOpacity = 0.8;
+  const confettiCount = 8;
+  const confettiSpread = 1.0;
 
   const bentoPresets = [
     {
@@ -390,7 +377,7 @@ const Landing = () => {
       accents: { integrationCircle: "hsl(189,70%,48%)", attendeeBorder: "hsl(0,0%,4%)", analyticsBars: "hsl(189,70%,48%)", analyticsAccent: "hsl(189,70%,38%)", pageButton: "hsl(189,70%,48%)" },
     },
   ];
-  const currentPreset = bentoPresets[bentoStyle] ?? bentoPresets[0];
+  const currentPreset = bentoPresets[0];
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -406,12 +393,6 @@ const Landing = () => {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  useEffect(() => {
-    document.querySelectorAll<HTMLElement>("h1,h2,h3,h4,h5,h6,.font-display").forEach((el) => {
-      el.style.fontWeight = String(titleWeight);
-    });
-  }, [titleWeight]);
 
   return (
     <div id="top" className="min-h-screen bg-background overflow-x-hidden">
@@ -791,14 +772,12 @@ const Landing = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="relative overflow-hidden rounded-3xl bg-card border-2 border-dashed border-border aspect-[4/3] flex items-center justify-center">
-              <div className="text-center px-6">
-                <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                  <Mic className="w-6 h-6 text-primary" />
-                </div>
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Placeholder de imagen</p>
-                <p className="text-[11px] text-muted-foreground/70 mt-1">Imagen rectangular</p>
-              </div>
+            <div className="relative overflow-hidden rounded-3xl bg-card aspect-[4/3]">
+              <img
+                src="/about-imanol.png"
+                alt="Imanol Valencia grabando contenido para OpenMic Media"
+                className="h-full w-full object-cover"
+              />
             </div>
 
             <div>
@@ -996,77 +975,6 @@ const Landing = () => {
         </div>
       </footer>
 
-      {/* Dev picker */}
-      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 z-[9999]">
-        <button
-          onClick={() => setDevOpen(!devOpen)}
-          className="mx-auto flex items-center gap-1.5 bg-foreground text-background text-xs font-medium px-4 py-1.5 rounded-t-lg shadow-lg"
-        >
-          🎨 Dev tools {devOpen ? <ChevronDown className="w-3 h-3" /> : <ChevronUp className="w-3 h-3" />}
-        </button>
-        {devOpen && (
-          <div className="bg-card border border-border rounded-t-xl shadow-2xl p-4 w-[340px] space-y-4">
-            <div>
-              <label className="text-xs font-medium text-muted-foreground mb-1 block">Title font weight</label>
-              <select
-                value={titleWeight}
-                onChange={(e) => setTitleWeight(Number(e.target.value))}
-                className="w-full text-sm bg-background border border-input rounded-lg px-3 py-2 text-foreground"
-              >
-                {fontWeightOptions.map((f) => (
-                  <option key={f.value} value={f.value}>{f.label}</option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="text-xs font-medium text-muted-foreground mb-1 block">Bento colour style</label>
-              <div className="flex gap-1.5">
-                {bentoPresets.map((preset, idx) => (
-                  <button
-                    key={preset.label}
-                    onClick={() => setBentoStyle(idx)}
-                    className={`text-xs px-3 py-1.5 rounded-lg border transition-colors ${bentoStyle === idx ? "bg-primary text-primary-foreground border-primary" : "bg-background border-input text-foreground hover:bg-muted"}`}
-                  >
-                    {preset.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <label className="flex items-center justify-between cursor-pointer">
-              <span className="text-xs font-medium text-muted-foreground">Confetti visible</span>
-              <input type="checkbox" checked={confettiCount > 0} onChange={(e) => setConfettiCount(e.target.checked ? 6 : 0)} className="accent-primary w-4 h-4" />
-            </label>
-            <div className="border-t border-border pt-3 space-y-2">
-              <label className="text-xs font-medium text-muted-foreground block">Confetti</label>
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between">
-                  <span className="text-[11px] text-muted-foreground">Size</span>
-                  <span className="text-[11px] text-muted-foreground w-8 text-right">{confettiSize.toFixed(1)}</span>
-                </div>
-                <input type="range" min="0.3" max="2.5" step="0.1" value={confettiSize} onChange={(e) => setConfettiSize(Number(e.target.value))} className="w-full h-1.5 accent-primary" />
-
-                <div className="flex items-center justify-between">
-                  <span className="text-[11px] text-muted-foreground">Boldness</span>
-                  <span className="text-[11px] text-muted-foreground w-8 text-right">{Math.round(confettiOpacity * 100)}%</span>
-                </div>
-                <input type="range" min="0.1" max="1" step="0.05" value={confettiOpacity} onChange={(e) => setConfettiOpacity(Number(e.target.value))} className="w-full h-1.5 accent-primary" />
-
-                <div className="flex items-center justify-between">
-                  <span className="text-[11px] text-muted-foreground">Amount</span>
-                  <span className="text-[11px] text-muted-foreground w-8 text-right">{confettiCount}</span>
-                </div>
-                <input type="range" min="1" max="8" step="1" value={confettiCount} onChange={(e) => setConfettiCount(Number(e.target.value))} className="w-full h-1.5 accent-primary" />
-
-                <div className="flex items-center justify-between">
-                  <span className="text-[11px] text-muted-foreground">Spread</span>
-                  <span className="text-[11px] text-muted-foreground w-8 text-right">{confettiSpread.toFixed(1)}</span>
-                </div>
-                <input type="range" min="0.5" max="2" step="0.1" value={confettiSpread} onChange={(e) => setConfettiSpread(Number(e.target.value))} className="w-full h-1.5 accent-primary" />
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
     </div>
   );
 };
