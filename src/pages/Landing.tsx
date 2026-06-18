@@ -592,10 +592,11 @@ const Landing = () => {
             <h3 className="text-2xl sm:text-3xl font-display text-foreground tracking-[-0.02em] mb-6" style={{ fontWeight: titleWeight }}>
               Resultados de empresas siguiendo esta estrategia
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
               {[
                 { value: "2X", label: "View rate de 6 segundos" },
                 { value: "+50%", label: "hook rate" },
+                { value: "2X", label: "ROAS" },
               ].map((result) => (
                 <div key={result.label} className="rounded-3xl bg-card p-6">
                   <p className="font-display text-4xl sm:text-5xl text-primary tracking-[-0.03em]" style={{ fontWeight: titleWeight }}>
