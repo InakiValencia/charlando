@@ -289,11 +289,11 @@ const NAV_LINKS = [
 
 const FAQS = [
   {
-    q: "¿Qué hace exactamente OpenMicMedia?",
+    q: "¿Qué hace exactamente Charlando?",
     a: "Creamos entrevistas callejeras para marcas. Nos encargamos de pensar el concepto, diseñar las preguntas, grabar con personas reales y entregar videos editados para redes y campañas digitales.",
   },
   {
-    q: "¿Qué diferencia a OpenMicMedia de una agencia tradicional?",
+    q: "¿Qué diferencia a Charlando de una agencia tradicional?",
     a: "No hacemos publicidad que parece publicidad. Creamos conversaciones reales que se sienten nativas en redes. La marca aparece dentro de una interacción humana, no como un anuncio forzado.",
   },
   {
@@ -309,7 +309,7 @@ const FAQS = [
     a: "Sí. Podemos hacer una primera jornada de contenido o un paquete inicial. Si la marca necesita volumen constante, también trabajamos con planes mensuales.",
   },
   {
-    q: "¿Qué tipo de marcas pueden trabajar con OpenMicMedia?",
+    q: "¿Qué tipo de marcas pueden trabajar con Charlando?",
     a: "Marcas de consumo, moda, belleza, wellness, alimentos, bebidas, tecnología, apps, retail, eventos, entretenimiento y servicios. El formato funciona especialmente bien cuando el producto necesita explicación, reacción o prueba social.",
   },
   {
@@ -556,7 +556,7 @@ const Landing = () => {
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-center mb-8">
             <h2 className="text-2xl sm:text-3xl font-display text-foreground tracking-[-0.02em] text-center" style={{ fontWeight: titleWeight }}>
-              Videos destacados de OpenMicMedia
+              Videos destacados de Charlando
             </h2>
           </div>
           <div className="flex sm:grid sm:grid-cols-4 gap-4 sm:gap-5 max-w-6xl mx-auto overflow-x-auto sm:overflow-visible snap-x snap-mandatory px-1 pb-4 sm:px-0 sm:pb-0">
@@ -573,7 +573,7 @@ const Landing = () => {
                   <div className="relative rounded-2xl overflow-hidden bg-muted aspect-[9/16] shadow-sm transition-transform duration-300 group-hover:-translate-y-1">
                     <img
                       src={video}
-                      alt={`Video destacado de OpenMicMedia ${i + 1}`}
+                      alt={`Video destacado de Charlando ${i + 1}`}
                       className="h-full w-full object-cover"
                     />
                   </div>
@@ -776,7 +776,7 @@ const Landing = () => {
             <div className="relative overflow-hidden rounded-3xl bg-card aspect-[4/3]">
               <img
                 src="/about-imanol.png"
-                alt="Imanol Valencia grabando contenido para OpenMic Media"
+                alt="Imanol Valencia grabando contenido para Charlando"
                 className="h-full w-full object-cover"
               />
             </div>
@@ -789,7 +789,18 @@ const Landing = () => {
                 Imanol Valencia
               </h2>
               <div className="space-y-3 text-lg text-muted-foreground leading-relaxed">
-                <p className="font-semibold text-foreground">Co-Founder @SwapStyle</p>
+                <p className="font-semibold text-foreground">
+                  Co-Founder{" "}
+                  <a
+                    href="https://www.instagram.com/swapstyle.com.ar/"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-primary transition-colors hover:text-primary/80"
+                  >
+                    @SwapStyle
+                  </a>{" "}
+                  & @Charlando
+                </p>
                 <p>Director Creativo</p>
                 <p>Marcas con las que colaboré: Arcor, SAO medialunas, Ogham.</p>
               </div>
@@ -970,7 +981,7 @@ const Landing = () => {
             </div>
           </div>
           <div className="pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-muted-foreground">© 2026 OpenMicMedia. Todos los derechos reservados.</p>
+            <p className="text-sm text-muted-foreground">© 2026 Charlando. Todos los derechos reservados.</p>
             <p className="text-xs text-muted-foreground">De la calle a la pantalla.</p>
           </div>
         </div>

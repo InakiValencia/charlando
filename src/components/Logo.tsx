@@ -26,7 +26,7 @@ export function Logo({ size = "md", className = "", variant = "default" }: LogoP
         draggable={false}
       />
       <span className={`font-geist font-bold tracking-tight ${textColor} ${s.text}`}>
-        OpenMic Media
+        Charlando
       </span>
     </span>
   );
