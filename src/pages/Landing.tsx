@@ -693,11 +693,11 @@ const Landing = () => {
                 Personas reales · Reacciones reales
               </div>
               <h1 className="text-[28px] min-[360px]:text-[31px] sm:text-5xl lg:text-[44px] 2xl:text-[56px] font-display tracking-tight leading-[1.15] text-foreground mb-4" style={{ fontWeight: titleWeight }}>
-                <span className="inline-flex flex-col items-end">
+                <span className="inline-flex flex-col items-center">
                   <span>Conversaciones que</span>
-                  <span className="inline-flex items-baseline justify-end gap-x-[0.18em] whitespace-nowrap">
+                  <span className="inline-flex translate-x-3 items-baseline justify-center gap-x-[0.18em] whitespace-nowrap sm:translate-x-7 lg:translate-x-9">
                     <span>convierten en</span>
-                    <span className="inline-block relative text-right" style={{ minWidth: "7ch" }}>
+                    <span className="inline-block relative text-left" style={{ minWidth: "7ch" }}>
                       <AnimatePresence mode="wait">
                         <motion.span
                           key={rotatingWords[wordIndex]}
@@ -842,7 +842,6 @@ const Landing = () => {
           </motion.div>
 
           <div className="relative">
-            <div className="hidden lg:block absolute top-8 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" aria-hidden="true" />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-3">
               {PROCESS_STEPS.map((step, i) => (
                 <motion.div
