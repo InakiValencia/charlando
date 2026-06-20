@@ -326,10 +326,10 @@ const FAQS = [
 ];
 
 const PROCESS_STEPS = [
-  { n: "01", title: "Concepto", text: "Entendemos tu producto y marca. En base a eso diseñamos preguntas, hooks y ángulos para generar respuestas naturales y transmitir tu mensaje." },
-  { n: "02", title: "Producción", text: "Grabamos entrevistas callejeras con personas reales, cuidando energía, sonido, encuadre y contexto." },
-  { n: "03", title: "Edición", text: "Creamos piezas verticales optimizadas para retención, claridad y conversión." },
-  { n: "04", title: "Entrega", text: "Recibís videos listos para publicar, pautar y testear en diferentes plataformas." },
+  { n: "01", title: "Planeamos", text: "Entendemos tu producto y marca. En base a eso diseñamos preguntas, hooks y ángulos para generar respuestas naturales y transmitir tu mensaje." },
+  { n: "02", title: "Producimos", text: "Grabamos entrevistas callejeras con personas reales, cuidando energía, sonido, encuadre y contexto." },
+  { n: "03", title: "Editamos", text: "Creamos piezas verticales optimizadas para retención, claridad y conversión." },
+  { n: "04", title: "Entregamos", text: "Recibís videos listos para publicar, pautar y testear en diferentes plataformas." },
 ];
 
 const HOSTS = [
@@ -853,7 +853,7 @@ const Landing = () => {
                   transition={{ duration: 0.4, delay: i * 0.08 }}
                   className="group relative"
                 >
-                  <div className="relative bg-background rounded-3xl p-6 lg:p-7 h-full min-h-[230px] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5">
+                  <div className={`relative ${currentPreset.cardBg} rounded-3xl p-6 lg:p-7 h-full min-h-[230px] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5`}>
                     <div className="flex items-center justify-between mb-5">
                       <div className="w-16 h-16 rounded-2xl bg-foreground text-background flex items-center justify-center font-display font-bold text-2xl shadow-md group-hover:bg-primary transition-colors">
                         {step.n}
@@ -958,7 +958,7 @@ const Landing = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
-                className="rounded-3xl bg-background p-6 lg:p-7 min-h-[230px]"
+                className={`${currentPreset.cardBg} rounded-3xl p-6 lg:p-7 min-h-[230px]`}
               >
                 <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-5">
                   <span className="text-primary font-display font-bold text-2xl">{i + 1}</span>
