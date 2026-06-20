@@ -693,24 +693,25 @@ const Landing = () => {
                 Personas reales · Reacciones reales
               </div>
               <h1 className="text-[28px] min-[360px]:text-[31px] sm:text-5xl lg:text-[44px] 2xl:text-[56px] font-display tracking-tight leading-[1.15] text-foreground mb-4" style={{ fontWeight: titleWeight }}>
-                Conversaciones que
-                <br />
-                <span className="whitespace-nowrap">
-                  convierten en{" "}
-                  <span className="inline-block relative" style={{ minWidth: "7ch" }}>
-                    <AnimatePresence mode="wait">
-                      <motion.span
-                        key={rotatingWords[wordIndex]}
-                        initial={{ opacity: 0, y: 16 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -16 }}
-                        transition={{ duration: 0.35 }}
-                        className="text-primary inline-block"
-                      >
-                        {rotatingWords[wordIndex]}
-                      </motion.span>
-                    </AnimatePresence>
-                    <span className="invisible block h-0 overflow-hidden" aria-hidden="true">Shorts.</span>
+                <span className="inline-flex flex-col items-end">
+                  <span>Conversaciones que</span>
+                  <span className="inline-flex items-baseline justify-end gap-x-[0.18em] whitespace-nowrap">
+                    <span>convierten en</span>
+                    <span className="inline-block relative text-right" style={{ minWidth: "7ch" }}>
+                      <AnimatePresence mode="wait">
+                        <motion.span
+                          key={rotatingWords[wordIndex]}
+                          initial={{ opacity: 0, y: 16 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -16 }}
+                          transition={{ duration: 0.35 }}
+                          className="text-primary inline-block"
+                        >
+                          {rotatingWords[wordIndex]}
+                        </motion.span>
+                      </AnimatePresence>
+                      <span className="invisible block h-0 overflow-hidden" aria-hidden="true">Shorts.</span>
+                    </span>
                   </span>
                 </span>
               </h1>
