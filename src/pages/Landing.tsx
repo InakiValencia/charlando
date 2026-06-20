@@ -760,27 +760,37 @@ const Landing = () => {
               Videos destacados de Charlando
             </h2>
           </div>
-          <div className="flex sm:grid sm:grid-cols-4 gap-4 sm:gap-5 max-w-6xl mx-auto overflow-x-auto sm:overflow-visible snap-x snap-mandatory px-1 pb-4 sm:px-0 sm:pb-0">
-            {FEATURED_VIDEOS.map((video, i) => (
-              <motion.div
-                key={video}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.1 }}
-                className="min-w-[68vw] max-w-[270px] sm:min-w-0 sm:max-w-none snap-center"
-              >
-                <div className="group cursor-pointer">
-                  <div className="relative rounded-2xl overflow-hidden bg-muted aspect-[9/16] shadow-sm transition-transform duration-300 group-hover:-translate-y-1">
-                    <img
-                      src={video}
-                      alt={`Video destacado de Charlando ${i + 1}`}
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
+          <div
+            className="relative -mx-6 overflow-hidden px-6 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)] lg:-mx-8 lg:px-8"
+            data-testid="featured-videos-carousel"
+          >
+            <motion.div
+              className="flex w-max"
+              animate={{ x: ["0%", "-50%"] }}
+              transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
+              data-testid="featured-videos-track"
+            >
+              {[0, 1].map((copy) => (
+                <div key={copy} className="flex shrink-0 gap-4 pr-4 sm:gap-5 sm:pr-5" aria-hidden={copy === 1}>
+                  {FEATURED_VIDEOS.map((video, i) => (
+                    <div
+                      key={`${video}-${copy}`}
+                      className="w-[64vw] max-w-[270px] shrink-0 sm:w-[220px] lg:w-[255px]"
+                    >
+                      <div className="group cursor-pointer">
+                        <div className="relative rounded-2xl overflow-hidden bg-muted aspect-[9/16] shadow-sm transition-transform duration-300 group-hover:-translate-y-1">
+                          <img
+                            src={video}
+                            alt={copy === 1 ? "" : `Video destacado de Charlando ${i + 1}`}
+                            className="h-full w-full object-cover"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              </motion.div>
-            ))}
+              ))}
+            </motion.div>
           </div>
 
           <motion.div
