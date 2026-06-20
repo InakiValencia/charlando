@@ -340,7 +340,7 @@ const HOSTS = [
   { label: "Host eventos", avatar: AVATAR_URLS[4] },
 ];
 
-const FULL_SECTION_CLASS = "min-h-[78svh] flex items-center py-8 lg:py-10";
+const FULL_SECTION_CLASS = "flex items-center py-8 lg:py-10";
 const SECTION_HEADER_CLASS = "text-center mb-7 lg:mb-8";
 const SECTION_TITLE_CLASS = "text-3xl sm:text-4xl lg:text-5xl font-display mb-4";
 const TALLY_FORM_ID = import.meta.env.VITE_TALLY_FORM_ID;
@@ -1082,7 +1082,7 @@ const Landing = () => {
       {/* CTA */}
       <section id="cta" className={`${FULL_SECTION_CLASS} relative`}>
         <div className="w-full max-w-4xl mx-auto px-6 lg:px-8">
-          <div className="relative pt-16 lg:pt-[4.5rem]">
+          <div className="relative pt-12 lg:pt-14">
             <div className="absolute inset-x-0 top-0 z-20 flex justify-center pointer-events-none" aria-hidden="true">
               <motion.div
                 initial={{ opacity: 0, y: 16, scale: 0.85 }}
@@ -1099,7 +1099,7 @@ const Landing = () => {
               </motion.div>
             </div>
 
-            <div className="bg-foreground rounded-[2rem] relative overflow-hidden px-6 pt-20 pb-16 lg:px-10 lg:pt-24 lg:pb-[4.5rem]">
+            <div className="bg-foreground rounded-[2rem] relative overflow-hidden px-6 pt-20 pb-12 lg:px-10 lg:pt-24 lg:pb-14">
               <div className="absolute inset-x-0 top-5 flex justify-center pointer-events-none" aria-hidden="true">
                 {[
                   { x: -110, y: 20, size: 14, color: "hsl(189 70% 48%)", shape: "circle", rot: 0 },
@@ -1174,9 +1174,9 @@ const Landing = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-16 px-6 lg:px-8 border-t border-border">
+      <footer className="py-8 px-6 lg:px-8 lg:py-10 border-t border-border">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-7">
             <div className="md:col-span-2">
               <Logo size="md" />
               <p className="text-sm text-muted-foreground mt-4 max-w-xs leading-relaxed">
@@ -1208,7 +1208,7 @@ const Landing = () => {
               </ul>
             </div>
           </div>
-          <div className="pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="pt-6 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-sm text-muted-foreground">© 2026 Charlando. Todos los derechos reservados.</p>
             <p className="text-xs text-muted-foreground">De la calle a la pantalla.</p>
           </div>
