@@ -1,7 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, type FormEvent } from "react";
 import { Logo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -340,11 +343,30 @@ const HOSTS = [
 const FULL_SECTION_CLASS = "min-h-[78svh] flex items-center py-8 lg:py-10";
 const SECTION_HEADER_CLASS = "text-center mb-7 lg:mb-8";
 const SECTION_TITLE_CLASS = "text-3xl sm:text-4xl lg:text-5xl font-display mb-4";
+const TALLY_FORM_ID = import.meta.env.VITE_TALLY_FORM_ID;
+
+type LeadFormValues = {
+  email: string;
+  name: string;
+  brand: string;
+  website: string;
+};
+
+const initialLeadForm: LeadFormValues = {
+  email: "",
+  name: "",
+  brand: "",
+  website: "",
+};
 
 const Landing = () => {
   const [wordIndex, setWordIndex] = useState(0);
   const [navVisible, setNavVisible] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [leadFormOpen, setLeadFormOpen] = useState(false);
+  const [leadStep, setLeadStep] = useState<1 | 2>(1);
+  const [leadForm, setLeadForm] = useState<LeadFormValues>(initialLeadForm);
+  const [leadSubmitted, setLeadSubmitted] = useState(false);
   const titleWeight = 700;
   const confettiSize = 2.5;
   const confettiOpacity = 0.8;
@@ -382,6 +404,50 @@ const Landing = () => {
     },
   ];
   const currentPreset = bentoPresets[0];
+  const trimmedEmail = leadForm.email.trim();
+  const trimmedName = leadForm.name.trim();
+  const trimmedBrand = leadForm.brand.trim();
+  const trimmedWebsite = leadForm.website.trim();
+  const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail);
+  const canContinueLeadForm = isValidEmail && trimmedName.length > 1;
+  const canSubmitLeadForm = canContinueLeadForm && trimmedBrand.length > 1 && trimmedWebsite.length > 3;
+  const hasTallyConnection = Boolean(TALLY_FORM_ID);
+
+  const updateLeadForm = (field: keyof LeadFormValues, value: string) => {
+    setLeadForm((current) => ({ ...current, [field]: value }));
+    setLeadSubmitted(false);
+  };
+
+  const openLeadForm = () => {
+    setLeadStep(1);
+    setLeadSubmitted(false);
+    setLeadFormOpen(true);
+  };
+
+  const buildTallyUrl = () => {
+    if (!TALLY_FORM_ID) return "";
+
+    const params = new URLSearchParams({
+      email: trimmedEmail,
+      nombre: trimmedName,
+      marca: trimmedBrand,
+      url: trimmedWebsite,
+    });
+
+    return `https://tally.so/r/${TALLY_FORM_ID}?${params.toString()}`;
+  };
+
+  const handleLeadSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!canSubmitLeadForm) return;
+
+    const tallyUrl = buildTallyUrl();
+    if (tallyUrl) {
+      window.open(tallyUrl, "_blank", "noopener,noreferrer");
+    }
+
+    setLeadSubmitted(true);
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -419,12 +485,137 @@ const Landing = () => {
             ))}
           </div>
           <div className="flex items-center gap-3 shrink-0">
-            <Button className="text-xs sm:text-sm font-semibold bg-foreground text-background hover:bg-primary hover:text-background px-3 sm:px-4" asChild>
-              <a href="https://calendar.app.google/Pm3VmXyedj7Qx4R89" target="_blank" rel="noopener noreferrer">Agendar llamada</a>
+            <Button
+              className="text-xs sm:text-sm font-semibold bg-foreground text-background hover:bg-primary hover:text-background px-3 sm:px-4"
+              type="button"
+              onClick={openLeadForm}
+              data-testid="open-lead-form-nav"
+            >
+              Agendar llamada
             </Button>
           </div>
         </div>
       </motion.nav>
+
+      <Dialog open={leadFormOpen} onOpenChange={setLeadFormOpen}>
+        <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-lg rounded-2xl border-border p-6 sm:p-7">
+          <DialogHeader>
+            <DialogTitle className="font-display text-2xl text-foreground">
+              Agendar llamada
+            </DialogTitle>
+            <DialogDescription>
+              Dejanos tus datos y avanzamos con una conversación concreta sobre tu marca.
+            </DialogDescription>
+          </DialogHeader>
+
+          <form className="space-y-5" onSubmit={handleLeadSubmit}>
+            <div className="flex items-center gap-2" aria-label={`Paso ${leadStep} de 2`}>
+              <span className={`h-2 flex-1 rounded-full ${leadStep >= 1 ? "bg-primary" : "bg-muted"}`} />
+              <span className={`h-2 flex-1 rounded-full ${leadStep >= 2 ? "bg-primary" : "bg-muted"}`} />
+            </div>
+
+            {leadStep === 1 ? (
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="lead-email">Cuál es tu mail</Label>
+                  <Input
+                    id="lead-email"
+                    data-testid="lead-email"
+                    type="email"
+                    value={leadForm.email}
+                    onChange={(event) => updateLeadForm("email", event.target.value)}
+                    placeholder="tu@email.com"
+                    autoComplete="email"
+                    required
+                  />
+                  {trimmedEmail.length > 0 && !isValidEmail && (
+                    <p className="text-xs text-destructive">Ingresá un mail válido para continuar.</p>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="lead-name">Cómo es tu nombre</Label>
+                  <Input
+                    id="lead-name"
+                    data-testid="lead-name"
+                    value={leadForm.name}
+                    onChange={(event) => updateLeadForm("name", event.target.value)}
+                    placeholder="Tu nombre"
+                    autoComplete="name"
+                    required
+                  />
+                </div>
+                <Button
+                  type="button"
+                  className="w-full bg-foreground text-background hover:bg-primary hover:text-background"
+                  disabled={!canContinueLeadForm}
+                  onClick={() => setLeadStep(2)}
+                  data-testid="lead-next"
+                >
+                  Continuar <ArrowRight className="w-4 h-4" />
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="lead-brand">Cómo se llama tu marca</Label>
+                  <Input
+                    id="lead-brand"
+                    data-testid="lead-brand"
+                    value={leadForm.brand}
+                    onChange={(event) => updateLeadForm("brand", event.target.value)}
+                    placeholder="Nombre de la marca"
+                    autoComplete="organization"
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="lead-website">Cómo es la URL de tu página</Label>
+                  <Input
+                    id="lead-website"
+                    data-testid="lead-website"
+                    type="url"
+                    value={leadForm.website}
+                    onChange={(event) => updateLeadForm("website", event.target.value)}
+                    placeholder="https://tumarca.com"
+                    autoComplete="url"
+                    required
+                  />
+                </div>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="sm:flex-1"
+                    onClick={() => setLeadStep(1)}
+                  >
+                    Volver
+                  </Button>
+                  <Button
+                    type="submit"
+                    className="sm:flex-1 bg-foreground text-background hover:bg-primary hover:text-background"
+                    disabled={!canSubmitLeadForm}
+                    data-testid="lead-submit"
+                  >
+                    Enviar
+                  </Button>
+                </div>
+                {!hasTallyConnection && (
+                  <p className="text-xs text-muted-foreground">
+                    Falta configurar VITE_TALLY_FORM_ID para abrir el formulario de Tally con estos datos.
+                  </p>
+                )}
+                {leadSubmitted && (
+                  <p className="rounded-xl bg-primary/10 px-4 py-3 text-sm font-medium text-primary">
+                    {hasTallyConnection
+                      ? "Abrimos Tally con tus datos para terminar el envío."
+                      : "Formulario validado. Cuando agreguemos el ID de Tally, estos datos se enviarán al formulario."}
+                  </p>
+                )}
+              </div>
+            )}
+          </form>
+        </DialogContent>
+      </Dialog>
 
       {/* Hero */}
       <section className="relative min-h-[88svh] overflow-hidden flex items-center">
@@ -541,8 +732,14 @@ const Landing = () => {
                 Hacemos entrevistas en la calle con personas reales y transformamos esas reacciones en videos listos para contenido orgánico y ads, para viralizar tu marca.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                <Button size="lg" className="text-base font-semibold px-8 h-12 bg-foreground text-background hover:bg-primary hover:text-background" asChild>
-                  <a href="https://calendar.app.google/Pm3VmXyedj7Qx4R89" target="_blank" rel="noopener noreferrer">Agendar llamada <ArrowRight className="ml-2 w-4 h-4" /></a>
+                <Button
+                  size="lg"
+                  className="text-base font-semibold px-8 h-12 bg-foreground text-background hover:bg-primary hover:text-background"
+                  type="button"
+                  onClick={openLeadForm}
+                  data-testid="open-lead-form-hero"
+                >
+                  Agendar llamada <ArrowRight className="ml-2 w-4 h-4" />
                 </Button>
                 <Button size="lg" variant="outline" className="text-base font-semibold px-8 h-12 border-foreground/15" asChild>
                   <a href="#videos">Ver videos</a>
@@ -946,8 +1143,14 @@ const Landing = () => {
                     Agendemos una llamada y veamos cómo convertir tu producto, servicio o campaña en entrevistas reales para redes y pauta.
                   </p>
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                    <Button size="lg" className="text-base font-semibold px-8 h-12 bg-primary text-white hover:bg-primary/90" asChild>
-                      <a href="https://calendar.app.google/Pm3VmXyedj7Qx4R89" target="_blank" rel="noopener noreferrer">Agendar llamada <ArrowRight className="ml-2 w-4 h-4" /></a>
+                    <Button
+                      size="lg"
+                      className="text-base font-semibold px-8 h-12 bg-primary text-white hover:bg-primary/90"
+                      type="button"
+                      onClick={openLeadForm}
+                      data-testid="open-lead-form-cta"
+                    >
+                      Agendar llamada <ArrowRight className="ml-2 w-4 h-4" />
                     </Button>
                     <Button size="lg" variant="outline" className="text-base font-semibold px-8 h-12 bg-transparent text-background border-background/30 hover:bg-background/10 hover:text-background" asChild>
                       <a href="#videos">Ver ejemplos</a>
