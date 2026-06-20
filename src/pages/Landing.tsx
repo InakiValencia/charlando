@@ -424,8 +424,8 @@ const Landing = () => {
 
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-12 lg:py-20">
-          <div className="relative min-h-[580px] flex items-center justify-center">
+        <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-8 lg:py-12">
+          <div className="relative min-h-[500px] flex items-center justify-center">
 
             <ConfettiLayer size={confettiSize} opacity={confettiOpacity} count={confettiCount} spread={confettiSpread} />
 
@@ -490,14 +490,14 @@ const Landing = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7 }}
             >
-              <div className="flex items-center justify-center mb-6">
+              <div className="flex items-center justify-center mb-4">
                 <Logo size="lg" />
               </div>
-              <div className="inline-flex items-center gap-2 text-xs font-semibold text-primary bg-primary/10 px-3 py-1 rounded-full mb-5">
+              <div className="inline-flex items-center gap-2 text-xs font-semibold text-primary bg-primary/10 px-3 py-1 rounded-full mb-4">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
                 Personas reales · Reacciones reales
               </div>
-              <h1 className="text-[28px] min-[360px]:text-[31px] sm:text-5xl lg:text-[44px] 2xl:text-[56px] font-display tracking-tight leading-[1.15] text-foreground mb-6" style={{ fontWeight: titleWeight }}>
+              <h1 className="text-[28px] min-[360px]:text-[31px] sm:text-5xl lg:text-[44px] 2xl:text-[56px] font-display tracking-tight leading-[1.15] text-foreground mb-4" style={{ fontWeight: titleWeight }}>
                 Conversaciones que
                 <br />
                 <span className="whitespace-nowrap">
@@ -519,7 +519,7 @@ const Landing = () => {
                   </span>
                 </span>
               </h1>
-              <div className="md:hidden grid grid-cols-4 gap-2 max-w-[350px] mx-auto mb-7 px-2">
+              <div className="md:hidden grid grid-cols-4 gap-2 max-w-[350px] mx-auto mb-5 px-2">
                 {HERO_IMAGES.map((image, i) => (
                   <motion.div
                     key={image}
@@ -533,7 +533,7 @@ const Landing = () => {
                   </motion.div>
                 ))}
               </div>
-              <p className="text-base text-muted-foreground max-w-lg mx-auto mb-8 leading-relaxed">
+              <p className="text-base text-muted-foreground max-w-lg mx-auto mb-6 leading-relaxed">
                 Hacemos entrevistas en la calle con personas reales y transformamos esas reacciones en videos listos para contenido orgánico y ads, para viralizar tu marca.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -552,9 +552,9 @@ const Landing = () => {
       </section>
 
       {/* Videos destacados */}
-      <section id="videos" className="py-10 lg:py-14">
+      <section id="videos" className="py-8 lg:py-10">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-center mb-8">
+          <div className="flex items-center justify-center mb-6">
             <h2 className="text-2xl sm:text-3xl font-display text-foreground tracking-[-0.02em] text-center" style={{ fontWeight: titleWeight }}>
               Videos destacados de Charlando
             </h2>
@@ -583,13 +583,13 @@ const Landing = () => {
           </div>
 
           <motion.div
-            className="mt-12 text-center"
+            className="mt-8 text-center"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <h3 className="text-2xl sm:text-3xl font-display text-foreground tracking-[-0.02em] mb-6" style={{ fontWeight: titleWeight }}>
+            <h3 className="text-2xl sm:text-3xl font-display text-foreground tracking-[-0.02em] mb-4" style={{ fontWeight: titleWeight }}>
               Resultados de empresas siguiendo esta estrategia
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
@@ -611,10 +611,10 @@ const Landing = () => {
       </section>
 
       {/* Proceso — moderno */}
-      <section id="proceso" className="pt-6 lg:pt-10 pb-12 lg:pb-20 bg-card">
+      <section id="proceso" className="py-8 lg:py-12 bg-card">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <motion.div
-            className="text-center mb-12"
+            className="text-center mb-8"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -644,8 +644,8 @@ const Landing = () => {
                   transition={{ duration: 0.4, delay: i * 0.08 }}
                   className="group relative"
                 >
-                  <div className="relative bg-background rounded-3xl p-6 h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5">
-                    <div className="flex items-center justify-between mb-5">
+                  <div className="relative bg-background rounded-3xl p-5 h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5">
+                    <div className="flex items-center justify-between mb-4">
                       <div className="w-16 h-16 rounded-2xl bg-foreground text-background flex items-center justify-center font-display font-bold text-xl shadow-md group-hover:bg-primary transition-colors">
                         {step.n}
                       </div>
@@ -664,10 +664,10 @@ const Landing = () => {
       </section>
 
       {/* Features */}
-      <section id="features" className="pt-6 lg:pt-10 pb-12 lg:pb-20">
+      <section id="features" className="py-8 lg:py-12">
         <div className="max-w-5xl mx-auto px-6 lg:px-8">
           <motion.div
-            className="text-center mb-12"
+            className="text-center mb-8"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -724,10 +724,10 @@ const Landing = () => {
 
 
       {/* Beneficios */}
-      <section className="pt-6 lg:pt-10 pb-12 lg:pb-20 bg-card">
+      <section className="py-8 lg:py-12 bg-card">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <motion.div
-            className="text-center mb-14"
+            className="text-center mb-8"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -749,7 +749,7 @@ const Landing = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
-                className="rounded-3xl bg-background p-8"
+                className="rounded-3xl bg-background p-6"
               >
                 <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                   <span className="text-primary font-bold">{i + 1}</span>
@@ -764,10 +764,10 @@ const Landing = () => {
 
 
       {/* Quienes somos */}
-      <section className="pt-6 lg:pt-10 pb-12 lg:pb-20">
+      <section className="py-8 lg:py-12">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <motion.div
-            className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-8 lg:gap-12 items-center"
+            className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-6 lg:gap-10 items-center"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -811,10 +811,10 @@ const Landing = () => {
 
 
       {/* FAQ */}
-      <section id="faq" className="py-12 lg:py-20">
+      <section id="faq" className="py-8 lg:py-12">
         <div className="max-w-3xl mx-auto px-6 lg:px-8">
           <motion.div
-            className="text-center mb-12"
+            className="text-center mb-8"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -858,9 +858,9 @@ const Landing = () => {
       </section>
 
       {/* CTA */}
-      <section id="cta" className="pt-6 lg:pt-8 pb-12 lg:pb-16 relative">
+      <section id="cta" className="pt-4 lg:pt-6 pb-8 lg:pb-10 relative">
         <div className="max-w-4xl mx-auto px-6 lg:px-8">
-          <div className="relative pt-20 lg:pt-24">
+          <div className="relative pt-16 lg:pt-20">
             <div className="absolute inset-x-0 top-0 z-20 flex justify-center pointer-events-none" aria-hidden="true">
               <motion.div
                 initial={{ opacity: 0, y: 16, scale: 0.85 }}
@@ -877,7 +877,7 @@ const Landing = () => {
               </motion.div>
             </div>
 
-            <div className="bg-foreground rounded-[2rem] relative overflow-hidden px-6 pt-24 pb-20 lg:px-10 lg:pt-28 lg:pb-24">
+            <div className="bg-foreground rounded-[2rem] relative overflow-hidden px-6 pt-20 pb-16 lg:px-10 lg:pt-24 lg:pb-20">
               <div className="absolute inset-x-0 top-5 flex justify-center pointer-events-none" aria-hidden="true">
                 {[
                   { x: -110, y: 20, size: 14, color: "hsl(189 70% 48%)", shape: "circle", rot: 0 },
