@@ -337,6 +337,10 @@ const HOSTS = [
   { label: "Host eventos", avatar: AVATAR_URLS[4] },
 ];
 
+const FULL_SECTION_CLASS = "min-h-[78svh] flex items-center py-8 lg:py-10";
+const SECTION_HEADER_CLASS = "text-center mb-7 lg:mb-8";
+const SECTION_TITLE_CLASS = "text-3xl sm:text-4xl lg:text-5xl font-display mb-4";
+
 const Landing = () => {
   const [wordIndex, setWordIndex] = useState(0);
   const [navVisible, setNavVisible] = useState(false);
@@ -423,9 +427,9 @@ const Landing = () => {
       </motion.nav>
 
       {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-8 lg:py-12">
-          <div className="relative min-h-[500px] flex items-center justify-center">
+      <section className="relative min-h-[88svh] overflow-hidden flex items-center">
+        <div className="w-full max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-8 lg:py-12">
+          <div className="relative min-h-[calc(88svh-5rem)] flex items-center justify-center">
 
             <ConfettiLayer size={confettiSize} opacity={confettiOpacity} count={confettiCount} spread={confettiSpread} />
 
@@ -533,7 +537,7 @@ const Landing = () => {
                   </motion.div>
                 ))}
               </div>
-              <p className="text-base text-muted-foreground max-w-lg mx-auto mb-6 leading-relaxed">
+              <p className="text-lg text-muted-foreground max-w-xl mx-auto mb-6 leading-relaxed">
                 Hacemos entrevistas en la calle con personas reales y transformamos esas reacciones en videos listos para contenido orgánico y ads, para viralizar tu marca.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -552,10 +556,10 @@ const Landing = () => {
       </section>
 
       {/* Videos destacados */}
-      <section id="videos" className="py-8 lg:py-10">
-        <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-center mb-6">
-            <h2 className="text-2xl sm:text-3xl font-display text-foreground tracking-[-0.02em] text-center" style={{ fontWeight: titleWeight }}>
+      <section id="videos" className={FULL_SECTION_CLASS}>
+        <div className="w-full max-w-6xl mx-auto px-6 lg:px-8">
+          <div className="flex items-center justify-center mb-7 lg:mb-8">
+            <h2 className={`${SECTION_TITLE_CLASS} text-foreground text-center`} style={{ fontWeight: titleWeight }}>
               Videos destacados de Charlando
             </h2>
           </div>
@@ -598,7 +602,7 @@ const Landing = () => {
                 { value: "+50%", label: "hook rate" },
                 { value: "2X", label: "ROAS" },
               ].map((result) => (
-                <div key={result.label} className="rounded-3xl bg-card p-6">
+                <div key={result.label} className="rounded-3xl bg-card p-5">
                   <p className="font-display text-4xl sm:text-5xl text-primary tracking-[-0.03em]" style={{ fontWeight: titleWeight }}>
                     {result.value}
                   </p>
@@ -611,24 +615,21 @@ const Landing = () => {
       </section>
 
       {/* Proceso — moderno */}
-      <section id="proceso" className="py-8 lg:py-12 bg-card">
-        <div className="max-w-6xl mx-auto px-6 lg:px-8">
+      <section id="proceso" className={`${FULL_SECTION_CLASS} bg-card`}>
+        <div className="w-full max-w-6xl mx-auto px-6 lg:px-8">
           <motion.div
-            className="text-center mb-8"
+            className={SECTION_HEADER_CLASS}
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="inline-flex items-center gap-2 text-xs font-semibold text-primary bg-primary/10 px-3 py-1 rounded-full mb-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-              Cómo trabajamos
-            </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display mb-4 text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
+            <h2 className={`${SECTION_TITLE_CLASS} text-foreground`} style={{ fontWeight: titleWeight }}>
               De la idea al video viral en 4 pasos.
             </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Un proceso simple: pensamos la conversación, salimos a grabar y entregamos contenido listo para usar.
+            <p className="text-muted-foreground text-xl sm:text-2xl leading-relaxed max-w-3xl mx-auto text-balance">
+              <span className="block">Sin IA, sin guiones, sin actores pagos.</span>
+              <span className="block">Nuestros hosts. Tus productos. Reacciones auténticas.</span>
             </p>
           </motion.div>
 
@@ -644,17 +645,17 @@ const Landing = () => {
                   transition={{ duration: 0.4, delay: i * 0.08 }}
                   className="group relative"
                 >
-                  <div className="relative bg-background rounded-3xl p-5 h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="w-16 h-16 rounded-2xl bg-foreground text-background flex items-center justify-center font-display font-bold text-xl shadow-md group-hover:bg-primary transition-colors">
+                  <div className="relative bg-background rounded-3xl p-6 lg:p-7 h-full min-h-[230px] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5">
+                    <div className="flex items-center justify-between mb-5">
+                      <div className="w-16 h-16 rounded-2xl bg-foreground text-background flex items-center justify-center font-display font-bold text-2xl shadow-md group-hover:bg-primary transition-colors">
                         {step.n}
                       </div>
                       {i < PROCESS_STEPS.length - 1 && (
                         <ArrowRight className="hidden lg:block w-5 h-5 text-primary/40 group-hover:text-primary transition-colors" />
                       )}
                     </div>
-                    <h3 className="font-display font-bold text-lg mb-2 text-foreground tracking-[-0.01em]">{step.title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{step.text}</p>
+                    <h3 className="font-display font-bold text-xl mb-3 text-foreground tracking-[-0.01em]">{step.title}</h3>
+                    <p className="text-base text-muted-foreground leading-relaxed">{step.text}</p>
                   </div>
                 </motion.div>
               ))}
@@ -664,19 +665,19 @@ const Landing = () => {
       </section>
 
       {/* Features */}
-      <section id="features" className="py-8 lg:py-12">
-        <div className="max-w-5xl mx-auto px-6 lg:px-8">
+      <section id="features" className={FULL_SECTION_CLASS}>
+        <div className="w-full max-w-6xl mx-auto px-6 lg:px-8">
           <motion.div
-            className="text-center mb-8"
+            className={SECTION_HEADER_CLASS}
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl sm:text-4xl font-display mb-4 text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
+            <h2 className={`${SECTION_TITLE_CLASS} text-foreground`} style={{ fontWeight: titleWeight }}>
               Todo lo que necesitás para viralizar tu producto
             </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            <p className="text-muted-foreground text-xl sm:text-2xl leading-relaxed max-w-3xl mx-auto text-balance">
               Desde la estrategia creativa hasta la edición final, nos ocupamos de transformar conversaciones espontáneas en piezas listas para publicar, pautar y testear.
             </p>
           </motion.div>
@@ -710,9 +711,9 @@ const Landing = () => {
                         <Illust accents={currentPreset.accents} />
                       )}
                     </div>
-                    <div className="p-6 md:p-5 flex-1">
-                      <h3 className="font-display font-bold text-xl mb-2 text-foreground tracking-[-0.01em]">{feature.title}</h3>
-                      <p className="text-muted-foreground text-sm md:text-[13px] leading-relaxed md:leading-snug">{feature.description}</p>
+                    <div className="p-6 lg:p-7 flex-1">
+                      <h3 className="font-display font-bold text-xl mb-3 text-foreground tracking-[-0.01em]">{feature.title}</h3>
+                      <p className="text-muted-foreground text-base leading-relaxed">{feature.description}</p>
                     </div>
                   </div>
                 </motion.div>
@@ -724,16 +725,16 @@ const Landing = () => {
 
 
       {/* Beneficios */}
-      <section className="py-8 lg:py-12 bg-card">
-        <div className="max-w-6xl mx-auto px-6 lg:px-8">
+      <section className={`${FULL_SECTION_CLASS} bg-card`}>
+        <div className="w-full max-w-6xl mx-auto px-6 lg:px-8">
           <motion.div
-            className="text-center mb-8"
+            className={SECTION_HEADER_CLASS}
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl sm:text-4xl font-display mb-4 text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
+            <h2 className={`${SECTION_TITLE_CLASS} text-foreground`} style={{ fontWeight: titleWeight }}>
               Por qué funciona
             </h2>
           </motion.div>
@@ -749,13 +750,13 @@ const Landing = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
-                className="rounded-3xl bg-background p-6"
+                className="rounded-3xl bg-background p-6 lg:p-7 min-h-[230px]"
               >
-                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                  <span className="text-primary font-bold">{i + 1}</span>
+                <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-5">
+                  <span className="text-primary font-display font-bold text-2xl">{i + 1}</span>
                 </div>
                 <h3 className="font-display font-bold text-xl mb-3 text-foreground tracking-[-0.01em]">{b.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{b.text}</p>
+                <p className="text-muted-foreground text-base leading-relaxed">{b.text}</p>
               </motion.div>
             ))}
           </div>
@@ -764,8 +765,20 @@ const Landing = () => {
 
 
       {/* Quienes somos */}
-      <section className="py-8 lg:py-12">
-        <div className="max-w-6xl mx-auto px-6 lg:px-8">
+      <section className={FULL_SECTION_CLASS}>
+        <div className="w-full max-w-6xl mx-auto px-6 lg:px-8">
+          <motion.div
+            className={SECTION_HEADER_CLASS}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className={`${SECTION_TITLE_CLASS} text-foreground`} style={{ fontWeight: titleWeight }}>
+              Quienes somos
+            </h2>
+          </motion.div>
+
           <motion.div
             className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-6 lg:gap-10 items-center"
             initial={{ opacity: 0, y: 24 }}
@@ -782,12 +795,9 @@ const Landing = () => {
             </div>
 
             <div>
-              <p className="text-xs font-semibold text-primary bg-primary/10 px-3 py-1 rounded-full inline-flex mb-4">
-                Quienes somos
-              </p>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display mb-5 text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
+              <h3 className="text-2xl sm:text-3xl font-display mb-5 text-foreground" style={{ fontWeight: titleWeight }}>
                 Imanol Valencia
-              </h2>
+              </h3>
               <div className="space-y-3 text-lg text-muted-foreground leading-relaxed">
                 <p className="font-semibold text-foreground">
                   Co-Founder{" "}
@@ -811,56 +821,61 @@ const Landing = () => {
 
 
       {/* FAQ */}
-      <section id="faq" className="py-8 lg:py-12">
-        <div className="max-w-3xl mx-auto px-6 lg:px-8">
+      <section id="faq" className={FULL_SECTION_CLASS}>
+        <div className="w-full max-w-6xl mx-auto px-6 lg:px-8">
           <motion.div
-            className="text-center mb-8"
+            className={SECTION_HEADER_CLASS}
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl sm:text-4xl font-display mb-4 text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
+            <h2 className={`${SECTION_TITLE_CLASS} text-foreground`} style={{ fontWeight: titleWeight }}>
               Preguntas frecuentes
             </h2>
           </motion.div>
-          <div className="space-y-3">
-            {FAQS.map((faq, i) => {
-              const open = openFaq === i;
-              return (
-                <div key={faq.q} className="rounded-2xl bg-card overflow-hidden">
-                  <button
-                    onClick={() => setOpenFaq(open ? null : i)}
-                    className="w-full flex items-center justify-between text-left p-5 gap-4"
-                  >
-                    <span className="font-display font-semibold text-foreground text-base">{faq.q}</span>
-                    <span className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
-                      {open ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
-                    </span>
-                  </button>
-                  <AnimatePresence initial={false}>
-                    {open && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.25 }}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-4">
+            {[FAQS.slice(0, 4), FAQS.slice(4)].map((column, columnIndex) => (
+              <div key={columnIndex} className="space-y-2.5">
+                {column.map((faq, i) => {
+                  const faqIndex = columnIndex * 4 + i;
+                  const open = openFaq === faqIndex;
+                  return (
+                    <div key={faq.q} className="rounded-2xl bg-card overflow-hidden">
+                      <button
+                        onClick={() => setOpenFaq(open ? null : faqIndex)}
+                        className="w-full flex items-center justify-between text-left p-4 gap-4"
                       >
-                        <div className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed">{faq.a}</div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              );
-            })}
+                        <span className="font-display font-semibold text-foreground text-base">{faq.q}</span>
+                        <span className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
+                          {open ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+                        </span>
+                      </button>
+                      <AnimatePresence initial={false}>
+                        {open && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.25 }}
+                          >
+                            <div className="px-4 pb-4 text-sm text-muted-foreground leading-relaxed">{faq.a}</div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section id="cta" className="pt-4 lg:pt-6 pb-8 lg:pb-10 relative">
-        <div className="max-w-4xl mx-auto px-6 lg:px-8">
-          <div className="relative pt-16 lg:pt-20">
+      <section id="cta" className={`${FULL_SECTION_CLASS} relative`}>
+        <div className="w-full max-w-4xl mx-auto px-6 lg:px-8">
+          <div className="relative pt-16 lg:pt-[4.5rem]">
             <div className="absolute inset-x-0 top-0 z-20 flex justify-center pointer-events-none" aria-hidden="true">
               <motion.div
                 initial={{ opacity: 0, y: 16, scale: 0.85 }}
@@ -869,15 +884,15 @@ const Landing = () => {
                 transition={{ duration: 0.6, type: "spring", stiffness: 220, damping: 18 }}
                 className="drop-shadow-[0_18px_40px_rgba(0,0,0,0.18)]"
               >
-                <div className="w-[130px] h-[140px] flex items-center justify-center">
-                  <div className="w-[110px] h-[110px] rounded-full bg-primary flex items-center justify-center shadow-xl">
-                    <Mic className="w-14 h-14 text-white" strokeWidth={2.5} />
+                <div className="w-[112px] h-[120px] flex items-center justify-center">
+                  <div className="w-[96px] h-[96px] rounded-full bg-primary flex items-center justify-center shadow-xl">
+                    <Mic className="w-12 h-12 text-white" strokeWidth={2.5} />
                   </div>
                 </div>
               </motion.div>
             </div>
 
-            <div className="bg-foreground rounded-[2rem] relative overflow-hidden px-6 pt-20 pb-16 lg:px-10 lg:pt-24 lg:pb-20">
+            <div className="bg-foreground rounded-[2rem] relative overflow-hidden px-6 pt-20 pb-16 lg:px-10 lg:pt-24 lg:pb-[4.5rem]">
               <div className="absolute inset-x-0 top-5 flex justify-center pointer-events-none" aria-hidden="true">
                 {[
                   { x: -110, y: 20, size: 14, color: "hsl(189 70% 48%)", shape: "circle", rot: 0 },
@@ -924,7 +939,7 @@ const Landing = () => {
                   viewport={{ once: true }}
                   transition={{ duration: 0.6 }}
                 >
-                  <h2 className="text-3xl sm:text-4xl font-display mb-4 text-background tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
+                  <h2 className={`${SECTION_TITLE_CLASS} text-background`} style={{ fontWeight: titleWeight }}>
                     ¿Listo para crear contenido que la gente sí quiera mirar?
                   </h2>
                   <p className="text-background/70 text-lg mb-8 max-w-lg mx-auto text-balance">
