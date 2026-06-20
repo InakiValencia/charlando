@@ -692,7 +692,7 @@ const Landing = () => {
                 <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
                 Personas reales · Reacciones reales
               </div>
-              <h1 className="text-[28px] min-[360px]:text-[31px] sm:text-5xl lg:text-[44px] 2xl:text-[56px] font-display tracking-tight leading-[1.15] text-foreground mb-4" style={{ fontWeight: titleWeight }}>
+              <h1 className="text-[28px] min-[360px]:text-[31px] sm:text-5xl lg:text-[44px] 2xl:text-[56px] font-display tracking-tight leading-[1.42] text-foreground mb-4" style={{ fontWeight: titleWeight }}>
                 <span className="inline-flex flex-col items-center">
                   <span>Conversaciones que</span>
                   <span className="inline-flex translate-x-3 items-baseline justify-center gap-x-[0.18em] whitespace-nowrap sm:translate-x-7 lg:translate-x-9">
