@@ -940,13 +940,13 @@ const Landing = () => {
                   aria-label="Marcas que colaboran con Charlando"
                 >
                   {[0, 1].map((copy) => (
-                    <div key={copy} className="flex shrink-0 items-center gap-8 pr-8 sm:gap-10 sm:pr-10" aria-hidden={copy === 1}>
+                    <div key={copy} className="flex shrink-0 items-center gap-7 pr-7 sm:gap-8 sm:pr-8" aria-hidden={copy === 1}>
                       {COLLABORATOR_BRANDS.map((brand) => (
-                        <div key={`${brand.name}-${copy}`} className="flex h-20 min-w-[170px] items-center justify-center sm:min-w-[190px]">
+                        <div key={`${brand.name}-${copy}`} className="flex h-16 min-w-[145px] items-center justify-center sm:min-w-[165px]">
                           <img
                             src={brand.logo}
                             alt={copy === 1 ? "" : brand.name}
-                            className="no-image-outline h-14 w-auto max-w-[160px] object-contain sm:h-16 sm:max-w-[180px]"
+                            className="no-image-outline h-11 w-auto max-w-[135px] object-contain sm:h-12 sm:max-w-[150px]"
                           />
                         </div>
                       ))}
