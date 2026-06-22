@@ -340,7 +340,7 @@ const HOSTS = [
   { label: "Host eventos", avatar: AVATAR_URLS[4] },
 ];
 
-const FULL_SECTION_CLASS = "flex items-center py-8 lg:py-10";
+const FULL_SECTION_CLASS = "flex items-center py-12 lg:py-16";
 const SECTION_HEADER_CLASS = "text-center mb-7 lg:mb-8";
 const SECTION_TITLE_CLASS = "text-3xl sm:text-4xl lg:text-5xl font-display mb-4";
 const TALLY_FORM_ID = import.meta.env.VITE_TALLY_FORM_ID;
@@ -1174,7 +1174,7 @@ const Landing = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 px-6 lg:px-8 lg:py-10 border-t border-border">
+      <footer className="py-12 px-6 lg:px-8 lg:py-16 border-t border-border">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-7">
             <div className="md:col-span-2">
