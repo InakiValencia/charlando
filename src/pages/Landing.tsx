@@ -13,7 +13,6 @@ import {
   Mic,
   Plus,
   Minus,
-  CalendarDays,
 } from "lucide-react";
 
 import eventHackathon from "@/assets/event-hackathon-ai.jpg";
@@ -343,10 +342,9 @@ const HOSTS = [
 
 const COLLABORATOR_BRANDS = [
   { name: "Café Delirante", logo: "/cafe-delirante-logo.png" },
-  { name: "Arcor" },
-  { name: "SAO medialunas" },
-  { name: "Ogham" },
-  { name: "Charlando" },
+  { name: "Arcor", logo: "/arcor-logo.png" },
+  { name: "SAO medialunas", logo: "/sao-medialunas-logo.png" },
+  { name: "Ogham", logo: "/ogham-logo.png" },
 ];
 
 const FULL_SECTION_CLASS = "flex items-center py-12 lg:py-16";
@@ -927,13 +925,13 @@ const Landing = () => {
           </div>
 
           <motion.div
-            className="mt-8 lg:mt-10 overflow-hidden rounded-3xl bg-foreground p-3 shadow-xl shadow-foreground/10 sm:p-4"
+            className="mt-8 overflow-hidden lg:mt-10"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
               <div className="min-w-0 flex-1 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
                 <motion.div
                   className="flex w-max items-center"
@@ -944,20 +942,12 @@ const Landing = () => {
                   {[0, 1].map((copy) => (
                     <div key={copy} className="flex shrink-0 items-center gap-8 pr-8 sm:gap-10 sm:pr-10" aria-hidden={copy === 1}>
                       {COLLABORATOR_BRANDS.map((brand) => (
-                        <div key={`${brand.name}-${copy}`} className="flex h-14 min-w-[150px] items-center justify-center">
-                          {brand.logo ? (
-                            <div className="flex h-12 w-[158px] items-center justify-center rounded-2xl bg-background px-4 shadow-sm">
-                              <img
-                                src={brand.logo}
-                                alt={copy === 1 ? "" : brand.name}
-                                className="no-image-outline h-9 w-auto max-w-[130px] object-contain"
-                              />
-                            </div>
-                          ) : (
-                            <span className="font-display text-xl font-bold uppercase tracking-[0.18em] text-background/90 sm:text-2xl">
-                              {brand.name}
-                            </span>
-                          )}
+                        <div key={`${brand.name}-${copy}`} className="flex h-20 min-w-[170px] items-center justify-center sm:min-w-[190px]">
+                          <img
+                            src={brand.logo}
+                            alt={copy === 1 ? "" : brand.name}
+                            className="no-image-outline h-14 w-auto max-w-[160px] object-contain sm:h-16 sm:max-w-[180px]"
+                          />
                         </div>
                       ))}
                     </div>
@@ -967,10 +957,10 @@ const Landing = () => {
               <Button
                 type="button"
                 size="lg"
-                className="h-12 shrink-0 bg-primary px-5 text-sm font-semibold text-white hover:bg-primary/90 sm:text-base lg:px-6"
+                className="h-12 shrink-0 bg-foreground px-5 text-sm font-semibold text-background hover:bg-primary hover:text-background sm:text-base lg:px-6"
                 onClick={openLeadForm}
               >
-                Agendar una llamada <CalendarDays className="ml-1 h-4 w-4" />
+                Agendar una llamada <ArrowRight className="ml-1 h-4 w-4" />
               </Button>
             </div>
           </motion.div>
