@@ -5,9 +5,9 @@ interface LogoProps {
 }
 
 const sizes = {
-  sm: { glyph: 28, text: "text-lg" },
-  md: { glyph: 34, text: "text-[22px]" },
-  lg: { glyph: 44, text: "text-[28px]" },
+  sm: { glyph: 30, text: "text-lg" },
+  md: { glyph: 36, text: "text-[22px]" },
+  lg: { glyph: 46, text: "text-[28px]" },
 };
 
 export function Logo({ size = "md", className = "", variant = "default" }: LogoProps) {
