@@ -996,7 +996,7 @@ const Landing = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               { title: "Sin videos AI, generás confianza", text: "Tu audiencia ve a personas reales reaccionando, opinando y haciendo preguntas. Eso se siente más creíble que una marca hablando sola." },
-              { title: "Detiene el scroll", text: "Los videos reales llaman la atención de la gente. Termina haciendo que el producto se entienda sin explicarlo de forma pesada. La conversación abre el interés y mantiene la atención." },
+              { title: "Detiene el scroll", text: "Cuando a un desconocido le hacen una pregunta directa frente a la cámara, el espectador inmediatamente piensa dos cosas: ¿Qué va a decir? ¿Y qué diría yo si me preguntaran eso? Esa tensión obliga al usuario a dejar de scrollear." },
               { title: "Impulsa conversión", text: "El contenido puede trabajar todo el funnel: presenta la marca, educa, genera consideración y termina con un llamado a la acción claro." },
             ].map((b, i) => (
               <motion.div
