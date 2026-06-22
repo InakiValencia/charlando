@@ -954,13 +954,13 @@ const Landing = () => {
                         <img
                           src={CREATIVE_STRATEGY_IMAGE}
                           alt="Estrategia creativa"
-                          className="no-image-outline h-full w-full object-cover"
+                          className="no-image-outline h-full w-full object-contain md:object-cover"
                         />
                       ) : i === 1 ? (
                         <img
                           src={STREET_RECORDING_IMAGE}
                           alt="Grabación en la calle"
-                          className="no-image-outline h-full w-full object-cover"
+                          className="no-image-outline h-full w-full object-contain md:object-cover"
                         />
                       ) : (
                         <Illust accents={currentPreset.accents} />
