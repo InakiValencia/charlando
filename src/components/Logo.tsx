@@ -21,7 +21,7 @@ export function Logo({ size = "md", className = "", variant = "default" }: LogoP
         aria-hidden="true"
         width={s.glyph}
         height={s.glyph}
-        className="rounded-full object-contain"
+        className="no-image-outline rounded-full object-contain p-[1px]"
         style={{ width: s.glyph, height: s.glyph }}
         draggable={false}
       />
