@@ -368,6 +368,7 @@ const Landing = () => {
   const [leadStep, setLeadStep] = useState<1 | 2>(1);
   const [leadForm, setLeadForm] = useState<LeadFormValues>(initialLeadForm);
   const [leadSubmitted, setLeadSubmitted] = useState(false);
+  const [activeProcessStep, setActiveProcessStep] = useState<number | null>(null);
   const titleWeight = 700;
   const confettiSize = 2.5;
   const confettiOpacity = 0.8;
@@ -463,6 +464,51 @@ const Landing = () => {
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 639px)");
+    let frame = 0;
+
+    const updateActiveProcessStep = () => {
+      frame = 0;
+      if (!mediaQuery.matches) {
+        setActiveProcessStep(null);
+        return;
+      }
+
+      const cards = Array.from(document.querySelectorAll<HTMLElement>("[data-process-card]"));
+      const targetY = window.innerHeight * 0.52;
+      const closest = cards.reduce<{ index: number; distance: number } | null>((best, card) => {
+        const rect = card.getBoundingClientRect();
+        if (rect.bottom < 0 || rect.top > window.innerHeight) return best;
+
+        const index = Number(card.dataset.processCard);
+        const distance = Math.abs(rect.top + rect.height / 2 - targetY);
+        return !best || distance < best.distance ? { index, distance } : best;
+      }, null);
+
+      if (closest) {
+        setActiveProcessStep(closest.index);
+      }
+    };
+
+    const scheduleUpdate = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(updateActiveProcessStep);
+    };
+
+    scheduleUpdate();
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
+    mediaQuery.addEventListener("change", scheduleUpdate);
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+      mediaQuery.removeEventListener("change", scheduleUpdate);
+    };
   }, []);
 
   return (
@@ -805,17 +851,17 @@ const Landing = () => {
             <h3 className="text-2xl sm:text-3xl font-display text-foreground tracking-[-0.02em] mb-4" style={{ fontWeight: titleWeight }}>
               Resultados de empresas siguiendo esta estrategia
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 max-w-3xl mx-auto">
               {[
                 { value: "2X", label: "View rate de 6 segundos" },
                 { value: "+50%", label: "hook rate" },
                 { value: "2X", label: "ROAS" },
               ].map((result) => (
-                <div key={result.label} className="rounded-3xl bg-card p-5">
-                  <p className="font-display text-4xl sm:text-5xl text-primary tracking-[-0.03em] tabular-nums" style={{ fontWeight: titleWeight }}>
+                <div key={result.label} className="rounded-2xl sm:rounded-3xl bg-card px-2.5 py-4 min-[360px]:p-4 sm:p-5">
+                  <p className="font-display text-3xl min-[360px]:text-4xl sm:text-5xl text-primary tracking-[-0.03em] tabular-nums" style={{ fontWeight: titleWeight }}>
                     {result.value}
                   </p>
-                  <p className="text-sm sm:text-base text-muted-foreground mt-2">{result.label}</p>
+                  <p className="text-[11px] min-[360px]:text-xs sm:text-base text-muted-foreground mt-1.5 sm:mt-2 leading-snug">{result.label}</p>
                 </div>
               ))}
             </div>
@@ -852,10 +898,11 @@ const Landing = () => {
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: i * 0.08 }}
                   className="group relative"
+                  data-process-card={i}
                 >
-                  <div className={`relative ${currentPreset.cardBg} rounded-3xl p-6 lg:p-7 h-full min-h-[230px] transition-[background-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5`}>
+                  <div className={`relative ${currentPreset.cardBg} rounded-3xl p-6 lg:p-7 h-full min-h-[230px] transition-[background-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5 ${activeProcessStep === i ? "-translate-y-1 shadow-xl shadow-primary/5" : ""}`}>
                     <div className="flex items-center justify-between mb-5">
-                      <div className="w-16 h-16 rounded-2xl bg-foreground text-background flex items-center justify-center font-display font-bold text-2xl shadow-md tabular-nums group-hover:bg-primary transition-colors">
+                      <div className={`w-16 h-16 rounded-2xl text-background flex items-center justify-center font-display font-bold text-2xl shadow-md tabular-nums transition-colors group-hover:bg-primary ${activeProcessStep === i ? "bg-primary" : "bg-foreground"}`}>
                         {step.n}
                       </div>
                       {i < PROCESS_STEPS.length - 1 && (
@@ -907,13 +954,13 @@ const Landing = () => {
                         <img
                           src={CREATIVE_STRATEGY_IMAGE}
                           alt="Estrategia creativa"
-                          className="h-full w-full object-cover"
+                          className="no-image-outline h-full w-full object-cover"
                         />
                       ) : i === 1 ? (
                         <img
                           src={STREET_RECORDING_IMAGE}
                           alt="Grabación en la calle"
-                          className="h-full w-full object-cover"
+                          className="no-image-outline h-full w-full object-cover"
                         />
                       ) : (
                         <Illust accents={currentPreset.accents} />
