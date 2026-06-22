@@ -960,7 +960,7 @@ const Landing = () => {
                 className="h-12 shrink-0 bg-foreground px-5 text-sm font-semibold text-background hover:bg-primary hover:text-background sm:text-base lg:px-6"
                 onClick={openLeadForm}
               >
-                Agendar una llamada <ArrowRight className="ml-1 h-4 w-4" />
+                Agendar llamada <ArrowRight className="ml-1 h-4 w-4" />
               </Button>
             </div>
           </motion.div>
