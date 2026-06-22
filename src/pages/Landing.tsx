@@ -343,6 +343,7 @@ const HOSTS = [
 const FULL_SECTION_CLASS = "flex items-center py-12 lg:py-16";
 const SECTION_HEADER_CLASS = "text-center mb-7 lg:mb-8";
 const SECTION_TITLE_CLASS = "text-3xl sm:text-4xl lg:text-5xl font-display mb-4";
+const FOOTER_LINK_CLASS = "inline-flex min-h-10 min-w-10 items-center transition-colors hover:text-primary";
 const TALLY_FORM_ID = import.meta.env.VITE_TALLY_FORM_ID;
 
 type LeadFormValues = {
@@ -695,10 +696,10 @@ const Landing = () => {
               <h1 className="text-[28px] min-[360px]:text-[31px] sm:text-5xl lg:text-[44px] 2xl:text-[56px] font-display tracking-tight leading-[1.42] text-foreground mb-4" style={{ fontWeight: titleWeight }}>
                 <span className="inline-flex flex-col items-center">
                   <span>Conversaciones que</span>
-                  <span className="inline-flex translate-x-3 items-baseline justify-center gap-x-[0.18em] whitespace-nowrap sm:translate-x-7 lg:translate-x-9">
+                  <span className="inline-flex translate-x-1 items-baseline justify-center gap-x-[0.18em] whitespace-nowrap min-[360px]:translate-x-3 sm:translate-x-7 lg:translate-x-9">
                     <span>convierten en</span>
                     <span className="inline-block relative text-left" style={{ minWidth: "7ch" }}>
-                      <AnimatePresence mode="wait">
+                      <AnimatePresence initial={false} mode="wait">
                         <motion.span
                           key={rotatingWords[wordIndex]}
                           initial={{ opacity: 0, y: 16 }}
@@ -811,7 +812,7 @@ const Landing = () => {
                 { value: "2X", label: "ROAS" },
               ].map((result) => (
                 <div key={result.label} className="rounded-3xl bg-card p-5">
-                  <p className="font-display text-4xl sm:text-5xl text-primary tracking-[-0.03em]" style={{ fontWeight: titleWeight }}>
+                  <p className="font-display text-4xl sm:text-5xl text-primary tracking-[-0.03em] tabular-nums" style={{ fontWeight: titleWeight }}>
                     {result.value}
                   </p>
                   <p className="text-sm sm:text-base text-muted-foreground mt-2">{result.label}</p>
@@ -852,9 +853,9 @@ const Landing = () => {
                   transition={{ duration: 0.4, delay: i * 0.08 }}
                   className="group relative"
                 >
-                  <div className={`relative ${currentPreset.cardBg} rounded-3xl p-6 lg:p-7 h-full min-h-[230px] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5`}>
+                  <div className={`relative ${currentPreset.cardBg} rounded-3xl p-6 lg:p-7 h-full min-h-[230px] transition-[background-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5`}>
                     <div className="flex items-center justify-between mb-5">
-                      <div className="w-16 h-16 rounded-2xl bg-foreground text-background flex items-center justify-center font-display font-bold text-2xl shadow-md group-hover:bg-primary transition-colors">
+                      <div className="w-16 h-16 rounded-2xl bg-foreground text-background flex items-center justify-center font-display font-bold text-2xl shadow-md tabular-nums group-hover:bg-primary transition-colors">
                         {step.n}
                       </div>
                       {i < PROCESS_STEPS.length - 1 && (
@@ -960,7 +961,7 @@ const Landing = () => {
                 className={`${currentPreset.cardBg} rounded-3xl p-6 lg:p-7 min-h-[230px]`}
               >
                 <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-5">
-                  <span className="text-primary font-display font-bold text-2xl">{i + 1}</span>
+                  <span className="text-primary font-display font-bold text-2xl tabular-nums">{i + 1}</span>
                 </div>
                 <h3 className="font-display font-bold text-xl mb-3 text-foreground tracking-[-0.01em]">{b.title}</h3>
                 <p className="text-muted-foreground text-base leading-relaxed">{b.text}</p>
@@ -1012,7 +1013,7 @@ const Landing = () => {
                     href="https://www.instagram.com/swapstyle.com.ar/"
                     target="_blank"
                     rel="noreferrer"
-                    className="text-primary transition-colors hover:text-primary/80"
+                    className="relative inline-flex min-h-10 items-center -my-2 align-middle text-primary transition-colors hover:text-primary/80"
                   >
                     @SwapStyle
                   </a>{" "}
@@ -1185,26 +1186,26 @@ const Landing = () => {
             </div>
             <div>
               <h4 className="font-display font-bold text-sm mb-4 text-foreground">Compañía</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><a href="#top" className="hover:text-primary">Inicio</a></li>
-                <li><a href="#videos" className="hover:text-primary">Videos</a></li>
-                <li><a href="#proceso" className="hover:text-primary">Proceso</a></li>
-                <li><a href="#features" className="hover:text-primary">Servicios</a></li>
-                <li><a href="#cta" className="hover:text-primary">Contacto</a></li>
+              <ul className="space-y-0.5 text-sm text-muted-foreground">
+                <li><a href="#top" className={FOOTER_LINK_CLASS}>Inicio</a></li>
+                <li><a href="#videos" className={FOOTER_LINK_CLASS}>Videos</a></li>
+                <li><a href="#proceso" className={FOOTER_LINK_CLASS}>Proceso</a></li>
+                <li><a href="#features" className={FOOTER_LINK_CLASS}>Servicios</a></li>
+                <li><a href="#cta" className={FOOTER_LINK_CLASS}>Contacto</a></li>
               </ul>
             </div>
             <div>
               <h4 className="font-display font-bold text-sm mb-4 text-foreground">Redes</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><a href="#" className="hover:text-primary">Instagram</a></li>
-                <li><a href="#" className="hover:text-primary">TikTok</a></li>
-                <li><a href="#" className="hover:text-primary">LinkedIn</a></li>
-                <li><a href="#" className="hover:text-primary">YouTube</a></li>
+              <ul className="space-y-0.5 text-sm text-muted-foreground">
+                <li><a href="#" className={FOOTER_LINK_CLASS}>Instagram</a></li>
+                <li><a href="#" className={FOOTER_LINK_CLASS}>TikTok</a></li>
+                <li><a href="#" className={FOOTER_LINK_CLASS}>LinkedIn</a></li>
+                <li><a href="#" className={FOOTER_LINK_CLASS}>YouTube</a></li>
               </ul>
               <h4 className="font-display font-bold text-sm mb-3 mt-6 text-foreground">Legal</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><a href="#" className="hover:text-primary">Términos y condiciones</a></li>
-                <li><a href="#" className="hover:text-primary">Política de privacidad</a></li>
+              <ul className="space-y-0.5 text-sm text-muted-foreground">
+                <li><a href="#" className={FOOTER_LINK_CLASS}>Términos y condiciones</a></li>
+                <li><a href="#" className={FOOTER_LINK_CLASS}>Política de privacidad</a></li>
               </ul>
             </div>
           </div>
