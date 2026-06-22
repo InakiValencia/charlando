@@ -148,6 +148,11 @@
 }
 
 @layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
   * {
     @apply border-border;
   }
@@ -159,6 +164,20 @@
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+    text-wrap: balance;
+  }
+
+  p, li {
+    text-wrap: pretty;
+  }
+
+  img:not([src$=".svg"]):not(.no-image-outline) {
+    outline: 1px solid rgba(0, 0, 0, 0.1);
+    outline-offset: -1px;
+  }
+
+  .dark img:not([src$=".svg"]):not(.no-image-outline) {
+    outline-color: rgba(255, 255, 255, 0.1);
   }
 }
 

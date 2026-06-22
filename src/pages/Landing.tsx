@@ -326,10 +326,10 @@ const FAQS = [
 ];
 
 const PROCESS_STEPS = [
-  { n: "01", title: "Concepto", text: "Entendemos tu producto y marca. En base a eso diseñamos preguntas, hooks y ángulos para generar respuestas naturales y transmitir tu mensaje." },
-  { n: "02", title: "Producción", text: "Grabamos entrevistas callejeras con personas reales, cuidando energía, sonido, encuadre y contexto." },
-  { n: "03", title: "Edición", text: "Creamos piezas verticales optimizadas para retención, claridad y conversión." },
-  { n: "04", title: "Entrega", text: "Recibís videos listos para publicar, pautar y testear en diferentes plataformas." },
+  { n: "01", title: "Planeamos", text: "Entendemos tu producto y marca. En base a eso diseñamos preguntas, hooks y ángulos para generar respuestas naturales y transmitir tu mensaje." },
+  { n: "02", title: "Producimos", text: "Grabamos entrevistas callejeras con personas reales, cuidando energía, sonido, encuadre y contexto." },
+  { n: "03", title: "Editamos", text: "Creamos piezas verticales optimizadas para retención, claridad y conversión." },
+  { n: "04", title: "Entregamos", text: "Recibís videos listos para publicar, pautar y testear en diferentes plataformas." },
 ];
 
 const HOSTS = [
@@ -340,9 +340,10 @@ const HOSTS = [
   { label: "Host eventos", avatar: AVATAR_URLS[4] },
 ];
 
-const FULL_SECTION_CLASS = "min-h-[78svh] flex items-center py-8 lg:py-10";
+const FULL_SECTION_CLASS = "flex items-center py-12 lg:py-16";
 const SECTION_HEADER_CLASS = "text-center mb-7 lg:mb-8";
 const SECTION_TITLE_CLASS = "text-3xl sm:text-4xl lg:text-5xl font-display mb-4";
+const FOOTER_LINK_CLASS = "inline-flex min-h-10 min-w-10 items-center transition-colors hover:text-primary";
 const TALLY_FORM_ID = import.meta.env.VITE_TALLY_FORM_ID;
 
 type LeadFormValues = {
@@ -367,6 +368,7 @@ const Landing = () => {
   const [leadStep, setLeadStep] = useState<1 | 2>(1);
   const [leadForm, setLeadForm] = useState<LeadFormValues>(initialLeadForm);
   const [leadSubmitted, setLeadSubmitted] = useState(false);
+  const [activeProcessStep, setActiveProcessStep] = useState<number | null>(null);
   const titleWeight = 700;
   const confettiSize = 2.5;
   const confettiOpacity = 0.8;
@@ -462,6 +464,51 @@ const Landing = () => {
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 639px)");
+    let frame = 0;
+
+    const updateActiveProcessStep = () => {
+      frame = 0;
+      if (!mediaQuery.matches) {
+        setActiveProcessStep(null);
+        return;
+      }
+
+      const cards = Array.from(document.querySelectorAll<HTMLElement>("[data-process-card]"));
+      const targetY = window.innerHeight * 0.52;
+      const closest = cards.reduce<{ index: number; distance: number } | null>((best, card) => {
+        const rect = card.getBoundingClientRect();
+        if (rect.bottom < 0 || rect.top > window.innerHeight) return best;
+
+        const index = Number(card.dataset.processCard);
+        const distance = Math.abs(rect.top + rect.height / 2 - targetY);
+        return !best || distance < best.distance ? { index, distance } : best;
+      }, null);
+
+      if (closest) {
+        setActiveProcessStep(closest.index);
+      }
+    };
+
+    const scheduleUpdate = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(updateActiveProcessStep);
+    };
+
+    scheduleUpdate();
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
+    mediaQuery.addEventListener("change", scheduleUpdate);
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+      mediaQuery.removeEventListener("change", scheduleUpdate);
+    };
   }, []);
 
   return (
@@ -692,25 +739,26 @@ const Landing = () => {
                 <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
                 Personas reales · Reacciones reales
               </div>
-              <h1 className="text-[28px] min-[360px]:text-[31px] sm:text-5xl lg:text-[44px] 2xl:text-[56px] font-display tracking-tight leading-[1.15] text-foreground mb-4" style={{ fontWeight: titleWeight }}>
-                Conversaciones que
-                <br />
-                <span className="whitespace-nowrap">
-                  convierten en{" "}
-                  <span className="inline-block relative" style={{ minWidth: "7ch" }}>
-                    <AnimatePresence mode="wait">
-                      <motion.span
-                        key={rotatingWords[wordIndex]}
-                        initial={{ opacity: 0, y: 16 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -16 }}
-                        transition={{ duration: 0.35 }}
-                        className="text-primary inline-block"
-                      >
-                        {rotatingWords[wordIndex]}
-                      </motion.span>
-                    </AnimatePresence>
-                    <span className="invisible block h-0 overflow-hidden" aria-hidden="true">Shorts.</span>
+              <h1 className="text-[28px] min-[360px]:text-[31px] sm:text-5xl lg:text-[44px] 2xl:text-[56px] font-display tracking-tight leading-[1.42] text-foreground mb-4" style={{ fontWeight: titleWeight }}>
+                <span className="inline-flex flex-col items-center">
+                  <span>Conversaciones que</span>
+                  <span className="inline-flex translate-x-1 items-baseline justify-center gap-x-[0.18em] whitespace-nowrap min-[360px]:translate-x-3 sm:translate-x-7 lg:translate-x-9">
+                    <span>convierten en</span>
+                    <span className="inline-block relative text-left" style={{ minWidth: "7ch" }}>
+                      <AnimatePresence initial={false} mode="wait">
+                        <motion.span
+                          key={rotatingWords[wordIndex]}
+                          initial={{ opacity: 0, y: 16 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -16 }}
+                          transition={{ duration: 0.35 }}
+                          className="text-primary inline-block"
+                        >
+                          {rotatingWords[wordIndex]}
+                        </motion.span>
+                      </AnimatePresence>
+                      <span className="invisible block h-0 overflow-hidden" aria-hidden="true">Shorts.</span>
+                    </span>
                   </span>
                 </span>
               </h1>
@@ -803,17 +851,17 @@ const Landing = () => {
             <h3 className="text-2xl sm:text-3xl font-display text-foreground tracking-[-0.02em] mb-4" style={{ fontWeight: titleWeight }}>
               Resultados de empresas siguiendo esta estrategia
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 max-w-3xl mx-auto">
               {[
                 { value: "2X", label: "View rate de 6 segundos" },
                 { value: "+50%", label: "hook rate" },
                 { value: "2X", label: "ROAS" },
               ].map((result) => (
-                <div key={result.label} className="rounded-3xl bg-card p-5">
-                  <p className="font-display text-4xl sm:text-5xl text-primary tracking-[-0.03em]" style={{ fontWeight: titleWeight }}>
+                <div key={result.label} className="rounded-2xl sm:rounded-3xl bg-card px-2.5 py-4 min-[360px]:p-4 sm:p-5">
+                  <p className="font-display text-3xl min-[360px]:text-4xl sm:text-5xl text-primary tracking-[-0.03em] tabular-nums" style={{ fontWeight: titleWeight }}>
                     {result.value}
                   </p>
-                  <p className="text-sm sm:text-base text-muted-foreground mt-2">{result.label}</p>
+                  <p className="text-[11px] min-[360px]:text-xs sm:text-base text-muted-foreground mt-1.5 sm:mt-2 leading-snug">{result.label}</p>
                 </div>
               ))}
             </div>
@@ -841,7 +889,6 @@ const Landing = () => {
           </motion.div>
 
           <div className="relative">
-            <div className="hidden lg:block absolute top-8 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" aria-hidden="true" />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-3">
               {PROCESS_STEPS.map((step, i) => (
                 <motion.div
@@ -851,10 +898,11 @@ const Landing = () => {
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: i * 0.08 }}
                   className="group relative"
+                  data-process-card={i}
                 >
-                  <div className="relative bg-background rounded-3xl p-6 lg:p-7 h-full min-h-[230px] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5">
+                  <div className={`relative ${currentPreset.cardBg} rounded-3xl p-6 lg:p-7 h-full min-h-[230px] transition-[background-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5 ${activeProcessStep === i ? "-translate-y-1 shadow-xl shadow-primary/5" : ""}`}>
                     <div className="flex items-center justify-between mb-5">
-                      <div className="w-16 h-16 rounded-2xl bg-foreground text-background flex items-center justify-center font-display font-bold text-2xl shadow-md group-hover:bg-primary transition-colors">
+                      <div className={`w-16 h-16 rounded-2xl text-background flex items-center justify-center font-display font-bold text-2xl shadow-md tabular-nums transition-colors group-hover:bg-primary ${activeProcessStep === i ? "bg-primary" : "bg-foreground"}`}>
                         {step.n}
                       </div>
                       {i < PROCESS_STEPS.length - 1 && (
@@ -906,13 +954,13 @@ const Landing = () => {
                         <img
                           src={CREATIVE_STRATEGY_IMAGE}
                           alt="Estrategia creativa"
-                          className="h-full w-full object-cover"
+                          className="no-image-outline h-full w-full object-contain md:object-cover"
                         />
                       ) : i === 1 ? (
                         <img
                           src={STREET_RECORDING_IMAGE}
                           alt="Grabación en la calle"
-                          className="h-full w-full object-cover"
+                          className="no-image-outline h-full w-full object-contain md:object-cover"
                         />
                       ) : (
                         <Illust accents={currentPreset.accents} />
@@ -948,7 +996,7 @@ const Landing = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               { title: "Sin videos AI, generás confianza", text: "Tu audiencia ve a personas reales reaccionando, opinando y haciendo preguntas. Eso se siente más creíble que una marca hablando sola." },
-              { title: "Detiene el scroll", text: "Los videos reales llaman la atención de la gente. Termina haciendo que el producto se entienda sin explicarlo de forma pesada. La conversación abre el interés y mantiene la atención." },
+              { title: "Detiene el scroll", text: "Cuando a un desconocido le hacen una pregunta directa frente a la cámara, el espectador inmediatamente piensa dos cosas: ¿Qué va a decir? ¿Y qué diría yo si me preguntaran eso? Esa tensión obliga al usuario a dejar de scrollear." },
               { title: "Impulsa conversión", text: "El contenido puede trabajar todo el funnel: presenta la marca, educa, genera consideración y termina con un llamado a la acción claro." },
             ].map((b, i) => (
               <motion.div
@@ -957,10 +1005,10 @@ const Landing = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
-                className="rounded-3xl bg-background p-6 lg:p-7 min-h-[230px]"
+                className={`${currentPreset.cardBg} rounded-3xl p-6 lg:p-7 min-h-[230px]`}
               >
                 <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-5">
-                  <span className="text-primary font-display font-bold text-2xl">{i + 1}</span>
+                  <span className="text-primary font-display font-bold text-2xl tabular-nums">{i + 1}</span>
                 </div>
                 <h3 className="font-display font-bold text-xl mb-3 text-foreground tracking-[-0.01em]">{b.title}</h3>
                 <p className="text-muted-foreground text-base leading-relaxed">{b.text}</p>
@@ -1012,7 +1060,7 @@ const Landing = () => {
                     href="https://www.instagram.com/swapstyle.com.ar/"
                     target="_blank"
                     rel="noreferrer"
-                    className="text-primary transition-colors hover:text-primary/80"
+                    className="relative inline-flex min-h-10 items-center -my-2 align-middle text-primary transition-colors hover:text-primary/80"
                   >
                     @SwapStyle
                   </a>{" "}
@@ -1082,7 +1130,7 @@ const Landing = () => {
       {/* CTA */}
       <section id="cta" className={`${FULL_SECTION_CLASS} relative`}>
         <div className="w-full max-w-4xl mx-auto px-6 lg:px-8">
-          <div className="relative pt-16 lg:pt-[4.5rem]">
+          <div className="relative pt-12 lg:pt-14">
             <div className="absolute inset-x-0 top-0 z-20 flex justify-center pointer-events-none" aria-hidden="true">
               <motion.div
                 initial={{ opacity: 0, y: 16, scale: 0.85 }}
@@ -1099,7 +1147,7 @@ const Landing = () => {
               </motion.div>
             </div>
 
-            <div className="bg-foreground rounded-[2rem] relative overflow-hidden px-6 pt-20 pb-16 lg:px-10 lg:pt-24 lg:pb-[4.5rem]">
+            <div className="bg-foreground rounded-[2rem] relative overflow-hidden px-6 pt-20 pb-12 lg:px-10 lg:pt-24 lg:pb-14">
               <div className="absolute inset-x-0 top-5 flex justify-center pointer-events-none" aria-hidden="true">
                 {[
                   { x: -110, y: 20, size: 14, color: "hsl(189 70% 48%)", shape: "circle", rot: 0 },
@@ -1174,9 +1222,9 @@ const Landing = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-16 px-6 lg:px-8 border-t border-border">
+      <footer className="py-12 px-6 lg:px-8 lg:py-16 border-t border-border">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-7">
             <div className="md:col-span-2">
               <Logo size="md" />
               <p className="text-sm text-muted-foreground mt-4 max-w-xs leading-relaxed">
@@ -1185,30 +1233,30 @@ const Landing = () => {
             </div>
             <div>
               <h4 className="font-display font-bold text-sm mb-4 text-foreground">Compañía</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><a href="#top" className="hover:text-primary">Inicio</a></li>
-                <li><a href="#videos" className="hover:text-primary">Videos</a></li>
-                <li><a href="#proceso" className="hover:text-primary">Proceso</a></li>
-                <li><a href="#features" className="hover:text-primary">Servicios</a></li>
-                <li><a href="#cta" className="hover:text-primary">Contacto</a></li>
+              <ul className="space-y-0.5 text-sm text-muted-foreground">
+                <li><a href="#top" className={FOOTER_LINK_CLASS}>Inicio</a></li>
+                <li><a href="#videos" className={FOOTER_LINK_CLASS}>Videos</a></li>
+                <li><a href="#proceso" className={FOOTER_LINK_CLASS}>Proceso</a></li>
+                <li><a href="#features" className={FOOTER_LINK_CLASS}>Servicios</a></li>
+                <li><a href="#cta" className={FOOTER_LINK_CLASS}>Contacto</a></li>
               </ul>
             </div>
             <div>
               <h4 className="font-display font-bold text-sm mb-4 text-foreground">Redes</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><a href="#" className="hover:text-primary">Instagram</a></li>
-                <li><a href="#" className="hover:text-primary">TikTok</a></li>
-                <li><a href="#" className="hover:text-primary">LinkedIn</a></li>
-                <li><a href="#" className="hover:text-primary">YouTube</a></li>
+              <ul className="space-y-0.5 text-sm text-muted-foreground">
+                <li><a href="#" className={FOOTER_LINK_CLASS}>Instagram</a></li>
+                <li><a href="#" className={FOOTER_LINK_CLASS}>TikTok</a></li>
+                <li><a href="#" className={FOOTER_LINK_CLASS}>LinkedIn</a></li>
+                <li><a href="#" className={FOOTER_LINK_CLASS}>YouTube</a></li>
               </ul>
               <h4 className="font-display font-bold text-sm mb-3 mt-6 text-foreground">Legal</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><a href="#" className="hover:text-primary">Términos y condiciones</a></li>
-                <li><a href="#" className="hover:text-primary">Política de privacidad</a></li>
+              <ul className="space-y-0.5 text-sm text-muted-foreground">
+                <li><a href="#" className={FOOTER_LINK_CLASS}>Términos y condiciones</a></li>
+                <li><a href="#" className={FOOTER_LINK_CLASS}>Política de privacidad</a></li>
               </ul>
             </div>
           </div>
-          <div className="pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="pt-6 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-sm text-muted-foreground">© 2026 Charlando. Todos los derechos reservados.</p>
             <p className="text-xs text-muted-foreground">De la calle a la pantalla.</p>
           </div>
