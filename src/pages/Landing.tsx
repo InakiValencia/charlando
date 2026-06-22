@@ -931,6 +931,9 @@ const Landing = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
+            <h3 className="mb-4 text-center font-display text-xl font-bold text-foreground text-balance sm:text-2xl">
+              Marcas que confían en nosotros
+            </h3>
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
               <div className="min-w-0 flex-1 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
                 <motion.div
