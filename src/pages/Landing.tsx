@@ -575,6 +575,9 @@ const Landing = () => {
               <DialogTitle className="font-display text-2xl text-foreground">
                 Agendar llamada
               </DialogTitle>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
+                Dejanos tus datos y avanzamos con una conversación concreta sobre tu marca.
+              </p>
             </div>
           </DialogHeader>
 
