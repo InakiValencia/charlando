@@ -1,10 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, type FormEvent } from "react";
 import { Logo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "sonner";
 import {
   Puzzle,
   ArrowRight,
@@ -18,6 +21,7 @@ import eventSummit from "@/assets/event-vibe-coding-summit.jpg";
 import avatarSarah from "@/assets/avatar-sarah.jpg";
 import avatarMarcus from "@/assets/avatar-marcus.jpg";
 import avatarPriya from "@/assets/avatar-priya.jpg";
+import { supabase } from "@/integrations/supabase/client";
 
 
 const features = [
@@ -342,32 +346,30 @@ const FULL_SECTION_CLASS = "flex items-center py-12 lg:py-16";
 const SECTION_HEADER_CLASS = "text-center mb-7 lg:mb-8";
 const SECTION_TITLE_CLASS = "text-3xl sm:text-4xl lg:text-5xl font-display mb-4";
 const FOOTER_LINK_CLASS = "inline-flex min-h-10 min-w-10 items-center transition-colors hover:text-primary";
-const TALLY_FORM_TARGET = import.meta.env.VITE_TALLY_FORM_URL || import.meta.env.VITE_TALLY_FORM_ID || "";
-
-const getTallyFormId = (target: string) => {
-  const value = target.trim();
-  if (!value) return "";
-
-  try {
-    const url = new URL(value);
-    const parts = url.pathname.split("/").filter(Boolean);
-    return parts[0] === "r" || parts[0] === "forms" ? parts[1] || "" : "";
-  } catch {
-    return value.replace(/^\/?r\//, "").replace(/^\/?forms\//, "");
-  }
+const CALENDAR_BOOKING_URL = "https://calendar.app.google/47zfzDkBhp8TM1Yo6";
+const EMPTY_LEAD_FORM = {
+  email: "",
+  fullName: "",
+  brandName: "",
+  websiteUrl: "",
 };
 
-const TALLY_FORM_ID = getTallyFormId(TALLY_FORM_TARGET);
-const TALLY_EMBED_URL = TALLY_FORM_ID
-  ? `https://tally.so/embed/${TALLY_FORM_ID}?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1`
-  : "";
-const CALENDAR_BOOKING_URL = "https://calendar.app.google/47zfzDkBhp8TM1Yo6";
+type LeadFormField = keyof typeof EMPTY_LEAD_FORM;
+
+const normalizeWebsiteUrl = (value: string) => {
+  const trimmed = value.trim();
+  if (!trimmed) return "";
+  return /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+};
 
 const Landing = () => {
   const [wordIndex, setWordIndex] = useState(0);
   const [navVisible, setNavVisible] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [leadFormOpen, setLeadFormOpen] = useState(false);
+  const [leadForm, setLeadForm] = useState(EMPTY_LEAD_FORM);
+  const [leadSubmitting, setLeadSubmitting] = useState(false);
+  const [leadError, setLeadError] = useState("");
   const [activeProcessStep, setActiveProcessStep] = useState<number | null>(null);
   const titleWeight = 700;
   const confettiSize = 2.5;
@@ -406,10 +408,71 @@ const Landing = () => {
     },
   ];
   const currentPreset = bentoPresets[0];
-  const hasTallyConnection = Boolean(TALLY_FORM_ID);
 
   const openLeadForm = () => {
+    setLeadError("");
     setLeadFormOpen(true);
+  };
+
+  const updateLeadField = (field: LeadFormField, value: string) => {
+    setLeadForm((current) => ({ ...current, [field]: value }));
+  };
+
+  const handleLeadSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setLeadError("");
+
+    const email = leadForm.email.trim().toLowerCase();
+    const fullName = leadForm.fullName.trim();
+    const brandName = leadForm.brandName.trim();
+    const websiteUrl = normalizeWebsiteUrl(leadForm.websiteUrl);
+
+    if (!email || !fullName || !brandName || !websiteUrl) {
+      setLeadError("Completá todos los campos para agendar la llamada.");
+      return;
+    }
+
+    try {
+      new URL(websiteUrl);
+    } catch {
+      setLeadError("Ingresá una URL válida para tu página.");
+      return;
+    }
+
+    const searchParams = new URLSearchParams(window.location.search);
+
+    setLeadSubmitting(true);
+
+    try {
+      const { error } = await supabase.from("lead_submissions").insert({
+        email,
+        full_name: fullName,
+        brand_name: brandName,
+        website_url: websiteUrl,
+        source: "landing",
+        page_path: `${window.location.pathname}${window.location.search}`,
+        utm_source: searchParams.get("utm_source"),
+        utm_medium: searchParams.get("utm_medium"),
+        utm_campaign: searchParams.get("utm_campaign"),
+      });
+
+      if (error) {
+        setLeadError("No pudimos guardar tus datos. Probá de nuevo en unos segundos.");
+        toast.error(error.message || "No pudimos guardar tus datos");
+        return;
+      }
+    } catch {
+      setLeadError("No pudimos guardar tus datos. Probá de nuevo en unos segundos.");
+      toast.error("No pudimos guardar tus datos");
+      return;
+    } finally {
+      setLeadSubmitting(false);
+    }
+
+    toast.success("Datos guardados. Te llevamos al calendario.");
+    setLeadForm(EMPTY_LEAD_FORM);
+    setLeadFormOpen(false);
+    window.location.assign(CALENDAR_BOOKING_URL);
   };
 
   useEffect(() => {
@@ -425,30 +488,6 @@ const Landing = () => {
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
-    const handleTallyMessage = (event: MessageEvent) => {
-      if (event.origin !== "https://tally.so") return;
-
-      const message =
-        typeof event.data === "string"
-          ? (() => {
-              try {
-                return JSON.parse(event.data);
-              } catch {
-                return null;
-              }
-            })()
-          : event.data;
-
-      if (message?.event === "Tally.FormSubmitted") {
-        window.location.assign(CALENDAR_BOOKING_URL);
-      }
-    };
-
-    window.addEventListener("message", handleTallyMessage);
-    return () => window.removeEventListener("message", handleTallyMessage);
   }, []);
 
   useEffect(() => {
@@ -542,21 +581,78 @@ const Landing = () => {
             </div>
           </DialogHeader>
 
-          {hasTallyConnection ? (
-            <iframe
-              src={TALLY_EMBED_URL}
-              title="Formulario para agendar llamada"
-              className="h-[430px] w-full border-0 sm:h-[480px]"
-              loading="lazy"
-              data-testid="tally-lead-form"
-            />
-          ) : (
-            <div className="px-6 pb-6 sm:px-7 sm:pb-7">
-              <p className="rounded-xl bg-muted px-4 py-3 text-sm text-muted-foreground">
-                Falta configurar VITE_TALLY_FORM_URL para mostrar el formulario de Tally.
-              </p>
+          <form className="space-y-4 px-6 pb-6 sm:px-7 sm:pb-7" onSubmit={handleLeadSubmit}>
+            <div className="grid gap-3">
+              <div className="space-y-2">
+                <Label htmlFor="lead-email">Cuál es tu mail</Label>
+                <Input
+                  id="lead-email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  placeholder="tu@mail.com"
+                  value={leadForm.email}
+                  onChange={(event) => updateLeadField("email", event.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="lead-name">Cómo es tu nombre</Label>
+                <Input
+                  id="lead-name"
+                  name="name"
+                  type="text"
+                  autoComplete="name"
+                  placeholder="Tu nombre"
+                  value={leadForm.fullName}
+                  onChange={(event) => updateLeadField("fullName", event.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="lead-brand">Cómo se llama tu marca</Label>
+                <Input
+                  id="lead-brand"
+                  name="brand"
+                  type="text"
+                  autoComplete="organization"
+                  placeholder="Nombre de tu marca"
+                  value={leadForm.brandName}
+                  onChange={(event) => updateLeadField("brandName", event.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="lead-website">Cuál es la URL de tu página</Label>
+                <Input
+                  id="lead-website"
+                  name="website"
+                  type="text"
+                  inputMode="url"
+                  autoComplete="url"
+                  placeholder="https://tumarca.com"
+                  value={leadForm.websiteUrl}
+                  onChange={(event) => updateLeadField("websiteUrl", event.target.value)}
+                  required
+                />
+              </div>
             </div>
-          )}
+
+            {leadError && (
+              <p className="rounded-xl bg-destructive/10 px-4 py-3 text-sm font-medium text-destructive">
+                {leadError}
+              </p>
+            )}
+
+            <DialogFooter>
+              <Button type="submit" className="w-full bg-foreground text-background hover:bg-primary hover:text-background" disabled={leadSubmitting}>
+                {leadSubmitting ? "Guardando..." : "Continuar"} <ArrowRight className="ml-1 h-4 w-4" />
+              </Button>
+            </DialogFooter>
+          </form>
         </DialogContent>
       </Dialog>
 
