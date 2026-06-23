@@ -342,6 +342,13 @@ const HOSTS = [
   { label: "Host eventos", avatar: AVATAR_URLS[4] },
 ];
 
+const COLLABORATOR_BRANDS = [
+  { name: "Café Delirante", logo: "/cafe-delirante-logo.png" },
+  { name: "Arcor", logo: "/arcor-logo.png" },
+  { name: "SAO medialunas", logo: "/sao-medialunas-logo.png" },
+  { name: "Ogham", logo: "/ogham-logo.png" },
+];
+
 const FULL_SECTION_CLASS = "flex items-center py-12 lg:py-16";
 const SECTION_HEADER_CLASS = "text-center mb-7 lg:mb-8";
 const SECTION_TITLE_CLASS = "text-3xl sm:text-4xl lg:text-5xl font-display mb-4";
@@ -908,6 +915,50 @@ const Landing = () => {
               ))}
             </div>
           </div>
+
+          <motion.div
+            className="mt-8 overflow-hidden lg:mt-10"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <h3 className="mb-4 text-center font-display text-xl font-bold text-foreground text-balance sm:text-2xl">
+              Marcas que confían en nosotros
+            </h3>
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
+              <div className="min-w-0 flex-1 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+                <motion.div
+                  className="flex w-max items-center"
+                  animate={{ x: ["0%", "-50%"] }}
+                  transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
+                  aria-label="Marcas que colaboran con Charlando"
+                >
+                  {[0, 1].map((copy) => (
+                    <div key={copy} className="flex shrink-0 items-center gap-7 pr-7 sm:gap-8 sm:pr-8" aria-hidden={copy === 1}>
+                      {COLLABORATOR_BRANDS.map((brand) => (
+                        <div key={`${brand.name}-${copy}`} className="flex h-16 min-w-[145px] items-center justify-center sm:min-w-[165px]">
+                          <img
+                            src={brand.logo}
+                            alt={copy === 1 ? "" : brand.name}
+                            className="no-image-outline h-11 w-auto max-w-[135px] object-contain sm:h-12 sm:max-w-[150px]"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </motion.div>
+              </div>
+              <Button
+                type="button"
+                size="lg"
+                className="h-12 shrink-0 bg-foreground px-5 text-sm font-semibold text-background hover:bg-primary hover:text-background sm:text-base lg:px-6"
+                onClick={openLeadForm}
+              >
+                Agendar llamada <ArrowRight className="ml-1 h-4 w-4" />
+              </Button>
+            </div>
+          </motion.div>
         </div>
       </section>
 
