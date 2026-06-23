@@ -15,7 +15,7 @@ export function Logo({ size = "md", className = "", variant = "default" }: LogoP
   const s = sizes[size];
   const textColor = variant === "light" ? "text-background" : "text-foreground";
   return (
-    <span className={`inline-flex items-center gap-2 ${className}`}>
+    <span className={`inline-flex items-center gap-1 ${className}`}>
       <img
         src="/openmic-logo.png"
         alt=""
