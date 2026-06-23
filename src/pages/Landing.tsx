@@ -716,19 +716,19 @@ const Landing = () => {
 
             {/* Center — headline */}
             <motion.div
-              className="text-center max-w-2xl mx-auto relative z-10"
+              className="text-center max-w-4xl mx-auto relative z-10"
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7 }}
             >
               <div className="flex items-center justify-center mb-4">
-                <Logo size="lg" />
+                <Logo size="xl" />
               </div>
               <div className="inline-flex items-center gap-2 text-xs font-semibold text-primary bg-primary/10 px-3 py-1 rounded-full mb-4">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
                 Personas reales · Reacciones reales
               </div>
-              <h1 className="text-[28px] min-[360px]:text-[31px] sm:text-5xl lg:text-[44px] 2xl:text-[56px] font-display tracking-tight leading-[1.42] text-foreground mb-4" style={{ fontWeight: titleWeight }}>
+              <h1 className="text-balance text-[30px] min-[360px]:text-[34px] sm:text-5xl md:text-[58px] lg:text-[64px] 2xl:text-[72px] font-display tracking-tight leading-[1.12] text-foreground mb-5" style={{ fontWeight: titleWeight }}>
                 <span className="inline-flex flex-col items-center">
                   <span>Conversaciones que</span>
                   <span className="inline-flex translate-x-1 items-baseline justify-center gap-x-[0.18em] whitespace-nowrap min-[360px]:translate-x-3 sm:translate-x-7 lg:translate-x-9">
@@ -765,7 +765,7 @@ const Landing = () => {
                   </motion.div>
                 ))}
               </div>
-              <p className="text-lg text-muted-foreground max-w-xl mx-auto mb-6 leading-relaxed">
+              <p className="text-pretty text-base sm:text-lg text-muted-foreground max-w-xl mx-auto mb-6 leading-relaxed">
                 Hacemos entrevistas en la calle con personas reales y transformamos esas reacciones en videos listos para contenido orgánico y ads, para viralizar tu marca.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
