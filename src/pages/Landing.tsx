@@ -2,7 +2,7 @@ import { useState, useEffect, type FormEvent } from "react";
 import { Logo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
@@ -575,9 +575,6 @@ const Landing = () => {
               <DialogTitle className="font-display text-2xl text-foreground">
                 Agendar llamada
               </DialogTitle>
-              <DialogDescription>
-                Completá el formulario sin salir de Charlando.
-              </DialogDescription>
             </div>
           </DialogHeader>
 
