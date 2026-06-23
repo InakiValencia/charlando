@@ -130,6 +130,48 @@ export type Database = {
         }
         Relationships: []
       }
+      lead_submissions: {
+        Row: {
+          brand_name: string
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          page_path: string | null
+          source: string
+          utm_campaign: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          website_url: string
+        }
+        Insert: {
+          brand_name: string
+          created_at?: string
+          email: string
+          full_name: string
+          id?: string
+          page_path?: string | null
+          source?: string
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          website_url: string
+        }
+        Update: {
+          brand_name?: string
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          page_path?: string | null
+          source?: string
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          website_url?: string
+        }
+        Relationships: []
+      }
       form_fields: {
         Row: {
           event_id: string
