@@ -347,6 +347,8 @@ const COLLABORATOR_BRANDS = [
   { name: "Arcor", logo: "/arcor-logo.png" },
   { name: "SAO medialunas", logo: "/sao-medialunas-logo.png" },
   { name: "Ogham", logo: "/ogham-logo.png" },
+  { name: "Mundo Mogul MDP", logo: "/mundo-mogul-mdp-logo.jpg" },
+  { name: "Swap Style", logo: "/swap-style-logo.jpg" },
 ];
 
 const FULL_SECTION_CLASS = "flex items-center py-12 lg:py-16";
