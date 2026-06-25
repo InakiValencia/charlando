@@ -1,7 +1,6 @@
 import { useState, useEffect, type FormEvent } from "react";
 import { Logo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -150,6 +149,11 @@ const FEATURED_VIDEOS = [
   "/featured-video-2.png",
   "/featured-video-3.jpg",
   "/featured-video-4.jpg",
+  "/featured-video-5.png",
+  "/featured-video-6.png",
+  "/featured-video-7.png",
+  "/featured-video-8.png",
+  "/featured-video-9.png",
 ];
 
 const HERO_IMAGES = [
@@ -284,12 +288,13 @@ function ConfettiLayer({ size, opacity, count, spread }: { size: number; opacity
 }
 
 const NAV_LINKS = [
-  { label: "Inicio", href: "#top" },
-  { label: "Videos", href: "#videos" },
-  { label: "Proceso", href: "#proceso" },
-  { label: "Servicios", href: "#features" },
-  { label: "Preguntas", href: "#faq" },
-  { label: "Contacto", href: "#cta" },
+  { label: "Inicio", href: "#top", external: false },
+  { label: "Videos", href: "#videos", external: false },
+  { label: "Biblioteca", href: "/biblioteca", external: true },
+  { label: "Proceso", href: "#proceso", external: false },
+  { label: "Servicios", href: "#features", external: false },
+  { label: "Preguntas", href: "#faq", external: false },
+  { label: "Contacto", href: "#cta", external: false },
 ];
 
 const FAQS = [
@@ -559,9 +564,15 @@ const Landing = () => {
           </Link>
           <div className="hidden lg:flex items-center gap-1">
             {NAV_LINKS.map((l) => (
-              <a key={l.label} href={l.href} className="text-sm font-medium text-foreground/80 hover:text-primary px-3 py-2 rounded-full transition-colors">
-                {l.label}
-              </a>
+              l.external ? (
+                <Link key={l.label} to={l.href} className="text-sm font-medium text-foreground/80 hover:text-primary px-3 py-2 rounded-full transition-colors">
+                  {l.label}
+                </Link>
+              ) : (
+                <a key={l.label} href={l.href} className="text-sm font-medium text-foreground/80 hover:text-primary px-3 py-2 rounded-full transition-colors">
+                  {l.label}
+                </a>
+              )
             ))}
           </div>
           <div className="flex items-center gap-3 shrink-0">
@@ -816,7 +827,7 @@ const Landing = () => {
             <motion.div
               className="flex w-max"
               animate={{ x: ["0%", "-50%"] }}
-              transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
+              transition={{ duration: 42, repeat: Infinity, ease: "linear" }}
               data-testid="featured-videos-track"
             >
               {[0, 1].map((copy) => (
@@ -840,6 +851,16 @@ const Landing = () => {
                 </div>
               ))}
             </motion.div>
+          </div>
+
+          <div className="mt-7 flex justify-center">
+            <Button
+              size="lg"
+              className="h-12 bg-foreground px-7 text-base font-semibold text-background transition-transform hover:bg-primary hover:text-background active:scale-[0.96]"
+              asChild
+            >
+              <Link to="/biblioteca">Mirá nuestros videos <ArrowRight className="ml-2 h-4 w-4" /></Link>
+            </Button>
           </div>
 
           <motion.div
@@ -1256,7 +1277,7 @@ const Landing = () => {
                       Agendar llamada <ArrowRight className="ml-2 w-4 h-4" />
                     </Button>
                     <Button size="lg" variant="outline" className="text-base font-semibold px-8 h-12 bg-transparent text-background border-background/30 hover:bg-background/10 hover:text-background" asChild>
-                      <a href="#videos">Ver ejemplos</a>
+                      <Link to="/biblioteca">Ver ejemplos</Link>
                     </Button>
                   </div>
                 </motion.div>

@@ -10,6 +10,7 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 
 import Landing from "./pages/Landing";
+import Library from "./pages/Library";
 import Auth from "./pages/Auth";
 import Register from "./pages/Register";
 import CompanyPage from "./pages/CompanyPage";
@@ -25,10 +26,30 @@ import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
 function ScrollToTop() {
-  const { pathname } = useLocation();
+  const { hash, pathname } = useLocation();
+
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+    if (!hash) {
+      window.scrollTo(0, 0);
+      return;
+    }
+
+    const targetId = hash.slice(1);
+    const scrollToTarget = () => {
+      const target = document.getElementById(targetId);
+      if (!target) return false;
+
+      const top = target.getBoundingClientRect().top + window.scrollY - 80;
+      window.scrollTo({ top, behavior: "auto" });
+      return true;
+    };
+
+    if (scrollToTarget()) return;
+
+    const timeout = window.setTimeout(scrollToTarget, 0);
+    return () => window.clearTimeout(timeout);
+  }, [hash, pathname]);
+
   return null;
 }
 
@@ -44,6 +65,7 @@ const App = () => (
             <Routes>
               {/* Public */}
               <Route path="/" element={<Landing />} />
+              <Route path="/biblioteca" element={<Library />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/register/:slug" element={<Register />} />
               <Route path="/company/:companySlug" element={<CompanyPage />} />
