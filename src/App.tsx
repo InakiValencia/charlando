@@ -10,6 +10,7 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 
 import Landing from "./pages/Landing";
+import Library from "./pages/Library";
 import Auth from "./pages/Auth";
 import Register from "./pages/Register";
 import CompanyPage from "./pages/CompanyPage";
@@ -44,6 +45,7 @@ const App = () => (
             <Routes>
               {/* Public */}
               <Route path="/" element={<Landing />} />
+              <Route path="/biblioteca" element={<Library />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/register/:slug" element={<Register />} />
               <Route path="/company/:companySlug" element={<CompanyPage />} />
