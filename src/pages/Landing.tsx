@@ -58,8 +58,8 @@ const LOGO_URLS = [
 
 const HOST_PROFILES = [
   { name: "Imanol", image: "/host-imanol.jpg" },
-  { name: "Juan", image: "/host-juan.jpg" },
   { name: "Carolina", image: "/host-carolina.jpg" },
+  { name: "Juan", image: "/host-juan.jpg" },
 ];
 
 type BentoAccents = { integrationCircle: string; attendeeBorder: string; analyticsBars: string; analyticsAccent: string; pageButton: string };
