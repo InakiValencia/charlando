@@ -827,21 +827,21 @@ const Landing = () => {
             </h2>
           </div>
           <div
-            className="relative -mx-6 overflow-hidden px-6 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)] lg:-mx-8 lg:px-8"
+            className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden px-4 [mask-image:linear-gradient(to_right,transparent,black_3%,black_97%,transparent)] sm:px-6 lg:w-[calc(100vw-3rem)] lg:px-0"
             data-testid="featured-videos-carousel"
           >
             <motion.div
               className="flex w-max"
               animate={{ x: ["0%", "-50%"] }}
-              transition={{ duration: 42, repeat: Infinity, ease: "linear" }}
+              transition={{ duration: 56, repeat: Infinity, ease: "linear" }}
               data-testid="featured-videos-track"
             >
               {[0, 1].map((copy) => (
-                <div key={copy} className="flex shrink-0 gap-4 pr-4 sm:gap-5 sm:pr-5" aria-hidden={copy === 1}>
+                <div key={copy} className="flex shrink-0 gap-4 pr-4 sm:gap-5 sm:pr-5 lg:gap-6 lg:pr-6" aria-hidden={copy === 1}>
                   {FEATURED_VIDEOS.map((video, i) => (
                     <div
                       key={`${video}-${copy}`}
-                      className="w-[64vw] max-w-[270px] shrink-0 sm:w-[220px] lg:w-[255px]"
+                      className="w-[66vw] max-w-[285px] shrink-0 sm:w-[225px] lg:w-[235px] xl:w-[245px] 2xl:w-[255px]"
                     >
                       <div className="group cursor-pointer">
                         <div className="relative rounded-2xl overflow-hidden bg-muted aspect-[9/16] shadow-sm transition-transform duration-300 group-hover:-translate-y-1">
