@@ -56,6 +56,12 @@ const LOGO_URLS = [
   { src: "https://cdn.simpleicons.org/snapchat/000000", name: "Snapchat" },
 ];
 
+const HOST_PROFILES = [
+  { name: "Imanol", image: "/host-imanol.jpg" },
+  { name: "Juan", image: "/host-juan.jpg" },
+  { name: "Carolina", image: "/host-carolina.jpg" },
+];
+
 type BentoAccents = { integrationCircle: string; attendeeBorder: string; analyticsBars: string; analyticsAccent: string; pageButton: string };
 
 function IllustrationPages({ accents }: { accents: BentoAccents }) {
@@ -749,7 +755,7 @@ const Landing = () => {
               </div>
               <div className="inline-flex items-center gap-2 text-xs font-semibold text-primary bg-primary/10 px-3 py-1 rounded-full mb-4">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                Personas reales · Reacciones reales
+                Personas reales · Reacciones reales · Resultados reales
               </div>
               <h1 className="text-balance text-[30px] min-[360px]:text-[34px] sm:text-5xl md:text-[58px] lg:text-[64px] 2xl:text-[72px] font-display tracking-tight leading-[1.12] text-foreground mb-5" style={{ fontWeight: titleWeight }}>
                 <span className="inline-flex flex-col items-center">
@@ -1085,7 +1091,7 @@ const Landing = () => {
       </section>
 
 
-      {/* Quienes somos */}
+      {/* Hosts */}
       <section className={FULL_SECTION_CLASS}>
         <div className="w-full max-w-6xl mx-auto px-6 lg:px-8">
           <motion.div
@@ -1095,47 +1101,39 @@ const Landing = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className={`${SECTION_TITLE_CLASS} text-foreground`} style={{ fontWeight: titleWeight }}>
-              Quienes somos
+            <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+              <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+              Hosts reales
+            </div>
+            <h2 className={`${SECTION_TITLE_CLASS} text-foreground text-balance`} style={{ fontWeight: titleWeight }}>
+              Conoce a los hosts
             </h2>
+            <p className="mx-auto max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg">
+              Las caras que salen a la calle a buscar reacciones auténticas para tu marca.
+            </p>
           </motion.div>
 
           <motion.div
-            className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-6 lg:gap-10 items-center"
+            className="mx-auto grid max-w-sm grid-cols-1 gap-4 sm:max-w-3xl sm:grid-cols-2 lg:max-w-5xl lg:grid-cols-3 lg:gap-5"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="relative overflow-hidden rounded-3xl bg-card aspect-[4/3]">
-              <img
-                src="/about-imanol.png"
-                alt="Imanol Valencia grabando contenido para Charlando"
-                className="h-full w-full object-cover"
-              />
-            </div>
-
-            <div>
-              <h3 className="text-2xl sm:text-3xl font-display mb-5 text-foreground" style={{ fontWeight: titleWeight }}>
-                Imanol Valencia
-              </h3>
-              <div className="space-y-3 text-lg text-muted-foreground leading-relaxed">
-                <p className="font-semibold text-foreground">
-                  Co-Founder{" "}
-                  <a
-                    href="https://www.instagram.com/swapstyle.com.ar/"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="relative inline-flex min-h-10 items-center -my-2 align-middle text-primary transition-colors hover:text-primary/80"
-                  >
-                    @SwapStyle
-                  </a>{" "}
-                  & @Charlando
-                </p>
-                <p>Director Creativo</p>
-                <p>Marcas con las que colaboré: Arcor, SAO medialunas, Ogham.</p>
+            {HOST_PROFILES.map((host) => (
+              <div key={host.name} className="group relative aspect-[4/5] overflow-hidden rounded-3xl bg-card shadow-xl shadow-foreground/10 outline outline-1 -outline-offset-1 outline-black/10 transition-[box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/10">
+                <img
+                  src={host.image}
+                  alt={`${host.name}, host de Charlando`}
+                  className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.03]"
+                />
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-foreground/75 via-foreground/20 to-transparent px-5 pb-5 pt-20">
+                  <h3 className="font-display text-4xl font-bold leading-none tracking-tight text-background sm:text-5xl lg:text-[52px]">
+                    {host.name}
+                  </h3>
+                </div>
               </div>
-            </div>
+            ))}
           </motion.div>
         </div>
       </section>
