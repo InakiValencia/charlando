@@ -60,6 +60,7 @@ const HOST_PROFILES = [
   { name: "Imanol", image: "/host-imanol.jpg" },
   { name: "Carolina", image: "/host-carolina.jpg" },
   { name: "Juan", image: "/host-juan.jpg" },
+  { name: "Sofía", image: "/host-sofia.jpg" },
 ];
 
 type BentoAccents = { integrationCircle: string; attendeeBorder: string; analyticsBars: string; analyticsAccent: string; pageButton: string };
@@ -295,12 +296,9 @@ function ConfettiLayer({ size, opacity, count, spread }: { size: number; opacity
 
 const NAV_LINKS = [
   { label: "Inicio", href: "#top", external: false },
-  { label: "Videos", href: "#videos", external: false },
   { label: "Biblioteca", href: "/biblioteca", external: true },
-  { label: "Blog", href: "/blog", external: true },
   { label: "Proceso", href: "#proceso", external: false },
   { label: "Servicios", href: "#features", external: false },
-  { label: "Preguntas", href: "#faq", external: false },
   { label: "Contacto", href: "#cta", external: false },
 ];
 
@@ -1094,7 +1092,7 @@ const Landing = () => {
 
       {/* Hosts */}
       <section className={FULL_SECTION_CLASS}>
-        <div className="w-full max-w-6xl mx-auto px-6 lg:px-8">
+        <div className="w-full max-w-7xl mx-auto px-6 lg:px-8">
           <motion.div
             className={SECTION_HEADER_CLASS}
             initial={{ opacity: 0, y: 24 }}
@@ -1115,7 +1113,7 @@ const Landing = () => {
           </motion.div>
 
           <motion.div
-            className="mx-auto grid max-w-sm grid-cols-1 gap-4 sm:max-w-3xl sm:grid-cols-2 lg:max-w-5xl lg:grid-cols-3 lg:gap-5"
+            className="mx-auto grid max-w-sm grid-cols-1 gap-4 sm:max-w-3xl sm:grid-cols-2 lg:max-w-7xl lg:grid-cols-4 lg:gap-5"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -1300,8 +1298,6 @@ const Landing = () => {
               <h4 className="font-display font-bold text-sm mb-4 text-foreground">Compañía</h4>
               <ul className="space-y-0.5 text-sm text-muted-foreground">
                 <li><a href="#top" className={FOOTER_LINK_CLASS}>Inicio</a></li>
-                <li><a href="#videos" className={FOOTER_LINK_CLASS}>Videos</a></li>
-                <li><Link to="/blog" className={FOOTER_LINK_CLASS}>Blog</Link></li>
                 <li><a href="#proceso" className={FOOTER_LINK_CLASS}>Proceso</a></li>
                 <li><a href="#features" className={FOOTER_LINK_CLASS}>Servicios</a></li>
                 <li><a href="#cta" className={FOOTER_LINK_CLASS}>Contacto</a></li>

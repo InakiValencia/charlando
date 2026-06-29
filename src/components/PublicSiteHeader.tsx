@@ -11,12 +11,9 @@ import { supabase } from "@/integrations/supabase/client";
 
 const NAV_LINKS = [
   { label: "Inicio", href: "/" },
-  { label: "Videos", href: "/#videos" },
   { label: "Biblioteca", href: "/biblioteca" },
-  { label: "Blog", href: "/blog" },
   { label: "Proceso", href: "/#proceso" },
   { label: "Servicios", href: "/#features" },
-  { label: "Preguntas", href: "/#faq" },
   { label: "Contacto", href: "/#cta" },
 ];
 
