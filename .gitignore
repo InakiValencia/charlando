@@ -24,3 +24,8 @@ dist-ssr
 *.sw?
 .gstack/
 .vercel
+
+# Sanity Studio
+sanity-studio/node_modules
+sanity-studio/dist
+sanity-studio/.sanity
