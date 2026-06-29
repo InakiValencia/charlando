@@ -297,6 +297,7 @@ const NAV_LINKS = [
   { label: "Inicio", href: "#top", external: false },
   { label: "Videos", href: "#videos", external: false },
   { label: "Biblioteca", href: "/biblioteca", external: true },
+  { label: "Blog", href: "/blog", external: true },
   { label: "Proceso", href: "#proceso", external: false },
   { label: "Servicios", href: "#features", external: false },
   { label: "Preguntas", href: "#faq", external: false },
@@ -1300,6 +1301,7 @@ const Landing = () => {
               <ul className="space-y-0.5 text-sm text-muted-foreground">
                 <li><a href="#top" className={FOOTER_LINK_CLASS}>Inicio</a></li>
                 <li><a href="#videos" className={FOOTER_LINK_CLASS}>Videos</a></li>
+                <li><Link to="/blog" className={FOOTER_LINK_CLASS}>Blog</Link></li>
                 <li><a href="#proceso" className={FOOTER_LINK_CLASS}>Proceso</a></li>
                 <li><a href="#features" className={FOOTER_LINK_CLASS}>Servicios</a></li>
                 <li><a href="#cta" className={FOOTER_LINK_CLASS}>Contacto</a></li>
