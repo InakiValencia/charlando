@@ -25,7 +25,7 @@ const projectId = process.env.VITE_SANITY_PROJECT_ID || "irdg3uqh";
 const dataset = process.env.VITE_SANITY_DATASET || "production";
 const apiVersion = process.env.VITE_SANITY_API_VERSION || "2026-06-26";
 
-const staticPaths = ["/", "/biblioteca", "/blog"];
+const staticPaths = ["/", "/biblioteca", "/blog", "/terminos-y-condiciones", "/politica-de-privacidad"];
 
 const publishedPostSlugsQuery = `
 *[

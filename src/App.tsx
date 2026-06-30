@@ -16,6 +16,8 @@ import BlogPost from "./pages/blog/BlogPost";
 import Auth from "./pages/Auth";
 import Register from "./pages/Register";
 import CompanyPage from "./pages/CompanyPage";
+import TermsConditions from "./pages/TermsConditions";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Events from "./pages/dashboard/Events";
 import CreateEvent from "./pages/dashboard/CreateEvent";
 import EventDetail from "./pages/dashboard/EventDetail";
@@ -73,6 +75,8 @@ const App = () => (
               <Route path="/auth" element={<Auth />} />
               <Route path="/register/:slug" element={<Register />} />
               <Route path="/company/:companySlug" element={<CompanyPage />} />
+              <Route path="/terminos-y-condiciones" element={<TermsConditions />} />
+              <Route path="/politica-de-privacidad" element={<PrivacyPolicy />} />
 
               {/* Dashboard (protected) */}
               <Route path="/dashboard" element={<Navigate to="/dashboard/events" replace />} />
