@@ -1,3 +1,4 @@
+import { createClient } from "@sanity/client";
 import { readFile, writeFile } from "node:fs/promises";
 
 async function loadPublicEnvFile(filePath) {
@@ -21,8 +22,23 @@ await loadPublicEnvFile(".env");
 await loadPublicEnvFile(".env.local");
 
 const SITE_URL = (process.env.VITE_SITE_URL || "https://www.charlando.com.ar").replace(/\/$/, "");
+const projectId = process.env.VITE_SANITY_PROJECT_ID;
+const dataset = process.env.VITE_SANITY_DATASET || "production";
+const apiVersion = process.env.VITE_SANITY_API_VERSION || "2026-06-26";
 
-const staticPaths = ["/", "/biblioteca"];
+const staticPaths = ["/", "/biblioteca", "/blog"];
+
+const publishedPostSlugsQuery = `
+*[
+  _type == "post" &&
+  defined(slug.current) &&
+  defined(publishedAt) &&
+  publishedAt <= now() &&
+  !(_id in path("drafts.**"))
+] | order(publishedAt desc) {
+  "slug": slug.current,
+  publishedAt
+}`;
 
 const escapeXml = (value) =>
   value
@@ -32,8 +48,31 @@ const escapeXml = (value) =>
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&apos;");
 
+async function getBlogPaths() {
+  if (!projectId) {
+    console.warn("[sitemap] VITE_SANITY_PROJECT_ID is not set. Generating sitemap without blog posts.");
+    return [];
+  }
+
+  const client = createClient({
+    projectId,
+    dataset,
+    apiVersion,
+    useCdn: false,
+    perspective: "published",
+  });
+
+  const posts = await client.fetch(publishedPostSlugsQuery);
+  return posts.map((post) => ({
+    path: `/blog/${post.slug}`,
+    lastmod: post.publishedAt,
+  }));
+}
+
+const blogPaths = await getBlogPaths();
 const entries = [
   ...staticPaths.map((path) => ({ path })),
+  ...blogPaths,
 ];
 
 const xml = `<?xml version="1.0" encoding="UTF-8"?>

@@ -20,6 +20,7 @@ type LibraryVideo = {
 const NAV_LINKS = [
   { label: "Inicio", href: "/" },
   { label: "Biblioteca", href: "/biblioteca" },
+  { label: "Blog", href: "/blog" },
   { label: "Proceso", href: "/#proceso" },
   { label: "Servicios", href: "/#features" },
   { label: "Contacto", href: "/#cta" },

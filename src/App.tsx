@@ -11,6 +11,8 @@ import { DashboardLayout } from "@/components/layout/DashboardLayout";
 
 import Landing from "./pages/Landing";
 import Library from "./pages/Library";
+import BlogIndex from "./pages/blog/BlogIndex";
+import BlogPost from "./pages/blog/BlogPost";
 import Auth from "./pages/Auth";
 import Register from "./pages/Register";
 import CompanyPage from "./pages/CompanyPage";
@@ -66,6 +68,8 @@ const App = () => (
               {/* Public */}
               <Route path="/" element={<Landing />} />
               <Route path="/biblioteca" element={<Library />} />
+              <Route path="/blog" element={<BlogIndex />} />
+              <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/register/:slug" element={<Register />} />
               <Route path="/company/:companySlug" element={<CompanyPage />} />

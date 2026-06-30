@@ -297,6 +297,7 @@ function ConfettiLayer({ size, opacity, count, spread }: { size: number; opacity
 const NAV_LINKS = [
   { label: "Inicio", href: "#top", external: false },
   { label: "Biblioteca", href: "/biblioteca", external: true },
+  { label: "Blog", href: "/blog", external: true },
   { label: "Proceso", href: "#proceso", external: false },
   { label: "Servicios", href: "#features", external: false },
   { label: "Contacto", href: "#cta", external: false },
