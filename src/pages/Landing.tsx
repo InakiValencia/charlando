@@ -1314,8 +1314,8 @@ const Landing = () => {
               </ul>
               <h4 className="font-display font-bold text-sm mb-3 mt-6 text-foreground">Legal</h4>
               <ul className="space-y-0.5 text-sm text-muted-foreground">
-                <li><a href="#" className={FOOTER_LINK_CLASS}>Términos y condiciones</a></li>
-                <li><a href="#" className={FOOTER_LINK_CLASS}>Política de privacidad</a></li>
+                <li><Link to="/terminos-y-condiciones" className={FOOTER_LINK_CLASS}>Términos y condiciones</Link></li>
+                <li><Link to="/politica-de-privacidad" className={FOOTER_LINK_CLASS}>Política de privacidad</Link></li>
               </ul>
             </div>
           </div>
