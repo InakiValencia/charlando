@@ -1,4 +1,3 @@
-import { createClient } from "@sanity/client";
 import { readFile, writeFile } from "node:fs/promises";
 
 async function loadPublicEnvFile(filePath) {
@@ -22,7 +21,7 @@ await loadPublicEnvFile(".env");
 await loadPublicEnvFile(".env.local");
 
 const SITE_URL = (process.env.VITE_SITE_URL || "https://www.charlando.com.ar").replace(/\/$/, "");
-const projectId = process.env.VITE_SANITY_PROJECT_ID;
+const projectId = process.env.VITE_SANITY_PROJECT_ID || "irdg3uqh";
 const dataset = process.env.VITE_SANITY_DATASET || "production";
 const apiVersion = process.env.VITE_SANITY_API_VERSION || "2026-06-26";
 
@@ -54,15 +53,25 @@ async function getBlogPaths() {
     return [];
   }
 
-  const client = createClient({
-    projectId,
-    dataset,
-    apiVersion,
-    useCdn: false,
-    perspective: "published",
-  });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 8000);
+  const url = new URL(`https://${projectId}.api.sanity.io/v${apiVersion}/data/query/${dataset}`);
+  url.searchParams.set("query", publishedPostSlugsQuery);
 
-  const posts = await client.fetch(publishedPostSlugsQuery);
+  let posts = [];
+  try {
+    const response = await fetch(url, { signal: controller.signal });
+    if (!response.ok) {
+      throw new Error(`Sanity returned ${response.status}`);
+    }
+    const payload = await response.json();
+    posts = Array.isArray(payload.result) ? payload.result : [];
+  } catch (error) {
+    console.warn(`[sitemap] Could not fetch Sanity posts: ${error instanceof Error ? error.message : "unknown error"}`);
+  } finally {
+    clearTimeout(timeout);
+  }
+
   return posts.map((post) => ({
     path: `/blog/${post.slug}`,
     lastmod: post.publishedAt,
