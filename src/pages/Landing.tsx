@@ -1114,14 +1114,14 @@ const Landing = () => {
           </motion.div>
 
           <motion.div
-            className="mx-auto grid max-w-sm grid-cols-1 gap-4 sm:max-w-3xl sm:grid-cols-2 lg:max-w-7xl lg:grid-cols-4 lg:gap-5"
+            className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4 [scrollbar-width:none] sm:mx-auto sm:grid sm:max-w-3xl sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0 lg:max-w-7xl lg:grid-cols-4 lg:gap-5 [&::-webkit-scrollbar]:hidden"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
             {HOST_PROFILES.map((host) => (
-              <div key={host.name} className="group relative aspect-[4/5] overflow-hidden rounded-3xl bg-card shadow-xl shadow-foreground/10 outline outline-1 -outline-offset-1 outline-black/10 transition-[box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/10">
+              <div key={host.name} className="group relative aspect-[4/5] w-[78vw] max-w-[320px] shrink-0 snap-center overflow-hidden rounded-3xl bg-card shadow-xl shadow-foreground/10 outline outline-1 -outline-offset-1 outline-black/10 transition-[box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/10 sm:w-auto sm:max-w-none">
                 <img
                   src={host.image}
                   alt={`${host.name}, host de Charlando`}
