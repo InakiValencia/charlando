@@ -1,11 +1,11 @@
-import { useState, useEffect, type FormEvent } from "react";
+import { useState, useEffect, useRef, type FormEvent } from "react";
 import { Logo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll } from "framer-motion";
 import { toast } from "sonner";
 import {
   Puzzle,
@@ -36,6 +36,12 @@ const features = [
     title: "Listo para viralizar",
     description: "Convertimos el material crudo en videos verticales con ritmo, subtítulos, hooks, cortes dinámicos y CTAs",
   },
+];
+
+const BENEFITS = [
+  { title: "Sin videos AI, generás confianza", text: "Tu audiencia ve a personas reales reaccionando, opinando y haciendo preguntas. Eso se siente más creíble que una marca hablando sola." },
+  { title: "Detiene el scroll", text: "Cuando a un desconocido le hacen una pregunta directa frente a la cámara, el espectador inmediatamente piensa dos cosas: ¿Qué va a decir? ¿Y qué diría yo si me preguntaran eso? Esa tensión obliga al usuario a dejar de scrollear." },
+  { title: "Impulsa conversión", text: "El contenido puede trabajar todo el funnel: presenta la marca, educa, genera consideración y termina con un llamado a la acción claro." },
 ];
 
 const AVATAR_URLS = [
@@ -391,6 +397,8 @@ const Landing = () => {
   const [leadSubmitting, setLeadSubmitting] = useState(false);
   const [leadError, setLeadError] = useState("");
   const [activeProcessStep, setActiveProcessStep] = useState<number | null>(null);
+  const [unlockedBenefitCount, setUnlockedBenefitCount] = useState(1);
+  const benefitsSectionRef = useRef<HTMLElement | null>(null);
   const titleWeight = 700;
   const confettiSize = 2.5;
   const confettiOpacity = 0.8;
@@ -428,6 +436,10 @@ const Landing = () => {
     },
   ];
   const currentPreset = bentoPresets[0];
+  const { scrollYProgress: benefitsScrollProgress } = useScroll({
+    target: benefitsSectionRef,
+    offset: ["start 55%", "end 55%"],
+  });
 
   const openLeadForm = () => {
     setLeadError("");
@@ -437,6 +449,14 @@ const Landing = () => {
   const updateLeadField = (field: LeadFormField, value: string) => {
     setLeadForm((current) => ({ ...current, [field]: value }));
   };
+
+  useEffect(() => {
+    return benefitsScrollProgress.on("change", (latest) => {
+      const nextCount = latest < 0.33 ? 1 : latest < 0.66 ? 2 : BENEFITS.length;
+
+      setUnlockedBenefitCount((current) => (current === nextCount ? current : nextCount));
+    });
+  }, [benefitsScrollProgress]);
 
   const handleLeadSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -556,7 +576,7 @@ const Landing = () => {
   }, []);
 
   return (
-    <div id="top" className="min-h-screen bg-background overflow-x-hidden">
+    <div id="top" className="min-h-screen bg-background overflow-x-clip">
       {/* Navbar — hidden until scroll */}
       <motion.nav
         className="fixed top-0 w-full z-50 bg-background/90 backdrop-blur-md"
@@ -991,6 +1011,52 @@ const Landing = () => {
         </div>
       </section>
 
+      {/* Beneficios */}
+      <section ref={benefitsSectionRef} className="bg-card md:min-h-[240vh]" data-benefits-section>
+        <div className="mx-auto flex w-full max-w-6xl flex-col justify-center px-6 py-12 lg:px-8 lg:py-16 md:sticky md:top-0 md:min-h-screen">
+          <motion.div
+            className={SECTION_HEADER_CLASS}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className={`${SECTION_TITLE_CLASS} text-foreground`} style={{ fontWeight: titleWeight }}>
+              Por qué funciona
+            </h2>
+          </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {BENEFITS.map((b, i) => {
+              const isUnlocked = i < unlockedBenefitCount;
+
+              return (
+                <motion.div
+                  key={b.title}
+                  initial={false}
+                  animate={{
+                    opacity: isUnlocked ? 1 : 0.32,
+                    y: isUnlocked ? 0 : 16,
+                    scale: isUnlocked ? 1 : 0.98,
+                    filter: isUnlocked ? "grayscale(0) saturate(1)" : "grayscale(1) saturate(0.25)",
+                  }}
+                  transition={{ duration: 0.42, ease: [0.2, 0, 0, 1] }}
+                  className={`${currentPreset.cardBg} min-h-[230px] rounded-3xl p-6 shadow-[0_12px_40px_-28px_rgba(0,0,0,0.45)] lg:p-7`}
+                  data-benefit-card={i}
+                  data-benefit-unlocked={isUnlocked}
+                >
+                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-5 transition-colors duration-300 ${isUnlocked ? "bg-primary/10" : "bg-muted"}`}>
+                    <span className="text-primary font-display font-bold text-2xl tabular-nums">{i + 1}</span>
+                  </div>
+                  <h3 className="font-display font-bold text-xl mb-3 text-foreground tracking-[-0.01em]">{b.title}</h3>
+                  <p className="text-muted-foreground text-base leading-relaxed">{b.text}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+
       {/* Features */}
       <section id="features" className={FULL_SECTION_CLASS}>
         <div className="w-full max-w-6xl mx-auto px-6 lg:px-8">
@@ -1046,46 +1112,6 @@ const Landing = () => {
                 </motion.div>
               );
             })}
-          </div>
-        </div>
-      </section>
-
-
-      {/* Beneficios */}
-      <section className={`${FULL_SECTION_CLASS} bg-card`}>
-        <div className="w-full max-w-6xl mx-auto px-6 lg:px-8">
-          <motion.div
-            className={SECTION_HEADER_CLASS}
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className={`${SECTION_TITLE_CLASS} text-foreground`} style={{ fontWeight: titleWeight }}>
-              Por qué funciona
-            </h2>
-          </motion.div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              { title: "Sin videos AI, generás confianza", text: "Tu audiencia ve a personas reales reaccionando, opinando y haciendo preguntas. Eso se siente más creíble que una marca hablando sola." },
-              { title: "Detiene el scroll", text: "Cuando a un desconocido le hacen una pregunta directa frente a la cámara, el espectador inmediatamente piensa dos cosas: ¿Qué va a decir? ¿Y qué diría yo si me preguntaran eso? Esa tensión obliga al usuario a dejar de scrollear." },
-              { title: "Impulsa conversión", text: "El contenido puede trabajar todo el funnel: presenta la marca, educa, genera consideración y termina con un llamado a la acción claro." },
-            ].map((b, i) => (
-              <motion.div
-                key={b.title}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.1 }}
-                className={`${currentPreset.cardBg} rounded-3xl p-6 lg:p-7 min-h-[230px]`}
-              >
-                <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-5">
-                  <span className="text-primary font-display font-bold text-2xl tabular-nums">{i + 1}</span>
-                </div>
-                <h3 className="font-display font-bold text-xl mb-3 text-foreground tracking-[-0.01em]">{b.title}</h3>
-                <p className="text-muted-foreground text-base leading-relaxed">{b.text}</p>
-              </motion.div>
-            ))}
           </div>
         </div>
       </section>
