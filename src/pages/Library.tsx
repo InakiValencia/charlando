@@ -36,12 +36,18 @@ const EMPTY_LEAD_FORM = {
 
 type LeadFormField = keyof typeof EMPTY_LEAD_FORM;
 
-const LIBRARY_VIDEOS: LibraryVideo[] = Array.from({ length: 10 }, (_, index) => ({
-  id: `charlando-video-${String(index + 1).padStart(2, "0")}`,
-  title: `Video ${String(index + 1).padStart(2, "0")}`,
-  videoUrl: `/videos/charlando-video-${String(index + 1).padStart(2, "0")}.mp4`,
-  poster: `/videos/posters/charlando-video-${String(index + 1).padStart(2, "0")}.png`,
-}));
+const LIBRARY_VIDEO_NUMBERS = [1, 2, 3, 4, 10, 11, 12];
+
+const LIBRARY_VIDEOS: LibraryVideo[] = LIBRARY_VIDEO_NUMBERS.map((number) => {
+  const paddedNumber = String(number).padStart(2, "0");
+
+  return {
+    id: `charlando-video-${paddedNumber}`,
+    title: `Video ${paddedNumber}`,
+    videoUrl: `/videos/charlando-video-${paddedNumber}.mp4`,
+    poster: `/videos/posters/charlando-video-${paddedNumber}.png`,
+  };
+});
 
 const normalizeWebsiteUrl = (value: string) => {
   const trimmed = value.trim();
