@@ -437,7 +437,7 @@ const Landing = () => {
   const currentPreset = bentoPresets[0];
   const { scrollYProgress: benefitsScrollProgress } = useScroll({
     target: benefitsSectionRef,
-    offset: ["start 55%", "end 55%"],
+    offset: ["start start", "end end"],
   });
 
   const openLeadForm = () => {
