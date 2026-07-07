@@ -158,15 +158,13 @@ const ILLUSTRATIONS = [IllustrationPages, IllustrationAnalytics, IllustrationInt
 const rotatingWords = ["TikTok.", "Reels.", "Shorts.", "marcas."];
 
 const FEATURED_VIDEOS = [
-  "/featured-video-1.png",
-  "/featured-video-2.png",
   "/featured-video-3.jpg",
   "/featured-video-4.jpg",
   "/featured-video-5.png",
   "/featured-video-6.png",
-  "/featured-video-7.png",
-  "/featured-video-8.png",
-  "/featured-video-9.png",
+  "/featured-video-10.png",
+  "/featured-video-11.png",
+  "/featured-video-12.png",
 ];
 
 const HERO_IMAGES = [
