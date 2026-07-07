@@ -36,7 +36,7 @@ const EMPTY_LEAD_FORM = {
 
 type LeadFormField = keyof typeof EMPTY_LEAD_FORM;
 
-const LIBRARY_VIDEO_NUMBERS = [1, 2, 3, 4, 10, 11, 12];
+const LIBRARY_VIDEO_NUMBERS = [1, 2, 3, 4, 10, 11, 12, 13, 14, 15];
 
 const LIBRARY_VIDEOS: LibraryVideo[] = LIBRARY_VIDEO_NUMBERS.map((number) => {
   const paddedNumber = String(number).padStart(2, "0");
