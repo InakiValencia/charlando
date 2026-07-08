@@ -36,7 +36,19 @@ const EMPTY_LEAD_FORM = {
 
 type LeadFormField = keyof typeof EMPTY_LEAD_FORM;
 
-const LIBRARY_VIDEO_NUMBERS = [1, 2, 3, 4, 10, 11, 12, 13, 14, 15];
+const LIBRARY_VIDEO_NUMBERS = [1, 2, 3, 4, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+const LIBRARY_STORAGE_BUCKET = "charlando-library";
+const SUPABASE_PUBLIC_URL = (
+  import.meta.env.VITE_SUPABASE_URL || "https://ltgklogmxvqezlpcrghr.supabase.co"
+).replace(/\/$/, "");
+const DEFAULT_LIBRARY_ASSET_BASE_URL = `${SUPABASE_PUBLIC_URL}/storage/v1/object/public/${LIBRARY_STORAGE_BUCKET}`;
+const LIBRARY_ASSET_BASE_URL = (
+  import.meta.env.VITE_LIBRARY_ASSET_BASE_URL || DEFAULT_LIBRARY_ASSET_BASE_URL
+).replace(/\/$/, "");
+
+const getLibraryAssetUrl = (storagePath: string) => {
+  return `${LIBRARY_ASSET_BASE_URL}/${storagePath}`;
+};
 
 const LIBRARY_VIDEOS: LibraryVideo[] = LIBRARY_VIDEO_NUMBERS.map((number) => {
   const paddedNumber = String(number).padStart(2, "0");
@@ -44,8 +56,8 @@ const LIBRARY_VIDEOS: LibraryVideo[] = LIBRARY_VIDEO_NUMBERS.map((number) => {
   return {
     id: `charlando-video-${paddedNumber}`,
     title: `Video ${paddedNumber}`,
-    videoUrl: `/videos/charlando-video-${paddedNumber}.mp4`,
-    poster: `/videos/posters/charlando-video-${paddedNumber}.png`,
+    videoUrl: getLibraryAssetUrl(`videos/charlando-video-${paddedNumber}.mp4`),
+    poster: getLibraryAssetUrl(`posters/charlando-video-${paddedNumber}.png`),
   };
 });
 

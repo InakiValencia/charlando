@@ -7,6 +7,8 @@
     "dev": "vite",
     "prebuild": "node scripts/generate-sitemap.mjs",
     "build": "vite build",
+    "storage:upload-library": "node scripts/upload-library-storage.mjs",
+    "storage:move-library": "node scripts/upload-library-storage.mjs --delete-local",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
