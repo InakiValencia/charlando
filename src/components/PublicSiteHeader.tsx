@@ -18,7 +18,7 @@ const NAV_LINKS = [
   { label: "Blog", href: "/blog" },
 ];
 
-const CALENDAR_BOOKING_URL = "https://calendar.app.google/47zfzDkBhp8TM1Yo6";
+const CALENDAR_BOOKING_URL = "https://calendar.app.google/WDhT6UwPWoAWxEoa9";
 const EMPTY_LEAD_FORM = {
   email: "",
   fullName: "",
