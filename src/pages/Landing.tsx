@@ -371,7 +371,7 @@ const FULL_SECTION_CLASS = "flex items-center py-12 lg:py-16";
 const SECTION_HEADER_CLASS = "text-center mb-7 lg:mb-8";
 const SECTION_TITLE_CLASS = "text-3xl sm:text-4xl lg:text-5xl font-display mb-4";
 const FOOTER_LINK_CLASS = "inline-flex min-h-10 min-w-10 items-center transition-colors hover:text-primary";
-const CALENDAR_BOOKING_URL = "https://calendar.app.google/47zfzDkBhp8TM1Yo6";
+const CALENDAR_BOOKING_URL = "https://calendar.app.google/WDhT6UwPWoAWxEoa9";
 const EMPTY_LEAD_FORM = {
   email: "",
   fullName: "",
