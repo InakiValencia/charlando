@@ -365,6 +365,7 @@ const COLLABORATOR_BRANDS = [
   { name: "Mundo Mogul MDP", logo: "/mundo-mogul-mdp-logo.jpg" },
   { name: "Swap Style", logo: "/swap-style-logo.jpg" },
   { name: "AIRTM", logo: "/airtm-logo.png" },
+  { name: "Wallbit", logo: "/wallbit-logo.png" },
 ];
 
 const FULL_SECTION_CLASS = "flex items-center py-12 lg:py-16";
