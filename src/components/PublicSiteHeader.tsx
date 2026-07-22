@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { Logo } from "@/components/Logo";
+import { MobileSiteMenu } from "@/components/MobileSiteMenu";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -134,6 +135,7 @@ export const PublicSiteHeader = ({ source = "site" }: PublicSiteHeaderProps) => 
             >
               Agendar llamada
             </Button>
+            <MobileSiteMenu links={NAV_LINKS} onLeadClick={openLeadForm} />
           </div>
         </div>
       </header>

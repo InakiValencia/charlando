@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, type FormEvent } from "react";
 import { Logo } from "@/components/Logo";
+import { MobileSiteMenu } from "@/components/MobileSiteMenu";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -424,7 +425,9 @@ const Landing = () => {
   const [hostApplicationError, setHostApplicationError] = useState("");
   const [activeProcessStep, setActiveProcessStep] = useState<number | null>(null);
   const [unlockedBenefitCount, setUnlockedBenefitCount] = useState(1);
+  const [benefitsStickyEnabled, setBenefitsStickyEnabled] = useState(true);
   const benefitsSectionRef = useRef<HTMLElement | null>(null);
+  const lastScrollYRef = useRef(0);
   const titleWeight = 700;
   const confettiSize = 2.5;
   const confettiOpacity = 0.8;
@@ -487,11 +490,38 @@ const Landing = () => {
 
   useEffect(() => {
     return benefitsScrollProgress.on("change", (latest) => {
+      if (!benefitsStickyEnabled) {
+        setUnlockedBenefitCount(BENEFITS.length);
+        return;
+      }
+
       const nextCount = latest < 0.33 ? 1 : latest < 0.66 ? 2 : BENEFITS.length;
 
       setUnlockedBenefitCount((current) => (current === nextCount ? current : nextCount));
     });
-  }, [benefitsScrollProgress]);
+  }, [benefitsScrollProgress, benefitsStickyEnabled]);
+
+  useEffect(() => {
+    lastScrollYRef.current = window.scrollY;
+
+    const updateBenefitsStickyMode = () => {
+      const currentScrollY = window.scrollY;
+      const isScrollingDown = currentScrollY > lastScrollYRef.current;
+      lastScrollYRef.current = currentScrollY;
+
+      setBenefitsStickyEnabled((current) => {
+        if (current === isScrollingDown) return current;
+        if (!isScrollingDown) {
+          setUnlockedBenefitCount(BENEFITS.length);
+        }
+        return isScrollingDown;
+      });
+    };
+
+    window.addEventListener("scroll", updateBenefitsStickyMode, { passive: true });
+
+    return () => window.removeEventListener("scroll", updateBenefitsStickyMode);
+  }, []);
 
   const handleLeadSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -712,6 +742,7 @@ const Landing = () => {
             >
               Agendar llamada
             </Button>
+            <MobileSiteMenu links={NAV_LINKS} onLeadClick={openLeadForm} />
           </div>
         </div>
       </motion.nav>
@@ -1269,8 +1300,12 @@ const Landing = () => {
       </section>
 
       {/* Beneficios */}
-      <section ref={benefitsSectionRef} className="bg-card md:min-h-[240vh]" data-benefits-section>
-        <div className="mx-auto flex w-full max-w-6xl flex-col justify-center px-6 py-12 lg:px-8 lg:py-16 md:sticky md:top-0 md:min-h-screen">
+      <section
+        ref={benefitsSectionRef}
+        className={`bg-card ${benefitsStickyEnabled ? "md:min-h-[240vh]" : ""}`}
+        data-benefits-section
+      >
+        <div className={`mx-auto flex w-full max-w-6xl flex-col justify-center px-6 py-12 lg:px-8 lg:py-16 ${benefitsStickyEnabled ? "md:sticky md:top-0 md:min-h-screen" : ""}`}>
           <motion.div
             className={SECTION_HEADER_CLASS}
             initial={{ opacity: 0, y: 24 }}
