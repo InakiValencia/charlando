@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Logo } from "@/components/Logo";
+import { MobileSiteMenu } from "@/components/MobileSiteMenu";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -177,6 +178,7 @@ const Library = () => {
             >
               Agendar llamada
             </Button>
+            <MobileSiteMenu links={NAV_LINKS} onLeadClick={openLeadForm} />
           </div>
         </div>
       </header>
@@ -284,7 +286,7 @@ const Library = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 gap-4 min-[520px]:grid-cols-2 lg:grid-cols-5 xl:gap-5">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-5 xl:gap-5">
           {LIBRARY_VIDEOS.map((video, index) => (
             <motion.button
               key={video.id}
@@ -319,8 +321,8 @@ const Library = () => {
                   preload="metadata"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 p-4">
-                  <p className="text-sm font-medium text-white/75">Click para abrir con audio</p>
+                <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4">
+                  <p className="text-xs font-medium leading-snug text-white/75 sm:text-sm">Click para abrir con audio</p>
                 </div>
               </div>
             </motion.button>
