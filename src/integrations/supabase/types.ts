@@ -130,6 +130,60 @@ export type Database = {
         }
         Relationships: []
       }
+      host_applications: {
+        Row: {
+          age: number
+          city_location: string
+          created_at: string
+          email: string
+          first_name: string
+          id: string
+          last_name: string
+          motivation: string
+          page_path: string | null
+          social_following: string
+          social_platform_handle: string
+          source: string
+          utm_campaign: string | null
+          utm_medium: string | null
+          utm_source: string | null
+        }
+        Insert: {
+          age: number
+          city_location: string
+          created_at?: string
+          email: string
+          first_name: string
+          id?: string
+          last_name: string
+          motivation: string
+          page_path?: string | null
+          social_following: string
+          social_platform_handle: string
+          source?: string
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+        }
+        Update: {
+          age?: number
+          city_location?: string
+          created_at?: string
+          email?: string
+          first_name?: string
+          id?: string
+          last_name?: string
+          motivation?: string
+          page_path?: string | null
+          social_following?: string
+          social_platform_handle?: string
+          source?: string
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+        }
+        Relationships: []
+      }
       lead_submissions: {
         Row: {
           brand_name: string

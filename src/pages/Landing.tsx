@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence, useScroll } from "framer-motion";
 import { toast } from "sonner";
@@ -13,6 +15,8 @@ import {
   Mic,
   Plus,
   Minus,
+  Globe2,
+  UserPlus,
 } from "lucide-react";
 
 import eventHackathon from "@/assets/event-hackathon-ai.jpg";
@@ -66,7 +70,6 @@ const HOST_PROFILES = [
   { name: "Imanol", image: "/host-imanol.jpg" },
   { name: "Carolina", image: "/host-carolina.jpg" },
   { name: "Juan", image: "/host-juan.jpg" },
-  { name: "Sofía", image: "/host-sofia.jpg" },
 ];
 
 type BentoAccents = { integrationCircle: string; attendeeBorder: string; analyticsBars: string; analyticsAccent: string; pageButton: string };
@@ -379,8 +382,27 @@ const EMPTY_LEAD_FORM = {
   brandName: "",
   websiteUrl: "",
 };
+const EMPTY_HOST_APPLICATION_FORM = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  cityLocation: "",
+  socialFollowing: "",
+  socialHandle: "",
+  age: "",
+  motivation: "",
+};
+
+const SOCIAL_FOLLOWING_OPTIONS = [
+  "Estoy empezando",
+  "Tengo una comunidad chica",
+  "Tengo una comunidad activa",
+  "Ya creo contenido seguido",
+  "Ya tengo experiencia como host",
+];
 
 type LeadFormField = keyof typeof EMPTY_LEAD_FORM;
+type HostApplicationFormField = keyof typeof EMPTY_HOST_APPLICATION_FORM;
 
 const normalizeWebsiteUrl = (value: string) => {
   const trimmed = value.trim();
@@ -396,6 +418,10 @@ const Landing = () => {
   const [leadForm, setLeadForm] = useState(EMPTY_LEAD_FORM);
   const [leadSubmitting, setLeadSubmitting] = useState(false);
   const [leadError, setLeadError] = useState("");
+  const [hostApplicationOpen, setHostApplicationOpen] = useState(false);
+  const [hostApplicationForm, setHostApplicationForm] = useState(EMPTY_HOST_APPLICATION_FORM);
+  const [hostApplicationSubmitting, setHostApplicationSubmitting] = useState(false);
+  const [hostApplicationError, setHostApplicationError] = useState("");
   const [activeProcessStep, setActiveProcessStep] = useState<number | null>(null);
   const [unlockedBenefitCount, setUnlockedBenefitCount] = useState(1);
   const benefitsSectionRef = useRef<HTMLElement | null>(null);
@@ -448,6 +474,15 @@ const Landing = () => {
 
   const updateLeadField = (field: LeadFormField, value: string) => {
     setLeadForm((current) => ({ ...current, [field]: value }));
+  };
+
+  const openHostApplicationForm = () => {
+    setHostApplicationError("");
+    setHostApplicationOpen(true);
+  };
+
+  const updateHostApplicationField = (field: HostApplicationFormField, value: string) => {
+    setHostApplicationForm((current) => ({ ...current, [field]: value }));
   };
 
   useEffect(() => {
@@ -513,6 +548,73 @@ const Landing = () => {
     setLeadForm(EMPTY_LEAD_FORM);
     setLeadFormOpen(false);
     window.location.assign(CALENDAR_BOOKING_URL);
+  };
+
+  const handleHostApplicationSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setHostApplicationError("");
+
+    const firstName = hostApplicationForm.firstName.trim();
+    const lastName = hostApplicationForm.lastName.trim();
+    const email = hostApplicationForm.email.trim().toLowerCase();
+    const cityLocation = hostApplicationForm.cityLocation.trim();
+    const socialFollowing = hostApplicationForm.socialFollowing.trim();
+    const socialHandle = hostApplicationForm.socialHandle.trim();
+    const age = Number.parseInt(hostApplicationForm.age, 10);
+    const motivation = hostApplicationForm.motivation.trim();
+
+    if (!firstName || !lastName || !email || !cityLocation || !socialFollowing || !socialHandle || !hostApplicationForm.age || !motivation) {
+      setHostApplicationError("Completá todos los campos para postularte como host.");
+      return;
+    }
+
+    if (!Number.isFinite(age) || age < 18 || age > 100) {
+      setHostApplicationError("Ingresá una edad válida.");
+      return;
+    }
+
+    if (motivation.length < 20) {
+      setHostApplicationError("Contanos un poco más sobre por qué querés ser host.");
+      return;
+    }
+
+    const searchParams = new URLSearchParams(window.location.search);
+
+    setHostApplicationSubmitting(true);
+
+    try {
+      const { error } = await supabase.from("host_applications").insert({
+        first_name: firstName,
+        last_name: lastName,
+        email,
+        city_location: cityLocation,
+        social_following: socialFollowing,
+        social_platform_handle: socialHandle,
+        age,
+        motivation,
+        source: "landing_hosts",
+        page_path: `${window.location.pathname}${window.location.search}`,
+        utm_source: searchParams.get("utm_source"),
+        utm_medium: searchParams.get("utm_medium"),
+        utm_campaign: searchParams.get("utm_campaign"),
+      });
+
+      if (error) {
+        setHostApplicationError("No pudimos guardar tu postulación. Probá de nuevo en unos segundos.");
+        toast.error(error.message || "No pudimos guardar tu postulación");
+        return;
+      }
+    } catch {
+      setHostApplicationError("No pudimos guardar tu postulación. Probá de nuevo en unos segundos.");
+      toast.error("No pudimos guardar tu postulación");
+      return;
+    } finally {
+      setHostApplicationSubmitting(false);
+    }
+
+    toast.success("Postulación enviada. Gracias por querer ser host de Charlando.");
+    setHostApplicationForm(EMPTY_HOST_APPLICATION_FORM);
+    setHostApplicationOpen(false);
   };
 
   useEffect(() => {
@@ -696,6 +798,161 @@ const Landing = () => {
             <DialogFooter>
               <Button type="submit" className="w-full bg-foreground text-background hover:bg-primary hover:text-background" disabled={leadSubmitting}>
                 {leadSubmitting ? "Guardando..." : "Continuar"} <ArrowRight className="ml-1 h-4 w-4" />
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={hostApplicationOpen} onOpenChange={setHostApplicationOpen}>
+        <DialogContent className="max-h-[calc(100svh-2rem)] max-w-[calc(100vw-2rem)] overflow-y-auto rounded-2xl border-border p-0 sm:max-w-2xl">
+          <DialogHeader>
+            <div className="px-6 pt-6 sm:px-7 sm:pt-7">
+              <div className="mb-3 inline-flex w-fit items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+                <Globe2 className="h-3.5 w-3.5" />
+                Hosts en todo el mundo
+              </div>
+              <DialogTitle className="font-display text-2xl text-foreground sm:text-3xl">
+                Postulate como host
+              </DialogTitle>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
+                Charlando está armando una red de hosts en distintas ciudades. Si tenés energía, carisma y ganas de entrevistar desconocidos frente a cámara, dejanos tus datos.
+              </p>
+            </div>
+          </DialogHeader>
+
+          <form className="space-y-4 px-6 pb-6 sm:px-7 sm:pb-7" onSubmit={handleHostApplicationSubmit}>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="host-first-name">Nombre</Label>
+                <Input
+                  id="host-first-name"
+                  name="firstName"
+                  type="text"
+                  autoComplete="given-name"
+                  placeholder="Tu nombre"
+                  value={hostApplicationForm.firstName}
+                  onChange={(event) => updateHostApplicationField("firstName", event.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="host-last-name">Apellido</Label>
+                <Input
+                  id="host-last-name"
+                  name="lastName"
+                  type="text"
+                  autoComplete="family-name"
+                  placeholder="Tu apellido"
+                  value={hostApplicationForm.lastName}
+                  onChange={(event) => updateHostApplicationField("lastName", event.target.value)}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="host-email">Email</Label>
+              <Input
+                id="host-email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                placeholder="tu@mail.com"
+                value={hostApplicationForm.email}
+                onChange={(event) => updateHostApplicationField("email", event.target.value)}
+                required
+              />
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="host-city">Ciudad / ubicación</Label>
+                <Input
+                  id="host-city"
+                  name="cityLocation"
+                  type="text"
+                  autoComplete="address-level2"
+                  placeholder="Buenos Aires, Madrid, CDMX..."
+                  value={hostApplicationForm.cityLocation}
+                  onChange={(event) => updateHostApplicationField("cityLocation", event.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="host-age">Edad</Label>
+                <Input
+                  id="host-age"
+                  name="age"
+                  type="number"
+                  inputMode="numeric"
+                  min={18}
+                  max={100}
+                  placeholder="22"
+                  value={hostApplicationForm.age}
+                  onChange={(event) => updateHostApplicationField("age", event.target.value)}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="host-social-following">Cómo clasificarías tu comunidad</Label>
+              <Select
+                value={hostApplicationForm.socialFollowing}
+                onValueChange={(value) => updateHostApplicationField("socialFollowing", value)}
+                required
+              >
+                <SelectTrigger id="host-social-following">
+                  <SelectValue placeholder="Elegí una opción" />
+                </SelectTrigger>
+                <SelectContent>
+                  {SOCIAL_FOLLOWING_OPTIONS.map((option) => (
+                    <SelectItem key={option} value={option}>
+                      {option}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="host-social-handle">Plataforma principal y usuario</Label>
+              <Input
+                id="host-social-handle"
+                name="socialHandle"
+                type="text"
+                placeholder="TikTok, Instagram o YouTube: @tuusuario"
+                value={hostApplicationForm.socialHandle}
+                onChange={(event) => updateHostApplicationField("socialHandle", event.target.value)}
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="host-motivation">Por qué querés ser host</Label>
+              <Textarea
+                id="host-motivation"
+                name="motivation"
+                className="min-h-28 resize-y"
+                placeholder="Contanos qué podés aportar, tu experiencia creando contenido o por qué te interesa salir a entrevistar gente."
+                value={hostApplicationForm.motivation}
+                onChange={(event) => updateHostApplicationField("motivation", event.target.value)}
+                required
+              />
+            </div>
+
+            {hostApplicationError && (
+              <p className="rounded-xl bg-destructive/10 px-4 py-3 text-sm font-medium text-destructive">
+                {hostApplicationError}
+              </p>
+            )}
+
+            <DialogFooter>
+              <Button type="submit" className="w-full bg-foreground text-background hover:bg-primary hover:text-background" disabled={hostApplicationSubmitting}>
+                {hostApplicationSubmitting ? "Enviando..." : "Enviar postulación"} <ArrowRight className="ml-1 h-4 w-4" />
               </Button>
             </DialogFooter>
           </form>
@@ -1140,7 +1397,7 @@ const Landing = () => {
           </motion.div>
 
           <motion.div
-            className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4 [scrollbar-width:none] sm:mx-auto sm:grid sm:max-w-3xl sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0 lg:max-w-7xl lg:grid-cols-4 lg:gap-5 [&::-webkit-scrollbar]:hidden"
+            className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4 [scrollbar-width:none] sm:mx-auto sm:grid sm:max-w-6xl sm:grid-cols-4 sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0 lg:gap-6 [&::-webkit-scrollbar]:hidden"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -1160,6 +1417,29 @@ const Landing = () => {
                 </div>
               </div>
             ))}
+            <div className="group relative aspect-[4/5] w-[78vw] max-w-[320px] shrink-0 snap-center overflow-hidden rounded-3xl bg-foreground text-background shadow-xl shadow-foreground/10 outline outline-1 -outline-offset-1 outline-background/15 transition-[box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/10 sm:w-auto sm:max-w-none">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,rgba(38,185,207,0.32),transparent_34%),linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0))]" />
+              <Mic className="absolute bottom-14 left-1/2 h-56 w-56 -translate-x-1/2 text-background/5 transition-transform duration-500 group-hover:scale-105" strokeWidth={1.2} />
+              <div className="relative flex h-full flex-col justify-between p-5 sm:p-6">
+                <span aria-hidden="true" />
+                <div className="mx-auto max-w-[220px] text-center">
+                  <p className="font-display text-5xl font-bold leading-none tracking-tight sm:text-6xl">
+                    Vos
+                  </p>
+                  <p className="mt-4 text-sm leading-relaxed text-background/72 sm:text-base">
+                    Postulate para ser host de entrevistas callejeras en tu ciudad.
+                  </p>
+                </div>
+
+                <Button
+                  type="button"
+                  className="w-full border border-background/20 bg-background text-foreground hover:bg-primary hover:text-background"
+                  onClick={openHostApplicationForm}
+                >
+                  Postularme <UserPlus className="ml-1 h-4 w-4" />
+                </Button>
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>

@@ -29,3 +29,6 @@ dist-ssr
 sanity-studio/node_modules
 sanity-studio/dist
 sanity-studio/.sanity
+
+# Supabase local CLI state
+supabase/.temp
