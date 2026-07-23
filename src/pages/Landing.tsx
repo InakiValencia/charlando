@@ -363,9 +363,6 @@ const HOSTS = [
 
 const COLLABORATOR_BRANDS = [
   { name: "Café Delirante", logo: "/cafe-delirante-logo.png" },
-  { name: "Arcor", logo: "/arcor-logo.png" },
-  { name: "SAO medialunas", logo: "/sao-medialunas-logo.png" },
-  { name: "Ogham", logo: "/ogham-logo.png" },
   { name: "Mundo Mogul MDP", logo: "/mundo-mogul-mdp-logo.jpg" },
   { name: "Swap Style", logo: "/swap-style-logo.jpg" },
   { name: "AIRTM", logo: "/airtm-logo.png" },
