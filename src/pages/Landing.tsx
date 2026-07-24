@@ -1645,10 +1645,8 @@ const Landing = () => {
             <div>
               <h4 className="font-display font-bold text-sm mb-4 text-foreground">Redes</h4>
               <ul className="space-y-0.5 text-sm text-muted-foreground">
-                <li><a href="#" className={FOOTER_LINK_CLASS}>Instagram</a></li>
-                <li><a href="#" className={FOOTER_LINK_CLASS}>TikTok</a></li>
-                <li><a href="#" className={FOOTER_LINK_CLASS}>LinkedIn</a></li>
-                <li><a href="#" className={FOOTER_LINK_CLASS}>YouTube</a></li>
+                <li><a href="https://www.instagram.com/charlando.com.ar?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noreferrer" className={FOOTER_LINK_CLASS}>Instagram</a></li>
+                <li><a href="https://x.com/charlando_ar?s=20" target="_blank" rel="noreferrer" className={FOOTER_LINK_CLASS}>X</a></li>
               </ul>
               <h4 className="font-display font-bold text-sm mb-3 mt-6 text-foreground">Legal</h4>
               <ul className="space-y-0.5 text-sm text-muted-foreground">
