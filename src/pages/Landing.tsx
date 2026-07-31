@@ -422,9 +422,12 @@ const Landing = () => {
   const [hostApplicationError, setHostApplicationError] = useState("");
   const [activeProcessStep, setActiveProcessStep] = useState<number | null>(null);
   const [unlockedBenefitCount, setUnlockedBenefitCount] = useState(1);
-  const [benefitsStickyEnabled, setBenefitsStickyEnabled] = useState(true);
+  const [benefitsStickyReleased, setBenefitsStickyReleased] = useState(false);
   const benefitsSectionRef = useRef<HTMLElement | null>(null);
   const lastScrollYRef = useRef(0);
+  const isScrollingDownRef = useRef(true);
+  const hasCompletedBenefitsRef = useRef(false);
+  const benefitsStickyReleasedRef = useRef(false);
   const titleWeight = 700;
   const confettiSize = 2.5;
   const confettiOpacity = 0.8;
@@ -487,7 +490,13 @@ const Landing = () => {
 
   useEffect(() => {
     return benefitsScrollProgress.on("change", (latest) => {
-      if (!benefitsStickyEnabled) {
+      if (benefitsStickyReleased || !isScrollingDownRef.current) {
+        setUnlockedBenefitCount(BENEFITS.length);
+        return;
+      }
+
+      if (latest >= 0.98) {
+        hasCompletedBenefitsRef.current = true;
         setUnlockedBenefitCount(BENEFITS.length);
         return;
       }
@@ -496,28 +505,47 @@ const Landing = () => {
 
       setUnlockedBenefitCount((current) => (current === nextCount ? current : nextCount));
     });
-  }, [benefitsScrollProgress, benefitsStickyEnabled]);
+  }, [benefitsScrollProgress, benefitsStickyReleased]);
 
   useEffect(() => {
     lastScrollYRef.current = window.scrollY;
 
-    const updateBenefitsStickyMode = () => {
-      const currentScrollY = window.scrollY;
-      const isScrollingDown = currentScrollY > lastScrollYRef.current;
-      lastScrollYRef.current = currentScrollY;
+    const releaseBenefitsSticky = () => {
+      const section = benefitsSectionRef.current;
+      if (!section || benefitsStickyReleasedRef.current) return;
 
-      setBenefitsStickyEnabled((current) => {
-        if (current === isScrollingDown) return current;
-        if (!isScrollingDown) {
-          setUnlockedBenefitCount(BENEFITS.length);
+      const previousHeight = section.offsetHeight;
+      benefitsStickyReleasedRef.current = true;
+      setBenefitsStickyReleased(true);
+
+      requestAnimationFrame(() => {
+        const nextHeight = section.offsetHeight;
+        const heightDelta = nextHeight - previousHeight;
+
+        if (heightDelta !== 0) {
+          window.scrollBy(0, heightDelta);
         }
-        return isScrollingDown;
       });
     };
 
-    window.addEventListener("scroll", updateBenefitsStickyMode, { passive: true });
+    const updateScrollDirection = () => {
+      const currentScrollY = window.scrollY;
+      const isScrollingDown = currentScrollY >= lastScrollYRef.current;
+      lastScrollYRef.current = currentScrollY;
+      isScrollingDownRef.current = isScrollingDown;
 
-    return () => window.removeEventListener("scroll", updateBenefitsStickyMode);
+      if (!isScrollingDown) {
+        setUnlockedBenefitCount(BENEFITS.length);
+
+        if (hasCompletedBenefitsRef.current) {
+          releaseBenefitsSticky();
+        }
+      }
+    };
+
+    window.addEventListener("scroll", updateScrollDirection, { passive: true });
+
+    return () => window.removeEventListener("scroll", updateScrollDirection);
   }, []);
 
   const handleLeadSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -1299,10 +1327,10 @@ const Landing = () => {
       {/* Beneficios */}
       <section
         ref={benefitsSectionRef}
-        className={`bg-card ${benefitsStickyEnabled ? "md:min-h-[240vh]" : ""}`}
+        className={`relative bg-card ${benefitsStickyReleased ? "" : "md:min-h-[240vh]"}`}
         data-benefits-section
       >
-        <div className={`mx-auto flex w-full max-w-6xl flex-col justify-center px-6 py-12 lg:px-8 lg:py-16 ${benefitsStickyEnabled ? "md:sticky md:top-0 md:min-h-screen" : ""}`}>
+        <div className={`mx-auto flex w-full max-w-6xl flex-col justify-center px-6 py-12 lg:px-8 lg:py-16 ${benefitsStickyReleased ? "" : "md:sticky md:top-0 md:min-h-screen"}`}>
           <motion.div
             className={SECTION_HEADER_CLASS}
             initial={{ opacity: 0, y: 24 }}
