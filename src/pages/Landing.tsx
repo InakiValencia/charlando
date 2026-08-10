@@ -367,6 +367,7 @@ const COLLABORATOR_BRANDS = [
   { name: "Swap Style", logo: "/swap-style-logo.jpg" },
   { name: "AIRTM", logo: "/airtm-logo.png" },
   { name: "Wallbit", logo: "/wallbit-logo.png" },
+  { name: "Takenos", logo: "/takenos-logo.png" },
 ];
 
 const FULL_SECTION_CLASS = "flex items-center py-12 lg:py-16";
