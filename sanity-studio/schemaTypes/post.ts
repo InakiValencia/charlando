@@ -104,6 +104,78 @@ export const post = defineType({
       ],
     }),
     defineField({
+      name: 'titleEn',
+      title: 'Title (English)',
+      type: 'string',
+      description: 'Used on /en/blog. Leave empty until the English version is ready to publish.',
+    }),
+    defineField({
+      name: 'slugEn',
+      title: 'Slug (English)',
+      type: 'slug',
+      options: {
+        source: 'titleEn',
+        maxLength: 96,
+      },
+      description: 'English URL slug used under /en/blog.',
+    }),
+    defineField({
+      name: 'excerptEn',
+      title: 'Excerpt (English)',
+      type: 'text',
+      rows: 3,
+    }),
+    defineField({
+      name: 'categoryEn',
+      title: 'Category (English)',
+      type: 'string',
+    }),
+    defineField({
+      name: 'bodyEn',
+      title: 'Body (English)',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          type: 'block',
+          styles: [
+            {title: 'Normal', value: 'normal'},
+            {title: 'H2', value: 'h2'},
+            {title: 'H3', value: 'h3'},
+            {title: 'Quote', value: 'blockquote'},
+          ],
+          marks: {
+            annotations: [
+              {
+                name: 'link',
+                type: 'object',
+                title: 'Link',
+                fields: [
+                  defineField({
+                    name: 'href',
+                    title: 'URL',
+                    type: 'url',
+                  }),
+                ],
+              },
+            ],
+          },
+        }),
+        defineArrayMember({
+          type: 'image',
+          options: {
+            hotspot: true,
+          },
+          fields: [
+            defineField({
+              name: 'alt',
+              title: 'Alt text',
+              type: 'string',
+            }),
+          ],
+        }),
+      ],
+    }),
+    defineField({
       name: 'seoTitle',
       title: 'SEO Title',
       type: 'string',
@@ -111,6 +183,17 @@ export const post = defineType({
     defineField({
       name: 'seoDescription',
       title: 'SEO Description',
+      type: 'text',
+      rows: 3,
+    }),
+    defineField({
+      name: 'seoTitleEn',
+      title: 'SEO Title (English)',
+      type: 'string',
+    }),
+    defineField({
+      name: 'seoDescriptionEn',
+      title: 'SEO Description (English)',
       type: 'text',
       rows: 3,
     }),

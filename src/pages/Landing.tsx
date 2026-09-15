@@ -388,9 +388,9 @@ const COLLABORATOR_BRANDS = [
   { name: "John Foos", logo: "/john-foos-logo.jpg" },
 ];
 
-const FULL_SECTION_CLASS = "flex items-center py-16 lg:py-24";
-const SECTION_HEADER_CLASS = "text-center mb-10 lg:mb-12";
-const SECTION_TITLE_CLASS = "text-4xl sm:text-5xl lg:text-6xl font-display mb-5";
+const FULL_SECTION_CLASS = "flex items-center py-20 sm:py-24 lg:py-32";
+const SECTION_HEADER_CLASS = "text-center mb-12 lg:mb-16";
+const SECTION_TITLE_CLASS = "text-5xl sm:text-6xl lg:text-7xl font-display mb-6";
 const FOOTER_LINK_CLASS = "inline-flex min-h-10 min-w-10 items-center transition-colors hover:text-primary";
 const CALENDAR_BOOKING_URL = "https://calendar.app.google/UqwA28tsXsQCnchF6";
 const EMPTY_LEAD_FORM = {
@@ -994,9 +994,9 @@ const Landing = () => {
       </Dialog>
 
       {/* Hero */}
-      <section className="relative min-h-[88svh] overflow-hidden flex items-center">
-        <div className="w-full max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-8 lg:py-12">
-          <div className="relative min-h-[calc(88svh-5rem)] flex items-center justify-center">
+      <section className="relative min-h-[94svh] overflow-hidden flex items-center">
+        <div className="w-full max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-10 lg:py-16">
+          <div className="relative min-h-[calc(94svh-5rem)] flex items-center justify-center">
 
             <ConfettiLayer size={confettiSize} opacity={confettiOpacity} count={confettiCount} spread={confettiSpread} />
 
@@ -1068,7 +1068,7 @@ const Landing = () => {
                 <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
                 {locale === "en" ? "Real people · Real reactions · Real results" : "Personas reales · Reacciones reales · Resultados reales"}
               </div>
-              <h1 className="text-balance text-[30px] min-[360px]:text-[34px] sm:text-5xl md:text-[58px] lg:text-[64px] 2xl:text-[72px] font-display tracking-tight leading-[1.12] text-foreground mb-5" style={{ fontWeight: titleWeight }}>
+              <h1 className="text-balance text-[34px] min-[360px]:text-[38px] sm:text-[56px] md:text-[64px] lg:text-[76px] 2xl:text-[84px] font-display tracking-tight leading-[1.08] text-foreground mb-6" style={{ fontWeight: titleWeight }}>
                 <span className="inline-flex flex-col items-center">
                   <span>{locale === "en" ? "Conversations that" : "Conversaciones que"}</span>
                   <span className="inline-flex translate-x-1 items-baseline justify-center gap-x-[0.18em] whitespace-nowrap min-[360px]:translate-x-3 sm:translate-x-7 lg:translate-x-9">
@@ -1105,25 +1105,25 @@ const Landing = () => {
                   </motion.div>
                 ))}
               </div>
-              <p className="text-pretty text-base sm:text-lg text-muted-foreground max-w-xl mx-auto mb-6 leading-relaxed">
+              <p className="text-pretty text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-7 leading-relaxed">
                 {landing.hero.subtitle}
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                 <Button
                   size="lg"
-                  className="text-base font-semibold px-8 h-12 bg-foreground text-background hover:bg-primary hover:text-background"
+                  className="text-lg font-semibold px-9 h-14 bg-foreground text-background hover:bg-primary hover:text-background"
                   type="button"
                   onClick={openLeadForm}
                   data-testid="open-lead-form-hero"
                 >
                   {landing.hero.primaryCta} <ArrowRight className="ml-2 w-4 h-4" />
                 </Button>
-                <Button size="lg" variant="outline" className="text-base font-semibold px-8 h-12 border-foreground/15" asChild>
+                <Button size="lg" variant="outline" className="text-lg font-semibold px-9 h-14 border-foreground/15" asChild>
                   <a href="#videos">{landing.hero.secondaryCta}</a>
                 </Button>
               </div>
-              <p className="text-xs text-muted-foreground mt-4">{landing.hero.note}</p>
-              <p className="text-sm font-semibold text-primary mt-1">{landing.hero.metric}</p>
+              <p className="text-sm text-muted-foreground mt-5">{landing.hero.note}</p>
+              <p className="text-base font-semibold text-primary mt-1.5">{landing.hero.metric}</p>
             </motion.div>
           </div>
         </div>
@@ -1187,7 +1187,7 @@ const Landing = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <h3 className="text-3xl sm:text-4xl font-display text-foreground tracking-[-0.02em] mb-5" style={{ fontWeight: titleWeight }}>
+	            <h3 className="text-4xl sm:text-5xl font-display text-foreground tracking-[-0.025em] mb-6" style={{ fontWeight: titleWeight }}>
               {locale === "en" ? "Results from companies using this strategy" : "Resultados de empresas siguiendo esta estrategia"}
             </h3>
             <div className="grid grid-cols-3 gap-3 sm:gap-5 max-w-4xl mx-auto">
@@ -1196,11 +1196,11 @@ const Landing = () => {
 	                { value: "+50%", label: locale === "en" ? "hook rate" : "hook rate" },
 	                { value: "2X", label: "ROAS" },
               ].map((result) => (
-                <div key={result.label} className="rounded-2xl sm:rounded-3xl bg-card px-3 py-5 min-[360px]:p-5 sm:p-7">
-                  <p className="font-display text-4xl min-[360px]:text-5xl sm:text-6xl text-primary tracking-[-0.03em] tabular-nums" style={{ fontWeight: titleWeight }}>
+	                <div key={result.label} className="rounded-2xl sm:rounded-3xl bg-card px-3 py-6 min-[360px]:p-6 sm:p-8">
+	                  <p className="font-display text-5xl min-[360px]:text-6xl sm:text-7xl text-primary tracking-[-0.035em] tabular-nums" style={{ fontWeight: titleWeight }}>
                     {result.value}
                   </p>
-                  <p className="text-xs min-[360px]:text-sm sm:text-lg text-muted-foreground mt-2 sm:mt-3 leading-snug">{result.label}</p>
+	                  <p className="text-sm min-[360px]:text-base sm:text-xl text-muted-foreground mt-3 sm:mt-4 leading-snug">{result.label}</p>
                 </div>
               ))}
             </div>
@@ -1248,17 +1248,17 @@ const Landing = () => {
                   className="group relative"
                   data-process-card={i}
                 >
-                  <div className={`relative ${currentPreset.cardBg} rounded-3xl p-7 lg:p-8 h-full min-h-[285px] transition-[background-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5 ${activeProcessStep === i ? "-translate-y-1 shadow-xl shadow-primary/5" : ""}`}>
-                    <div className="flex items-center justify-between mb-7">
-                      <div className={`flex h-20 w-20 items-center justify-center rounded-3xl text-background font-display text-2xl font-bold tabular-nums shadow-md transition-colors group-hover:bg-primary ${activeProcessStep === i ? "bg-primary" : "bg-foreground"}`}>
+	                  <div className={`relative ${currentPreset.cardBg} rounded-3xl p-8 lg:p-10 h-full min-h-[335px] transition-[background-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5 ${activeProcessStep === i ? "-translate-y-1 shadow-xl shadow-primary/5" : ""}`}>
+	                    <div className="flex items-center justify-between mb-8">
+	                      <div className={`flex h-[5.5rem] w-[5.5rem] shrink-0 items-center justify-center rounded-3xl text-background font-display text-3xl font-bold tabular-nums shadow-md transition-colors group-hover:bg-primary ${activeProcessStep === i ? "bg-primary" : "bg-foreground"}`}>
                         {step.n}
                       </div>
                       {i < processSteps.length - 1 && (
                         <ArrowRight className="hidden lg:block w-5 h-5 text-primary/40 group-hover:text-primary transition-colors" />
                       )}
                     </div>
-                    <h3 className="font-display font-bold text-2xl mb-4 text-foreground tracking-[-0.01em]">{step.title}</h3>
-                    <p className="text-lg text-muted-foreground leading-relaxed">{step.text}</p>
+	                    <h3 className="font-display font-bold text-3xl mb-5 text-foreground tracking-[-0.02em]">{step.title}</h3>
+	                    <p className="text-xl text-muted-foreground leading-relaxed">{step.text}</p>
                   </div>
                 </motion.div>
               ))}
@@ -1381,7 +1381,7 @@ const Landing = () => {
       </section>
 
       {/* Features */}
-      <section id="features" className="flex items-center pb-10 pt-16 lg:pb-14 lg:pt-24">
+      <section id="features" className="flex items-center pb-12 pt-20 sm:pt-24 lg:pb-16 lg:pt-32">
         <div className="w-full max-w-7xl mx-auto px-6 lg:px-8">
           <motion.div
             className={SECTION_HEADER_CLASS}
@@ -1390,27 +1390,28 @@ const Landing = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="mx-auto mb-5 max-w-7xl text-balance font-display text-4xl text-foreground sm:text-5xl lg:text-6xl xl:whitespace-nowrap xl:text-[3.35rem]" style={{ fontWeight: titleWeight }}>
+            <h2 className={`mx-auto mb-6 max-w-7xl text-balance font-display text-5xl text-foreground sm:text-6xl lg:text-7xl xl:whitespace-nowrap ${locale === "en" ? "xl:text-[3.35rem]" : "xl:text-[4.15rem]"}`} style={{ fontWeight: titleWeight }}>
               {landing.features.title}
             </h2>
-            <p className="mx-auto max-w-3xl text-balance text-lg leading-relaxed text-muted-foreground sm:text-xl lg:text-2xl">
+            <p className="mx-auto max-w-4xl text-balance text-xl leading-relaxed text-muted-foreground sm:text-2xl lg:text-[1.7rem]">
               {landing.features.subtitle}
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-7 lg:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
             {featureItems.map((feature, i) => {
               const Illust = ILLUSTRATIONS[i];
               return (
                 <motion.div
                   key={feature.title}
+                  className="h-full"
                   initial={{ opacity: 0, y: 24 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: i * 0.1 }}
                 >
-                  <div className={`h-full md:aspect-square rounded-3xl overflow-hidden ${currentPreset.cardBg} flex flex-col`}>
-                    <div className={`${currentPreset.colors[i]} aspect-[4/3] md:h-[46%] md:aspect-auto flex items-center justify-center overflow-hidden`}>
+	                  <div className={`grid h-full min-h-[34rem] grid-rows-[14rem_1fr] overflow-hidden rounded-[2rem] ${currentPreset.cardBg} md:min-h-[36rem] md:grid-rows-[16rem_1fr] lg:min-h-[37rem] lg:grid-rows-[17rem_1fr]`}>
+	                    <div className={`${currentPreset.colors[i]} flex items-center justify-center overflow-hidden`}>
                       {i === 0 ? (
                         <img
                           src={CREATIVE_STRATEGY_IMAGE}
@@ -1427,9 +1428,9 @@ const Landing = () => {
                         <Illust accents={currentPreset.accents} />
                       )}
                     </div>
-                    <div className="p-7 lg:p-9 flex-1">
-                      <h3 className="font-display font-bold text-2xl mb-4 text-foreground tracking-[-0.01em]">{feature.title}</h3>
-                      <p className="text-muted-foreground text-lg leading-relaxed">{feature.description}</p>
+	                    <div className="flex flex-col p-8 lg:p-10">
+	                      <h3 className="mb-3 min-h-[2.35em] font-display text-3xl font-bold leading-[1.12] tracking-[-0.02em] text-foreground">{feature.title}</h3>
+	                      <p className="text-muted-foreground text-xl leading-relaxed">{feature.description}</p>
                     </div>
                   </div>
                 </motion.div>
@@ -1441,7 +1442,7 @@ const Landing = () => {
 
 
       {/* Hosts */}
-      <section className="flex items-center pb-16 pt-10 lg:pb-24 lg:pt-14">
+      <section className="flex items-center pb-20 pt-12 sm:pb-24 lg:pb-32 lg:pt-16">
         <div className="w-full max-w-7xl mx-auto px-6 lg:px-8">
           <motion.div
             className={SECTION_HEADER_CLASS}
@@ -1457,7 +1458,7 @@ const Landing = () => {
             <h2 className={`${SECTION_TITLE_CLASS} text-foreground text-balance`} style={{ fontWeight: titleWeight }}>
               {landing.hosts.title}
             </h2>
-            <p className="mx-auto max-w-3xl text-pretty text-lg text-muted-foreground sm:text-xl">
+            <p className="mx-auto max-w-4xl text-pretty text-xl text-muted-foreground sm:text-2xl">
               {landing.hosts.subtitle}
             </p>
           </motion.div>
@@ -1486,13 +1487,13 @@ const Landing = () => {
             <div className="group relative aspect-[4/5] w-[82vw] max-w-[360px] shrink-0 snap-center overflow-hidden rounded-3xl bg-foreground text-background shadow-xl shadow-foreground/10 outline outline-1 -outline-offset-1 outline-background/15 transition-[box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/10 sm:w-auto sm:max-w-none">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,rgba(38,185,207,0.32),transparent_34%),linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0))]" />
               <Mic className="absolute bottom-14 left-1/2 h-56 w-56 -translate-x-1/2 text-background/5 transition-transform duration-500 group-hover:scale-105" strokeWidth={1.2} />
-              <div className="relative flex h-full flex-col justify-between p-5 sm:p-6">
+              <div className="relative flex h-full flex-col justify-between p-6 sm:p-7">
                 <span aria-hidden="true" />
                 <div className="mx-auto max-w-[220px] text-center">
                   <p className="font-display text-6xl font-bold leading-none tracking-tight sm:text-7xl">
                     {landing.hosts.you}
                   </p>
-                  <p className="mt-5 text-base leading-relaxed text-background/72 sm:text-lg">
+                  <p className="mt-5 text-lg leading-relaxed text-background/72 sm:text-xl">
                     {landing.hosts.applyText}
                   </p>
                 </div>
@@ -1537,8 +1538,8 @@ const Landing = () => {
                         onClick={() => setOpenFaq(open ? null : faqIndex)}
                         className="w-full flex items-center justify-between text-left p-5 gap-5 sm:p-6"
                       >
-                        <span className="font-display font-semibold text-foreground text-lg sm:text-xl">{faq.q}</span>
-                        <span className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
+                        <span className="font-display font-semibold text-foreground text-xl sm:text-2xl">{faq.q}</span>
+                        <span className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
                           {open ? <Minus className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
                         </span>
                       </button>
@@ -1550,7 +1551,7 @@ const Landing = () => {
                             exit={{ height: 0, opacity: 0 }}
                             transition={{ duration: 0.25 }}
                           >
-                            <div className="px-5 pb-5 text-base text-muted-foreground leading-relaxed sm:px-6 sm:pb-6 sm:text-lg">{faq.a}</div>
+	                            <div className="px-5 pb-5 text-lg text-muted-foreground leading-relaxed sm:px-6 sm:pb-6 sm:text-xl">{faq.a}</div>
                           </motion.div>
                         )}
                       </AnimatePresence>

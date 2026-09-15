@@ -86,13 +86,13 @@ export const en: typeof es = {
       title: "Why it works",
       subtitle: "Real reactions to your product, turned into ads that build trust and drive sales.",
       stages: [
-        { label: "Attention", title: "Earn the first second", text: "Most brands open with a message. We open with a moment: a raw, natural reaction that stops the scroll." },
+        { label: "Notice", title: "Earn the first second", text: "Most brands open with a message. We open with a moment: a raw, natural reaction that stops the scroll." },
         { label: "Trust", title: "Where decisions get made", text: "The questions, the pushback, and the honest answer. Nothing gets cut in a way that kills credibility. That’s where trust is built." },
-        { label: "Action", title: "Make yes feel easy", text: "Once attention and trust are earned, we turn those real reactions into pieces built to drive conversion." },
+        { label: "Act", title: "Make yes feel easy", text: "Once attention and trust are earned, we turn those real reactions into pieces built to drive conversion." },
       ],
       cta: "Design my campaign",
       footerLeft: "From the street to the screen",
-      footerRight: "Attention · Trust · Action",
+      footerRight: "Notice · Trust · Act",
     },
     features: {
       title: "Everything you need to make your product travel",
