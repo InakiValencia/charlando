@@ -1,20 +1,21 @@
 import { sanityFetch } from "./client";
 import type { BlogPost, BlogPostSummary } from "./types";
+import type { Locale } from "@/i18n/locales";
 
 const postSummaryFields = `
   _id,
   _updatedAt,
-  title,
-  "slug": slug.current,
-  excerpt,
+  "title": select($locale == "en" && defined(titleEn) => titleEn, title),
+  "slug": select($locale == "en" && defined(slugEn.current) => slugEn.current, slug.current),
+  "excerpt": select($locale == "en" && defined(excerptEn) => excerptEn, excerpt),
   coverImage,
-  category,
+  "category": select($locale == "en" && defined(categoryEn) => categoryEn, category),
   author,
   publishedAt,
-  seoTitle,
-  seoDescription,
+  "seoTitle": select($locale == "en" && defined(seoTitleEn) => seoTitleEn, seoTitle),
+  "seoDescription": select($locale == "en" && defined(seoDescriptionEn) => seoDescriptionEn, seoDescription),
   ogImage,
-  body
+  "body": select($locale == "en" && defined(bodyEn) => bodyEn, body)
 `;
 
 export const publishedPostsQuery = `
@@ -23,6 +24,7 @@ export const publishedPostsQuery = `
   defined(slug.current) &&
   defined(publishedAt) &&
   publishedAt <= now() &&
+  ($locale != "en" || (defined(titleEn) && defined(slugEn.current) && defined(excerptEn) && defined(bodyEn))) &&
   !(_id in path("drafts.**"))
 ] | order(publishedAt desc) {
   ${postSummaryFields}
@@ -31,7 +33,10 @@ export const publishedPostsQuery = `
 export const postBySlugQuery = `
 *[
   _type == "post" &&
-  slug.current == $slug &&
+  (
+    ($locale == "en" && slugEn.current == $slug && defined(titleEn) && defined(excerptEn) && defined(bodyEn)) ||
+    ($locale != "en" && slug.current == $slug)
+  ) &&
   defined(publishedAt) &&
   publishedAt <= now() &&
   !(_id in path("drafts.**"))
@@ -39,10 +44,10 @@ export const postBySlugQuery = `
   ${postSummaryFields}
 }`;
 
-export async function getPublishedPosts() {
-  return sanityFetch<BlogPostSummary[]>(publishedPostsQuery);
+export async function getPublishedPosts(locale: Locale = "es") {
+  return sanityFetch<BlogPostSummary[]>(publishedPostsQuery, { locale });
 }
 
-export async function getPostBySlug(slug: string) {
-  return sanityFetch<BlogPost | null>(postBySlugQuery, { slug });
+export async function getPostBySlug(slug: string, locale: Locale = "es") {
+  return sanityFetch<BlogPost | null>(postBySlugQuery, { slug, locale });
 }

@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { Logo } from "@/components/Logo";
 import { usePageSeo } from "@/lib/seo";
+import { alternatePathsFor, localizePath } from "@/i18n/routes";
+import { useTranslation } from "@/i18n/useTranslation";
 
 type PrivacyBlock =
   | { type: "paragraph"; text: string }
@@ -13,6 +16,7 @@ type PrivacySection = {
 };
 
 const LAST_UPDATED = "30 de junio de 2026";
+const LAST_UPDATED_EN = "June 30, 2026";
 
 const sections: PrivacySection[] = [
   {
@@ -236,26 +240,155 @@ const sections: PrivacySection[] = [
   },
 ];
 
+const sectionsEn: PrivacySection[] = [
+  {
+    id: "who-we-are",
+    title: "1. Who we are",
+    blocks: [
+      { type: "paragraph", text: "Charlando creates audiovisual content for brands through street interviews, real reactions, and vertical pieces for social media and digital campaigns. This Privacy Policy explains how we may collect, use, store, and protect personal information when someone visits our site, completes a form, books a call, interacts with our content, or participates in a production." },
+      { type: "paragraph", text: "By using the site, completing forms, or sharing information with Charlando, you accept the processing of your data under this policy." },
+    ],
+  },
+  {
+    id: "data-we-collect",
+    title: "2. Data we may collect",
+    blocks: [
+      { type: "paragraph", text: "Depending on how you interact with Charlando, we may collect the following categories of information:" },
+      { type: "list", items: ["contact details such as name, email, phone, brand, company, website, or social handle;", "commercial information shared to evaluate a project, campaign, or proposal;", "data submitted through site forms, external forms, booking calendars, or commercial channels such as email and WhatsApp;", "basic technical information such as page visited, date, time, browser, device, referrer URL, UTM parameters, or similar analytics data;", "image, voice, answers, reactions, or audiovisual participation when someone is part of an interview, recording, product test, or content production;", "materials provided by a brand or client, such as logos, guidelines, references, products, briefs, permitted claims, or communication restrictions."] },
+    ],
+  },
+  {
+    id: "data-use",
+    title: "3. How we use data",
+    blocks: [
+      { type: "paragraph", text: "We use collected information to operate Charlando, answer inquiries, and provide our services. In particular, we may use personal data to:" },
+      { type: "list", items: ["respond to commercial inquiries and coordinate calls;", "prepare proposals, quotes, creative strategies, or recommendations for a brand;", "manage relationships with clients, leads, collaborators, hosts, suppliers, and participants;", "coordinate recordings, releases, deliveries, revisions, and project communications;", "keep reasonable records of forms, approvals, consents, requests, or commercial conversations;", "improve the site, measure campaign effectiveness, and understand which content or pages generate interest;", "comply with legal, contractual, accounting, tax, or defense obligations."] },
+    ],
+  },
+  {
+    id: "participants",
+    title: "4. Image, voice, and production participants",
+    blocks: [
+      { type: "paragraph", text: "When someone participates in an interview, reaction, product test, or recording, Charlando may capture their image, voice, answers, gestures, and participation context to produce audiovisual pieces. In those cases, we seek to manage image and voice authorizations through forms, digital consents, QR flows, or other reasonable means according to the production type." },
+      { type: "paragraph", text: "Final materials may be used by Charlando or the client within the agreed scope for social media, digital campaigns, portfolio, case studies, commercial presentations, or other authorized uses. If someone requests review, limitation, or removal of the use of their image, we will evaluate the case in good faith with the client when applicable." },
+    ],
+  },
+  {
+    id: "legal-basis",
+    title: "5. Bases for processing information",
+    blocks: [
+      { type: "paragraph", text: "We process personal information when there is a valid reason to do so, including consent, the execution of a contractual or pre-contractual relationship, Charlando’s legitimate interest in operating and improving its services, or compliance with applicable legal obligations." },
+      { type: "paragraph", text: "In all cases we aim to collect only the information reasonably necessary for the relevant purpose." },
+    ],
+  },
+  {
+    id: "tools",
+    title: "6. Tools and providers",
+    blocks: [
+      { type: "paragraph", text: "To operate the site and provide services, we may use third-party tools. These tools may process information on our behalf or under their own privacy terms." },
+      { type: "list", items: ["hosting, infrastructure, and site deployment services;", "databases and tools to store forms or commercial requests;", "calendars, forms, email, messaging, and productivity tools;", "analytics, measurement, CRM, project management, or automation tools;", "content, storage, editing, file transfer, or campaign management platforms."] },
+      { type: "paragraph", text: "We do not sell personal databases. We may share information with providers only when necessary to operate the site, answer an inquiry, execute a project, or comply with legal obligations." },
+    ],
+  },
+  {
+    id: "cookies",
+    title: "7. Cookies and similar technologies",
+    blocks: [
+      { type: "paragraph", text: "The site may use cookies, local storage, pixels, or similar technologies to remember preferences, improve the experience, measure traffic, analyze campaigns, or understand site navigation." },
+      { type: "paragraph", text: "You can configure your browser to block or delete cookies. Some site features may not work properly if certain technologies are disabled." },
+    ],
+  },
+  {
+    id: "retention",
+    title: "8. Data retention",
+    blocks: [
+      { type: "paragraph", text: "We retain personal information for as long as necessary to fulfill the purposes in this policy, provide services, keep reasonable commercial records, comply with legal obligations, or defend rights against possible claims." },
+      { type: "paragraph", text: "When information is no longer necessary, we may delete it, anonymize it, or keep it in a limited way when there is a legitimate reason to do so." },
+    ],
+  },
+  {
+    id: "security",
+    title: "9. Security",
+    blocks: [
+      { type: "paragraph", text: "Charlando adopts reasonable measures to protect information against unauthorized access, loss, alteration, or improper disclosure. However, no digital system is completely secure and we cannot guarantee absolute security." },
+      { type: "paragraph", text: "The client must also protect the access, materials, links, and files shared with Charlando or third parties involved in a project." },
+    ],
+  },
+  {
+    id: "rights",
+    title: "10. Individual rights",
+    blocks: [
+      { type: "paragraph", text: "Depending on applicable law, a person may request access, update, rectification, deletion, limitation, or objection to the processing of their personal data. They may also withdraw consent when applicable." },
+      { type: "paragraph", text: "To exercise these rights, contact the Charlando team through the usual commercial channels or the site contact form. We may request additional information to verify identity and process the request securely." },
+    ],
+  },
+  {
+    id: "minors",
+    title: "11. Minors",
+    blocks: [
+      { type: "paragraph", text: "Charlando’s services are aimed at brands, companies, and adults. We do not intentionally seek to collect data from minors without the corresponding authorization. If we detect that we received information from a minor without valid authorization, we may delete it or limit its use." },
+    ],
+  },
+  {
+    id: "transfers",
+    title: "12. International transfers",
+    blocks: [
+      { type: "paragraph", text: "Some tools or providers we use may be located outside the country from which you access the site. In those cases, information may be processed in jurisdictions with different data protection rules." },
+      { type: "paragraph", text: "When applicable, we seek to work with recognized providers and adopt reasonable measures to protect transferred information." },
+    ],
+  },
+  {
+    id: "changes",
+    title: "13. Changes to this policy",
+    blocks: [
+      { type: "paragraph", text: "Charlando may update this Privacy Policy when necessary to reflect operational, legal, technical, or commercial changes. The current version is the one published on this page with its last updated date." },
+    ],
+  },
+  {
+    id: "contact",
+    title: "14. Contact",
+    blocks: [
+      { type: "paragraph", text: "For questions about privacy, data processing, access requests, or image use, you may contact the Charlando team through the usual commercial channels or the site contact form." },
+    ],
+  },
+  {
+    id: "legal-note",
+    title: "15. Legal note",
+    blocks: [
+      { type: "paragraph", text: "This policy is a general privacy base and does not replace specific legal advice. For sensitive campaigns, regulated categories, intensive data processing, projects involving minors, complex international transfers, or high-value agreements, professional legal review is recommended." },
+    ],
+  },
+];
+
 const PrivacyPolicy = () => {
+  const { locale, t } = useTranslation();
+  const localizedHome = localizePath("/", locale);
+  const currentSections = locale === "en" ? sectionsEn : sections;
+
   usePageSeo({
-    title: "Política de privacidad | Charlando",
-    description: "Política de privacidad de Charlando para el uso del sitio, formularios, datos comerciales, producciones audiovisuales e imagen de participantes.",
-    canonicalPath: "/politica-de-privacidad",
+    title: t.seo.privacyTitle,
+    description: locale === "en" ? "Charlando Privacy Policy for site usage, forms, commercial data, audiovisual productions, and participant image rights." : "Política de privacidad de Charlando para el uso del sitio, formularios, datos comerciales, producciones audiovisuales e imagen de participantes.",
+    canonicalPath: localizePath("/politica-de-privacidad", locale),
+    locale,
+    alternatePaths: alternatePathsFor("/politica-de-privacidad"),
   });
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="border-b border-border bg-background/95 backdrop-blur">
         <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-6 lg:px-8">
-          <Link to="/" aria-label="Ir al inicio" className="shrink-0">
+          <Link to={localizedHome} aria-label={t.common.goHome} className="shrink-0">
             <Logo size="md" />
           </Link>
-          <Link
-            to="/"
-            className="inline-flex min-h-10 items-center rounded-full px-4 py-2 text-sm font-semibold text-foreground/75 transition-colors hover:text-primary"
-          >
-            Volver al inicio
-          </Link>
+          <div className="flex items-center gap-2">
+            <LanguageSwitcher />
+            <Link
+              to={localizedHome}
+              className="inline-flex min-h-10 items-center rounded-full px-4 py-2 text-sm font-semibold text-foreground/75 transition-colors hover:text-primary"
+            >
+              {t.common.goHome}
+            </Link>
+          </div>
         </div>
       </header>
 
@@ -263,25 +396,29 @@ const PrivacyPolicy = () => {
         <aside className="lg:sticky lg:top-24 lg:self-start">
           <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">Legal</p>
           <h1 className="mt-4 text-balance font-display text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-            Política de privacidad
+            {locale === "en" ? "Privacy Policy" : "Política de privacidad"}
           </h1>
           <p className="mt-4 text-pretty text-sm leading-6 text-muted-foreground">
-            Última actualización: {LAST_UPDATED}
+            {locale === "en" ? "Last updated" : "Última actualización"}: {locale === "en" ? LAST_UPDATED_EN : LAST_UPDATED}
           </p>
         </aside>
 
         <article className="rounded-[28px] bg-card px-5 py-7 shadow-[0_18px_70px_-42px_rgba(0,0,0,0.35),0_0_0_1px_rgba(0,0,0,0.06)] sm:px-8 sm:py-10 lg:px-10">
           <div className="max-w-3xl">
             <p className="text-pretty text-base leading-8 text-muted-foreground sm:text-lg">
-              Esta Política de privacidad explica cómo Charlando recopila, usa y protege información relacionada con visitantes del sitio, personas que completan formularios, clientes, leads, colaboradores y participantes de producciones audiovisuales.
+              {locale === "en"
+                ? "This Privacy Policy explains how Charlando collects, uses, and protects information related to site visitors, people who complete forms, clients, leads, collaborators, and audiovisual production participants."
+                : "Esta Política de privacidad explica cómo Charlando recopila, usa y protege información relacionada con visitantes del sitio, personas que completan formularios, clientes, leads, colaboradores y participantes de producciones audiovisuales."}
             </p>
             <p className="mt-5 text-pretty text-base leading-8 text-muted-foreground sm:text-lg">
-              Buscamos tratar la información de forma razonable, limitada al propósito correspondiente y alineada con nuestros Términos y condiciones.
+              {locale === "en"
+                ? "We aim to process information reasonably, limited to the relevant purpose, and aligned with our Terms and Conditions."
+                : "Buscamos tratar la información de forma razonable, limitada al propósito correspondiente y alineada con nuestros Términos y condiciones."}
             </p>
           </div>
 
           <div className="mt-10 space-y-10">
-            {sections.map((section) => (
+            {currentSections.map((section) => (
               <section key={section.id} id={section.id} className="scroll-mt-24">
                 <h2 className="text-balance font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
                   {section.title}

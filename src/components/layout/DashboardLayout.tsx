@@ -14,6 +14,8 @@ import {
   LogOut,
   Eye,
 } from "lucide-react";
+import { localizePath } from "@/i18n/routes";
+import { useLocale } from "@/i18n/useTranslation";
 
 const navItems = [
   { title: "Events", url: "/dashboard/events", icon: CalendarDays },
@@ -24,6 +26,7 @@ const navItems = [
 ];
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const locale = useLocale();
   const mainRef = useRef<HTMLElement>(null);
   const { pathname } = useLocation();
   const { user, signOut } = useAuth();
@@ -36,7 +39,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
 
   const handleSignOut = async () => {
     await signOut();
-    navigate("/auth");
+    navigate(localizePath("/auth", locale));
   };
 
   const allItems = [
@@ -49,7 +52,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen flex flex-col w-full bg-background">
       <header className="h-14 flex items-center px-6 gap-4">
-        <Link to="/dashboard/events" className="mr-6 shrink-0">
+        <Link to={localizePath("/dashboard/events", locale)} className="mr-6 shrink-0">
           <Logo size="sm" />
         </Link>
         <div className="flex-1 flex items-center h-full overflow-x-auto">
@@ -57,7 +60,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
             {allItems.map((item) => (
               <NavLink
                 key={item.url}
-                to={item.url}
+                to={localizePath(item.url, locale)}
                 className="px-4 py-2 text-sm font-medium text-muted-foreground rounded-full transition-colors hover:text-foreground hover:bg-muted"
                 activeClassName="bg-foreground text-background hover:bg-foreground hover:text-background"
               >

@@ -9,10 +9,13 @@ import { getImageUrl } from "@/integrations/sanity/image";
 import { getPostBySlug, getPublishedPosts } from "@/integrations/sanity/queries";
 import { isSanityConfigured } from "@/integrations/sanity/client";
 import { DEFAULT_OG_IMAGE, getCanonicalUrl, usePageSeo } from "@/lib/seo";
+import { alternatePathsFor, localizePath } from "@/i18n/routes";
+import { useTranslation } from "@/i18n/useTranslation";
+import type { Locale } from "@/i18n/locales";
 
-const formatDate = (date?: string) => {
+const formatDate = (date: string | undefined, locale: Locale) => {
   if (!date) return "";
-  return new Intl.DateTimeFormat("es-AR", {
+  return new Intl.DateTimeFormat(locale === "en" ? "en-US" : "es-AR", {
     day: "2-digit",
     month: "long",
     year: "numeric",
@@ -34,35 +37,41 @@ const getPortableText = (value?: unknown[]) => {
     .join(" ");
 };
 
-const getReadingTime = (text?: string) => {
+const getReadingTime = (text: string | undefined, locale: Locale) => {
   const wordCount = text?.trim().split(/\s+/).filter(Boolean).length || 180;
-  return `${Math.max(4, Math.ceil(wordCount / 180))} min`;
+  const minutes = Math.max(4, Math.ceil(wordCount / 180));
+  return locale === "en" ? `${minutes} min read` : `${minutes} min`;
 };
 
 const BlogPost = () => {
+  const { locale, t } = useTranslation();
   const { slug = "" } = useParams();
   const { data: post, isLoading, error } = useQuery({
-    queryKey: ["blog-post", slug],
-    queryFn: () => getPostBySlug(slug),
+    queryKey: ["blog-post", slug, locale],
+    queryFn: () => getPostBySlug(slug, locale),
     enabled: isSanityConfigured && Boolean(slug),
   });
   const { data: posts = [] } = useQuery({
-    queryKey: ["blog-posts", "related"],
-    queryFn: getPublishedPosts,
+    queryKey: ["blog-posts", "related", locale],
+    queryFn: () => getPublishedPosts(locale),
     enabled: isSanityConfigured,
   });
 
   const seoImage = post ? getImageUrl(post.ogImage || post.coverImage, 1200, 630) || DEFAULT_OG_IMAGE : DEFAULT_OG_IMAGE;
   const relatedPosts = posts.filter((candidate) => candidate.slug !== slug).slice(0, 3);
   const articleText = post ? `${post.excerpt} ${getPortableText(post.body)}` : "";
-  const readingTime = getReadingTime(articleText);
-  const canonicalUrl = getCanonicalUrl(`/blog/${slug}`);
+  const readingTime = getReadingTime(articleText, locale);
+  const blogPath = localizePath("/blog", locale);
+  const articlePath = localizePath(`/blog/${post?.slug || slug}`, locale);
+  const canonicalUrl = getCanonicalUrl(articlePath);
 
   usePageSeo({
-    title: post?.seoTitle || post?.title || "Blog | Charlando",
-    description: post?.seoDescription || post?.excerpt || "Ideas de Charlando sobre contenido vertical y conversaciones reales.",
+    title: post?.seoTitle || post?.title || t.seo.blogTitle,
+    description: post?.seoDescription || post?.excerpt || t.seo.blogDescription,
     image: seoImage,
-    canonicalPath: `/blog/${slug}`,
+    canonicalPath: articlePath,
+    locale,
+    alternatePaths: post ? alternatePathsFor(`/blog/${post.slug}`) : alternatePathsFor("/blog"),
     type: "article",
     publishedTime: post?.publishedAt,
     modifiedTime: post?._updatedAt,
@@ -103,8 +112,8 @@ const BlogPost = () => {
         "@id": canonicalUrl,
       },
       articleSection: post.category,
-      inLanguage: "es-AR",
-    });
+	      inLanguage: locale === "en" ? "en" : "es-AR",
+	    });
     document.head.appendChild(script);
 
     return () => {
@@ -118,9 +127,9 @@ const BlogPost = () => {
 
       <main>
         {!isSanityConfigured ? (
-          <div className="mx-auto my-12 max-w-2xl rounded-[28px] bg-muted/60 p-8 text-center shadow-[0_0_0_1px_rgba(0,0,0,0.06)]">
-            <h1 className="font-display text-3xl font-bold text-foreground">Sanity no está configurado</h1>
-            <p className="mt-3 text-muted-foreground">Agregá `VITE_SANITY_PROJECT_ID` para cargar este artículo.</p>
+	          <div className="mx-auto my-12 max-w-2xl rounded-[28px] bg-muted/60 p-8 text-center shadow-[0_0_0_1px_rgba(0,0,0,0.06)]">
+	            <h1 className="font-display text-3xl font-bold text-foreground">{t.blog.notConfiguredTitle}</h1>
+	            <p className="mt-3 text-muted-foreground">{t.blog.notConfiguredText}</p>
           </div>
         ) : isLoading ? (
           <article className="mx-auto max-w-7xl px-6 py-12 lg:px-8 lg:py-16">
@@ -136,34 +145,34 @@ const BlogPost = () => {
           </article>
         ) : error || !post ? (
           <div className="mx-auto my-12 max-w-2xl rounded-[28px] bg-muted/60 p-8 text-center shadow-[0_0_0_1px_rgba(0,0,0,0.06)]">
-            <h1 className="font-display text-3xl font-bold text-foreground">Artículo no encontrado</h1>
-            <p className="mt-3 text-muted-foreground">Puede que todavía no esté publicado o que el slug no exista.</p>
-            <Button className="mt-6 bg-foreground text-background hover:bg-primary" asChild>
-              <Link to="/blog">Volver al blog</Link>
-            </Button>
+	            <h1 className="font-display text-3xl font-bold text-foreground">{t.blog.articleNotFound}</h1>
+	            <p className="mt-3 text-muted-foreground">{t.blog.articleNotFoundText}</p>
+	            <Button className="mt-6 bg-foreground text-background hover:bg-primary" asChild>
+	              <Link to={blogPath}>{t.blog.backToBlog}</Link>
+	            </Button>
           </div>
         ) : (
           <article>
             <header className="border-b border-border/70 bg-muted/35 px-6 py-12 lg:px-8 lg:py-14">
               <div className="mx-auto max-w-7xl">
                 <div className="mb-8">
-                  <Link to="/blog" className="inline-flex min-h-10 items-center rounded-full bg-background px-4 text-sm font-semibold text-foreground shadow-[0_0_0_1px_rgba(0,0,0,0.06),0_10px_22px_-18px_rgba(0,0,0,0.45)] transition-[box-shadow,color,transform] hover:text-primary hover:shadow-[0_0_0_1px_rgba(0,0,0,0.08),0_14px_26px_-18px_rgba(0,0,0,0.5)] active:scale-[0.96]">
-                    <ArrowLeft className="mr-2 h-4 w-4" />
-                    Volver al blog
-                  </Link>
+	                  <Link to={blogPath} className="inline-flex min-h-10 items-center rounded-full bg-background px-4 text-sm font-semibold text-foreground shadow-[0_0_0_1px_rgba(0,0,0,0.06),0_10px_22px_-18px_rgba(0,0,0,0.45)] transition-[box-shadow,color,transform] hover:text-primary hover:shadow-[0_0_0_1px_rgba(0,0,0,0.08),0_14px_26px_-18px_rgba(0,0,0,0.5)] active:scale-[0.96]">
+	                    <ArrowLeft className="mr-2 h-4 w-4" />
+	                    {t.blog.backToBlog}
+	                  </Link>
                 </div>
 
                 <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
                   <div className="order-2 lg:order-1">
                     <div className="mb-8 flex flex-wrap items-center gap-3 text-xs font-bold uppercase tracking-[0.16em] text-muted-foreground">
-                      <Link to="/blog" className="transition-colors hover:text-primary">Blog</Link>
+	                      <Link to={blogPath} className="transition-colors hover:text-primary">{t.blog.badge}</Link>
                       <ArrowRight className="h-3.5 w-3.5 text-primary" />
-                      {post.category ? <span className="text-primary">{post.category}</span> : <span className="text-primary">Insights</span>}
+	                      {post.category ? <span className="text-primary">{post.category}</span> : <span className="text-primary">{t.blog.insights}</span>}
                     </div>
 
                     {post.publishedAt ? (
                       <time className="mb-7 block text-sm font-semibold uppercase tracking-[0.14em] text-muted-foreground" dateTime={post.publishedAt}>
-                        {formatDate(post.publishedAt)}
+	                        {formatDate(post.publishedAt, locale)}
                       </time>
                     ) : null}
 
@@ -181,7 +190,7 @@ const BlogPost = () => {
                       </div>
                       <div>
                         {post.author ? <p className="font-semibold leading-tight text-foreground">{post.author}</p> : null}
-                        <p className="text-sm leading-tight text-muted-foreground">Equipo Charlando</p>
+	                        <p className="text-sm leading-tight text-muted-foreground">{locale === "en" ? "Charlando team" : "Equipo Charlando"}</p>
                       </div>
                       <span className="inline-flex min-h-9 items-center gap-1 rounded-full bg-primary/10 px-3 text-sm font-semibold text-primary">
                         <Clock3 className="h-3.5 w-3.5" />
@@ -210,10 +219,10 @@ const BlogPost = () => {
             <div className="mx-auto grid max-w-6xl gap-10 px-6 py-12 lg:grid-cols-[0.28fr_0.72fr] lg:px-8 lg:py-16">
               <aside className="hidden text-sm text-muted-foreground lg:block">
                 <div className="sticky top-28 rounded-[24px] bg-muted/55 p-5 shadow-[0_0_0_1px_rgba(0,0,0,0.06),0_16px_34px_-28px_rgba(0,0,0,0.4)]">
-                  <p className="font-semibold text-foreground">En esta nota</p>
-                  <p className="mt-3 text-pretty leading-relaxed">
-                    Una mirada práctica para marcas que quieren dejar de interrumpir y empezar a provocar conversaciones.
-                  </p>
+	                  <p className="font-semibold text-foreground">{locale === "en" ? "In this article" : "En esta nota"}</p>
+	                  <p className="mt-3 text-pretty leading-relaxed">
+	                    {locale === "en" ? "A practical look for brands that want to stop interrupting and start creating conversations." : "Una mirada práctica para marcas que quieren dejar de interrumpir y empezar a provocar conversaciones."}
+	                  </p>
                 </div>
               </aside>
 
@@ -225,25 +234,25 @@ const BlogPost = () => {
             <section className="mx-6 max-w-5xl rounded-[28px] bg-foreground px-6 py-10 text-background shadow-[0_18px_60px_-32px_rgba(0,0,0,0.55)] sm:px-10 lg:mx-auto">
               <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
                 <div>
-                  <p className="text-sm font-semibold text-background/70">¿Querés probar este formato con tu marca?</p>
+	                  <p className="text-sm font-semibold text-background/70">{locale === "en" ? "Want to try this format with your brand?" : "¿Querés probar este formato con tu marca?"}</p>
                   <h2 className="mt-2 max-w-2xl text-balance font-display text-3xl font-bold sm:text-4xl">
-                    Salimos a la calle, hacemos la pregunta correcta y convertimos la reacción en contenido.
-                  </h2>
-                </div>
-                <a href="/#cta" className="inline-flex min-h-11 items-center justify-center rounded-full bg-background px-5 py-3 text-sm font-bold text-foreground transition-transform hover:scale-[0.98] active:scale-[0.96]">
-                  Agendar llamada <ArrowRight className="ml-2 h-4 w-4" />
+	                    {locale === "en" ? "We hit the street, ask the right question, and turn the reaction into content." : "Salimos a la calle, hacemos la pregunta correcta y convertimos la reacción en contenido."}
+	                  </h2>
+	                </div>
+	                <a href={localizePath("/#cta", locale)} className="inline-flex min-h-11 items-center justify-center rounded-full bg-background px-5 py-3 text-sm font-bold text-foreground transition-transform hover:scale-[0.98] active:scale-[0.96]">
+	                  {t.common.bookCall} <ArrowRight className="ml-2 h-4 w-4" />
                 </a>
               </div>
             </section>
 
             {relatedPosts.length > 0 ? (
               <section className="mx-auto mt-16 max-w-5xl px-6 pb-16 lg:px-8">
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">Seguir leyendo</p>
+	                <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">{locale === "en" ? "Keep reading" : "Seguir leyendo"}</p>
                 <div className="mt-5 grid gap-5 sm:grid-cols-3">
                   {relatedPosts.map((related) => {
                     const coverUrl = getImageUrl(related.coverImage, 700, 368);
                     return (
-                      <Link key={related._id} to={`/blog/${related.slug}`} className="group overflow-hidden rounded-[24px] bg-card shadow-[0_0_0_1px_rgba(0,0,0,0.06),0_12px_30px_-22px_rgba(0,0,0,0.35)] transition-transform hover:-translate-y-1">
+	                      <Link key={related._id} to={localizePath(`/blog/${related.slug}`, locale)} className="group overflow-hidden rounded-[24px] bg-card shadow-[0_0_0_1px_rgba(0,0,0,0.06),0_12px_30px_-22px_rgba(0,0,0,0.35)] transition-transform hover:-translate-y-1">
                         <div className="aspect-[40/21] bg-muted">
                           {coverUrl ? <img src={coverUrl} alt={related.coverImage?.alt || related.title} className="h-full w-full object-cover outline outline-1 -outline-offset-1 outline-black/10" loading="lazy" /> : null}
                         </div>

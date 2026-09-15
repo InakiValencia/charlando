@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, type FormEvent } from "react";
+import { useState, useEffect, type FormEvent } from "react";
 import { Logo } from "@/components/Logo";
 import { MobileSiteMenu } from "@/components/MobileSiteMenu";
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Link } from "react-router-dom";
-import { motion, AnimatePresence, useScroll } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import {
   Puzzle,
@@ -26,6 +26,10 @@ import avatarSarah from "@/assets/avatar-sarah.jpg";
 import avatarMarcus from "@/assets/avatar-marcus.jpg";
 import avatarPriya from "@/assets/avatar-priya.jpg";
 import { supabase } from "@/integrations/supabase/client";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { alternatePathsFor, localizePath } from "@/i18n/routes";
+import { useTranslation } from "@/i18n/useTranslation";
+import { usePageSeo } from "@/lib/seo";
 
 
 const features = [
@@ -43,10 +47,22 @@ const features = [
   },
 ];
 
-const BENEFITS = [
-  { title: "Sin videos AI, generás confianza", text: "Tu audiencia ve a personas reales reaccionando, opinando y haciendo preguntas. Eso se siente más creíble que una marca hablando sola." },
-  { title: "Detiene el scroll", text: "Cuando a un desconocido le hacen una pregunta directa frente a la cámara, el espectador inmediatamente piensa dos cosas: ¿Qué va a decir? ¿Y qué diría yo si me preguntaran eso? Esa tensión obliga al usuario a dejar de scrollear." },
-  { title: "Impulsa conversión", text: "El contenido puede trabajar todo el funnel: presenta la marca, educa, genera consideración y termina con un llamado a la acción claro." },
+const MESSAGE_STAGES = [
+  {
+    label: "Atención",
+    title: "Ganate el primer segundo",
+    text: "Las marcas empiezan con un mensaje. Nosotros, con un momento. Una reacción real, cruda y natural que frena el scroll.",
+  },
+  {
+    label: "Confianza",
+    title: "Donde se toman las decisiones",
+    text: "Las preguntas, las objeciones y la respuesta honesta. Nada se recorta para no perder credibilidad. Ahí se construye la confianza.",
+  },
+  {
+    label: "Acción",
+    title: "Hacé fácil decir que sí",
+    text: "Con atención y confianza ganadas, convertimos esas reacciones reales en piezas que llevan a la conversión.",
+  },
 ];
 
 const AVATAR_URLS = [
@@ -94,7 +110,7 @@ function IllustrationPages({ accents }: { accents: BentoAccents }) {
           </div>
           <div className="flex gap-1.5 pt-1">
             <div className="h-6 rounded-full flex-1 flex items-center justify-center" style={{ backgroundColor: accents.pageButton }}>
-              <span className="text-[9px] text-white font-semibold">Llamado a la acción</span>
+              <span className="text-[9px] text-white font-semibold">CTA</span>
             </div>
           </div>
         </div>
@@ -118,7 +134,7 @@ function IllustrationAnalytics({ accents }: { accents: BentoAccents }) {
             <div key={i} className="flex-1 rounded-full" style={{ height: `${h}%`, backgroundColor: accents.analyticsBars }} />
           ))}
         </div>
-        <p className="text-[8px] text-muted-foreground mt-2 text-center">Entrevista en curso · Persona real</p>
+        <p className="text-[8px] text-muted-foreground mt-2 text-center">Live interview · Real person</p>
       </div>
     </div>
   );
@@ -149,7 +165,7 @@ function IllustrationAttendees({ accents }: { accents: BentoAccents }) {
       <div className="grid grid-cols-3 gap-4">
         {AVATAR_URLS.map((url, i) => (
           <div key={i} className="w-16 h-16 rounded-full overflow-hidden shadow-md border-[3px]" style={{ borderColor: accents.attendeeBorder }}>
-            <img src={url} alt={`Persona real ${i + 1}`} className="w-full h-full object-cover" />
+            <img src={url} alt={`Real person ${i + 1}`} className="w-full h-full object-cover" />
           </div>
         ))}
       </div>
@@ -169,6 +185,7 @@ const FEATURED_VIDEOS = [
   "/featured-video-10.png",
   "/featured-video-11.png",
   "/featured-video-12.png",
+  "/featured-video-13.png",
 ];
 
 const HERO_IMAGES = [
@@ -368,11 +385,12 @@ const COLLABORATOR_BRANDS = [
   { name: "AIRTM", logo: "/airtm-logo.png" },
   { name: "Wallbit", logo: "/wallbit-logo.png" },
   { name: "Takenos", logo: "/takenos-logo.png" },
+  { name: "John Foos", logo: "/john-foos-logo.jpg" },
 ];
 
-const FULL_SECTION_CLASS = "flex items-center py-12 lg:py-16";
-const SECTION_HEADER_CLASS = "text-center mb-7 lg:mb-8";
-const SECTION_TITLE_CLASS = "text-3xl sm:text-4xl lg:text-5xl font-display mb-4";
+const FULL_SECTION_CLASS = "flex items-center py-16 lg:py-24";
+const SECTION_HEADER_CLASS = "text-center mb-10 lg:mb-12";
+const SECTION_TITLE_CLASS = "text-4xl sm:text-5xl lg:text-6xl font-display mb-5";
 const FOOTER_LINK_CLASS = "inline-flex min-h-10 min-w-10 items-center transition-colors hover:text-primary";
 const CALENDAR_BOOKING_URL = "https://calendar.app.google/UqwA28tsXsQCnchF6";
 const EMPTY_LEAD_FORM = {
@@ -410,6 +428,27 @@ const normalizeWebsiteUrl = (value: string) => {
 };
 
 const Landing = () => {
+  const { locale, t } = useTranslation();
+  const landing = t.landing;
+  const leadCopy = t.leadForm;
+  const hostFormCopy = landing.hostForm;
+  const localizedHome = localizePath("/", locale);
+  const localizedLibrary = localizePath("/biblioteca", locale);
+  const localizedTerms = localizePath("/terminos-y-condiciones", locale);
+  const localizedPrivacy = localizePath("/politica-de-privacidad", locale);
+  const navLinks = [
+    { label: t.common.nav.home, href: localizePath("/#top", locale), external: false },
+    { label: t.common.nav.library, href: localizedLibrary, external: true },
+    { label: t.common.nav.process, href: localizePath("/#proceso", locale), external: false },
+    { label: t.common.nav.services, href: localizePath("/#features", locale), external: false },
+    { label: t.common.nav.contact, href: localizePath("/#cta", locale), external: false },
+    { label: t.common.nav.blog, href: localizePath("/blog", locale), external: true },
+  ];
+  const rotatingCopy = landing.rotatingWords;
+  const processSteps = landing.process.steps;
+  const messageStages = landing.why.stages;
+  const faqItems = landing.faq.items;
+  const featureItems = landing.features.items;
   const [wordIndex, setWordIndex] = useState(0);
   const [navVisible, setNavVisible] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
@@ -422,13 +461,6 @@ const Landing = () => {
   const [hostApplicationSubmitting, setHostApplicationSubmitting] = useState(false);
   const [hostApplicationError, setHostApplicationError] = useState("");
   const [activeProcessStep, setActiveProcessStep] = useState<number | null>(null);
-  const [unlockedBenefitCount, setUnlockedBenefitCount] = useState(1);
-  const [benefitsStickyReleased, setBenefitsStickyReleased] = useState(false);
-  const benefitsSectionRef = useRef<HTMLElement | null>(null);
-  const lastScrollYRef = useRef(0);
-  const isScrollingDownRef = useRef(true);
-  const hasCompletedBenefitsRef = useRef(false);
-  const benefitsStickyReleasedRef = useRef(false);
   const titleWeight = 700;
   const confettiSize = 2.5;
   const confettiOpacity = 0.8;
@@ -466,9 +498,13 @@ const Landing = () => {
     },
   ];
   const currentPreset = bentoPresets[0];
-  const { scrollYProgress: benefitsScrollProgress } = useScroll({
-    target: benefitsSectionRef,
-    offset: ["start start", "end end"],
+
+  usePageSeo({
+    title: t.seo.landingTitle,
+    description: t.seo.landingDescription,
+    canonicalPath: localizedHome,
+    locale,
+    alternatePaths: alternatePathsFor("/"),
   });
 
   const openLeadForm = () => {
@@ -489,66 +525,6 @@ const Landing = () => {
     setHostApplicationForm((current) => ({ ...current, [field]: value }));
   };
 
-  useEffect(() => {
-    return benefitsScrollProgress.on("change", (latest) => {
-      if (benefitsStickyReleased || !isScrollingDownRef.current) {
-        setUnlockedBenefitCount(BENEFITS.length);
-        return;
-      }
-
-      if (latest >= 0.98) {
-        hasCompletedBenefitsRef.current = true;
-        setUnlockedBenefitCount(BENEFITS.length);
-        return;
-      }
-
-      const nextCount = latest < 0.33 ? 1 : latest < 0.66 ? 2 : BENEFITS.length;
-
-      setUnlockedBenefitCount((current) => (current === nextCount ? current : nextCount));
-    });
-  }, [benefitsScrollProgress, benefitsStickyReleased]);
-
-  useEffect(() => {
-    lastScrollYRef.current = window.scrollY;
-
-    const releaseBenefitsSticky = () => {
-      const section = benefitsSectionRef.current;
-      if (!section || benefitsStickyReleasedRef.current) return;
-
-      const previousHeight = section.offsetHeight;
-      benefitsStickyReleasedRef.current = true;
-      setBenefitsStickyReleased(true);
-
-      requestAnimationFrame(() => {
-        const nextHeight = section.offsetHeight;
-        const heightDelta = nextHeight - previousHeight;
-
-        if (heightDelta !== 0) {
-          window.scrollBy(0, heightDelta);
-        }
-      });
-    };
-
-    const updateScrollDirection = () => {
-      const currentScrollY = window.scrollY;
-      const isScrollingDown = currentScrollY >= lastScrollYRef.current;
-      lastScrollYRef.current = currentScrollY;
-      isScrollingDownRef.current = isScrollingDown;
-
-      if (!isScrollingDown) {
-        setUnlockedBenefitCount(BENEFITS.length);
-
-        if (hasCompletedBenefitsRef.current) {
-          releaseBenefitsSticky();
-        }
-      }
-    };
-
-    window.addEventListener("scroll", updateScrollDirection, { passive: true });
-
-    return () => window.removeEventListener("scroll", updateScrollDirection);
-  }, []);
-
   const handleLeadSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLeadError("");
@@ -559,14 +535,14 @@ const Landing = () => {
     const websiteUrl = normalizeWebsiteUrl(leadForm.websiteUrl);
 
     if (!email || !fullName || !brandName || !websiteUrl) {
-      setLeadError("Completá todos los campos para agendar la llamada.");
+      setLeadError(leadCopy.requiredError);
       return;
     }
 
     try {
       new URL(websiteUrl);
     } catch {
-      setLeadError("Ingresá una URL válida para tu página.");
+      setLeadError(leadCopy.urlError);
       return;
     }
 
@@ -588,19 +564,19 @@ const Landing = () => {
       });
 
       if (error) {
-        setLeadError("No pudimos guardar tus datos. Probá de nuevo en unos segundos.");
-        toast.error(error.message || "No pudimos guardar tus datos");
+        setLeadError(leadCopy.submitError);
+        toast.error(error.message || leadCopy.submitError);
         return;
       }
     } catch {
-      setLeadError("No pudimos guardar tus datos. Probá de nuevo en unos segundos.");
-      toast.error("No pudimos guardar tus datos");
+      setLeadError(leadCopy.submitError);
+      toast.error(leadCopy.submitError);
       return;
     } finally {
       setLeadSubmitting(false);
     }
 
-    toast.success("Datos guardados. Te llevamos al calendario.");
+    toast.success(leadCopy.success);
     setLeadForm(EMPTY_LEAD_FORM);
     setLeadFormOpen(false);
     window.location.assign(CALENDAR_BOOKING_URL);
@@ -620,17 +596,17 @@ const Landing = () => {
     const motivation = hostApplicationForm.motivation.trim();
 
     if (!firstName || !lastName || !email || !cityLocation || !socialFollowing || !socialHandle || !hostApplicationForm.age || !motivation) {
-      setHostApplicationError("Completá todos los campos para postularte como host.");
+      setHostApplicationError(hostFormCopy.requiredError);
       return;
     }
 
     if (!Number.isFinite(age) || age < 18 || age > 100) {
-      setHostApplicationError("Ingresá una edad válida.");
+      setHostApplicationError(hostFormCopy.ageError);
       return;
     }
 
     if (motivation.length < 20) {
-      setHostApplicationError("Contanos un poco más sobre por qué querés ser host.");
+      setHostApplicationError(hostFormCopy.motivationError);
       return;
     }
 
@@ -656,29 +632,29 @@ const Landing = () => {
       });
 
       if (error) {
-        setHostApplicationError("No pudimos guardar tu postulación. Probá de nuevo en unos segundos.");
-        toast.error(error.message || "No pudimos guardar tu postulación");
+        setHostApplicationError(hostFormCopy.submitError);
+        toast.error(error.message || hostFormCopy.submitError);
         return;
       }
     } catch {
-      setHostApplicationError("No pudimos guardar tu postulación. Probá de nuevo en unos segundos.");
-      toast.error("No pudimos guardar tu postulación");
+      setHostApplicationError(hostFormCopy.submitError);
+      toast.error(hostFormCopy.submitError);
       return;
     } finally {
       setHostApplicationSubmitting(false);
     }
 
-    toast.success("Postulación enviada. Gracias por querer ser host de Charlando.");
+    toast.success(hostFormCopy.success);
     setHostApplicationForm(EMPTY_HOST_APPLICATION_FORM);
     setHostApplicationOpen(false);
   };
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setWordIndex((prev) => (prev + 1) % rotatingWords.length);
+      setWordIndex((prev) => (prev + 1) % rotatingCopy.length);
     }, 3000);
     return () => clearInterval(interval);
-  }, []);
+  }, [rotatingCopy.length]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -743,11 +719,11 @@ const Landing = () => {
         transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 h-[72px] px-6 lg:px-8">
-          <Link to="/" className="shrink-0">
+          <Link to={localizedHome} className="shrink-0">
             <Logo size="md" />
           </Link>
           <div className="hidden lg:flex items-center gap-1">
-            {NAV_LINKS.map((l) => (
+            {navLinks.map((l) => (
               l.external ? (
                 <Link key={l.label} to={l.href} className="text-sm font-medium text-foreground/80 hover:text-primary px-3 py-2 rounded-full transition-colors">
                   {l.label}
@@ -766,9 +742,10 @@ const Landing = () => {
               onClick={openLeadForm}
               data-testid="open-lead-form-nav"
             >
-              Agendar llamada
+              {t.common.bookCall}
             </Button>
-            <MobileSiteMenu links={NAV_LINKS} onLeadClick={openLeadForm} />
+            <LanguageSwitcher className="hidden lg:inline-flex" />
+            <MobileSiteMenu links={navLinks} onLeadClick={openLeadForm} />
           </div>
         </div>
       </motion.nav>
@@ -778,10 +755,10 @@ const Landing = () => {
           <DialogHeader>
             <div className="px-6 pt-6 sm:px-7 sm:pt-7">
               <DialogTitle className="font-display text-2xl text-foreground">
-                Agendar llamada
+                {leadCopy.title}
               </DialogTitle>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
-                Dejanos tus datos y avanzamos con una conversación concreta sobre tu marca.
+                {leadCopy.description}
               </p>
             </div>
           </DialogHeader>
@@ -789,13 +766,13 @@ const Landing = () => {
           <form className="space-y-4 px-6 pb-6 sm:px-7 sm:pb-7" onSubmit={handleLeadSubmit}>
             <div className="grid gap-3">
               <div className="space-y-2">
-                <Label htmlFor="lead-email">Cuál es tu mail</Label>
+                <Label htmlFor="lead-email">{leadCopy.email}</Label>
                 <Input
                   id="lead-email"
                   name="email"
                   type="email"
                   autoComplete="email"
-                  placeholder="tu@mail.com"
+                  placeholder={leadCopy.emailPlaceholder}
                   value={leadForm.email}
                   onChange={(event) => updateLeadField("email", event.target.value)}
                   required
@@ -803,13 +780,13 @@ const Landing = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="lead-name">Cómo es tu nombre</Label>
+                <Label htmlFor="lead-name">{leadCopy.name}</Label>
                 <Input
                   id="lead-name"
                   name="name"
                   type="text"
                   autoComplete="name"
-                  placeholder="Tu nombre"
+                  placeholder={leadCopy.namePlaceholder}
                   value={leadForm.fullName}
                   onChange={(event) => updateLeadField("fullName", event.target.value)}
                   required
@@ -817,13 +794,13 @@ const Landing = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="lead-brand">Cómo se llama tu marca</Label>
+                <Label htmlFor="lead-brand">{leadCopy.brand}</Label>
                 <Input
                   id="lead-brand"
                   name="brand"
                   type="text"
                   autoComplete="organization"
-                  placeholder="Nombre de tu marca"
+                  placeholder={leadCopy.brandPlaceholder}
                   value={leadForm.brandName}
                   onChange={(event) => updateLeadField("brandName", event.target.value)}
                   required
@@ -831,14 +808,14 @@ const Landing = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="lead-website">Cuál es la URL de tu página</Label>
+                <Label htmlFor="lead-website">{leadCopy.website}</Label>
                 <Input
                   id="lead-website"
                   name="website"
                   type="text"
                   inputMode="url"
                   autoComplete="url"
-                  placeholder="https://tumarca.com"
+                  placeholder={leadCopy.websitePlaceholder}
                   value={leadForm.websiteUrl}
                   onChange={(event) => updateLeadField("websiteUrl", event.target.value)}
                   required
@@ -854,7 +831,7 @@ const Landing = () => {
 
             <DialogFooter>
               <Button type="submit" className="w-full bg-foreground text-background hover:bg-primary hover:text-background" disabled={leadSubmitting}>
-                {leadSubmitting ? "Guardando..." : "Continuar"} <ArrowRight className="ml-1 h-4 w-4" />
+                {leadSubmitting ? t.common.saving : t.common.continue} <ArrowRight className="ml-1 h-4 w-4" />
               </Button>
             </DialogFooter>
           </form>
@@ -867,13 +844,13 @@ const Landing = () => {
             <div className="px-6 pt-6 sm:px-7 sm:pt-7">
               <div className="mb-3 inline-flex w-fit items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
                 <Globe2 className="h-3.5 w-3.5" />
-                Hosts en todo el mundo
+                {hostFormCopy.badge}
               </div>
               <DialogTitle className="font-display text-2xl text-foreground sm:text-3xl">
-                Postulate como host
+                {hostFormCopy.title}
               </DialogTitle>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
-                Charlando está armando una red de hosts en distintas ciudades. Si tenés energía, carisma y ganas de entrevistar desconocidos frente a cámara, dejanos tus datos.
+                {hostFormCopy.description}
               </p>
             </div>
           </DialogHeader>
@@ -881,13 +858,13 @@ const Landing = () => {
           <form className="space-y-4 px-6 pb-6 sm:px-7 sm:pb-7" onSubmit={handleHostApplicationSubmit}>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="host-first-name">Nombre</Label>
+                <Label htmlFor="host-first-name">{hostFormCopy.firstName}</Label>
                 <Input
                   id="host-first-name"
                   name="firstName"
                   type="text"
                   autoComplete="given-name"
-                  placeholder="Tu nombre"
+                  placeholder={hostFormCopy.firstNamePlaceholder}
                   value={hostApplicationForm.firstName}
                   onChange={(event) => updateHostApplicationField("firstName", event.target.value)}
                   required
@@ -895,13 +872,13 @@ const Landing = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="host-last-name">Apellido</Label>
+                <Label htmlFor="host-last-name">{hostFormCopy.lastName}</Label>
                 <Input
                   id="host-last-name"
                   name="lastName"
                   type="text"
                   autoComplete="family-name"
-                  placeholder="Tu apellido"
+                  placeholder={hostFormCopy.lastNamePlaceholder}
                   value={hostApplicationForm.lastName}
                   onChange={(event) => updateHostApplicationField("lastName", event.target.value)}
                   required
@@ -910,7 +887,7 @@ const Landing = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="host-email">Email</Label>
+              <Label htmlFor="host-email">{hostFormCopy.email}</Label>
               <Input
                 id="host-email"
                 name="email"
@@ -925,13 +902,13 @@ const Landing = () => {
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="host-city">Ciudad / ubicación</Label>
+              <Label htmlFor="host-city">{hostFormCopy.city}</Label>
                 <Input
                   id="host-city"
                   name="cityLocation"
                   type="text"
                   autoComplete="address-level2"
-                  placeholder="Buenos Aires, Madrid, CDMX..."
+                  placeholder={hostFormCopy.cityPlaceholder}
                   value={hostApplicationForm.cityLocation}
                   onChange={(event) => updateHostApplicationField("cityLocation", event.target.value)}
                   required
@@ -939,7 +916,7 @@ const Landing = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="host-age">Edad</Label>
+                <Label htmlFor="host-age">{hostFormCopy.age}</Label>
                 <Input
                   id="host-age"
                   name="age"
@@ -956,17 +933,17 @@ const Landing = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="host-social-following">Cómo clasificarías tu comunidad</Label>
+              <Label htmlFor="host-social-following">{hostFormCopy.following}</Label>
               <Select
                 value={hostApplicationForm.socialFollowing}
                 onValueChange={(value) => updateHostApplicationField("socialFollowing", value)}
                 required
               >
                 <SelectTrigger id="host-social-following">
-                  <SelectValue placeholder="Elegí una opción" />
+                  <SelectValue placeholder={hostFormCopy.followingPlaceholder} />
                 </SelectTrigger>
                 <SelectContent>
-                  {SOCIAL_FOLLOWING_OPTIONS.map((option) => (
+                  {hostFormCopy.followingOptions.map((option) => (
                     <SelectItem key={option} value={option}>
                       {option}
                     </SelectItem>
@@ -976,12 +953,12 @@ const Landing = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="host-social-handle">Plataforma principal y usuario</Label>
+              <Label htmlFor="host-social-handle">{hostFormCopy.handle}</Label>
               <Input
                 id="host-social-handle"
                 name="socialHandle"
                 type="text"
-                placeholder="TikTok, Instagram o YouTube: @tuusuario"
+                placeholder={hostFormCopy.handlePlaceholder}
                 value={hostApplicationForm.socialHandle}
                 onChange={(event) => updateHostApplicationField("socialHandle", event.target.value)}
                 required
@@ -989,12 +966,12 @@ const Landing = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="host-motivation">Por qué querés ser host</Label>
+              <Label htmlFor="host-motivation">{hostFormCopy.motivation}</Label>
               <Textarea
                 id="host-motivation"
                 name="motivation"
                 className="min-h-28 resize-y"
-                placeholder="Contanos qué podés aportar, tu experiencia creando contenido o por qué te interesa salir a entrevistar gente."
+                placeholder={hostFormCopy.motivationPlaceholder}
                 value={hostApplicationForm.motivation}
                 onChange={(event) => updateHostApplicationField("motivation", event.target.value)}
                 required
@@ -1009,7 +986,7 @@ const Landing = () => {
 
             <DialogFooter>
               <Button type="submit" className="w-full bg-foreground text-background hover:bg-primary hover:text-background" disabled={hostApplicationSubmitting}>
-                {hostApplicationSubmitting ? "Enviando..." : "Enviar postulación"} <ArrowRight className="ml-1 h-4 w-4" />
+                {hostApplicationSubmitting ? hostFormCopy.submitting : hostFormCopy.submit} <ArrowRight className="ml-1 h-4 w-4" />
               </Button>
             </DialogFooter>
           </form>
@@ -1031,7 +1008,7 @@ const Landing = () => {
               transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.2 }}
             >
               <div className="rounded-2xl overflow-hidden shadow-lg rotate-[6deg] bg-card aspect-[9/16] relative">
-                <img src={HERO_IMAGES[0]} alt="Entrevista callejera" className="w-full h-full object-cover" />
+	                <img src={HERO_IMAGES[0]} alt={landing.hero.imageAlt} className="w-full h-full object-cover" />
                 <div className="absolute bottom-2 left-2">
                   <span className="text-[10px] font-semibold text-primary bg-white/90 backdrop-blur px-2 py-0.5 rounded-full">Street Interview</span>
                 </div>
@@ -1046,7 +1023,7 @@ const Landing = () => {
               transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.35 }}
             >
               <div className="rounded-2xl overflow-hidden shadow-lg rotate-[-5deg] bg-card aspect-[9/16] relative">
-                <img src={HERO_IMAGES[1]} alt="Reacciones reales" className="w-full h-full object-cover" />
+	                <img src={HERO_IMAGES[1]} alt={landing.hero.imageAlt} className="w-full h-full object-cover" />
               </div>
             </motion.div>
 
@@ -1058,7 +1035,7 @@ const Landing = () => {
               transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.25 }}
             >
               <div className="rounded-2xl overflow-hidden shadow-lg rotate-[-6deg] bg-card aspect-[9/16] relative">
-                <img src={HERO_IMAGES[2]} alt="Reacción a producto" className="w-full h-full object-cover" />
+	                <img src={HERO_IMAGES[2]} alt={landing.hero.imageAlt} className="w-full h-full object-cover" />
                 <div className="absolute bottom-2 left-2">
                   <span className="text-[10px] font-semibold text-primary bg-white/90 backdrop-blur px-2 py-0.5 rounded-full">Product Reaction</span>
                 </div>
@@ -1073,7 +1050,7 @@ const Landing = () => {
               transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.4 }}
             >
               <div className="rounded-2xl overflow-hidden shadow-lg rotate-[5deg] bg-card aspect-[9/16] relative">
-                <img src={HERO_IMAGES[3]} alt="Lanzamiento de marca" className="w-full h-full object-cover" />
+	                <img src={HERO_IMAGES[3]} alt={landing.hero.imageAlt} className="w-full h-full object-cover" />
               </div>
             </motion.div>
 
@@ -1089,24 +1066,24 @@ const Landing = () => {
               </div>
               <div className="inline-flex items-center gap-2 text-xs font-semibold text-primary bg-primary/10 px-3 py-1 rounded-full mb-4">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                Personas reales · Reacciones reales · Resultados reales
+                {locale === "en" ? "Real people · Real reactions · Real results" : "Personas reales · Reacciones reales · Resultados reales"}
               </div>
               <h1 className="text-balance text-[30px] min-[360px]:text-[34px] sm:text-5xl md:text-[58px] lg:text-[64px] 2xl:text-[72px] font-display tracking-tight leading-[1.12] text-foreground mb-5" style={{ fontWeight: titleWeight }}>
                 <span className="inline-flex flex-col items-center">
-                  <span>Conversaciones que</span>
+                  <span>{locale === "en" ? "Conversations that" : "Conversaciones que"}</span>
                   <span className="inline-flex translate-x-1 items-baseline justify-center gap-x-[0.18em] whitespace-nowrap min-[360px]:translate-x-3 sm:translate-x-7 lg:translate-x-9">
-                    <span>convierten en</span>
+                    <span>{locale === "en" ? "turn into" : "convierten en"}</span>
                     <span className="inline-block relative text-left" style={{ minWidth: "7ch" }}>
                       <AnimatePresence initial={false} mode="wait">
                         <motion.span
-                          key={rotatingWords[wordIndex]}
+                          key={rotatingCopy[wordIndex]}
                           initial={{ opacity: 0, y: 16 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -16 }}
                           transition={{ duration: 0.35 }}
                           className="text-primary inline-block"
                         >
-                          {rotatingWords[wordIndex]}
+                          {rotatingCopy[wordIndex]}
                         </motion.span>
                       </AnimatePresence>
                       <span className="invisible block h-0 overflow-hidden" aria-hidden="true">Shorts.</span>
@@ -1123,13 +1100,13 @@ const Landing = () => {
                     transition={{ type: "spring", stiffness: 220, damping: 20, delay: 0.2 + i * 0.1 }}
                     className={`relative overflow-hidden rounded-xl bg-card shadow-lg aspect-[9/16] ${i === 1 || i === 2 ? "-translate-y-2" : ""}`}
                   >
-                    <img src={image} alt="Ejemplo de video vertical" className="h-full w-full object-cover" />
+                    <img src={image} alt={landing.hero.imageAlt} className="h-full w-full object-cover" />
                     <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/55 to-transparent" />
                   </motion.div>
                 ))}
               </div>
               <p className="text-pretty text-base sm:text-lg text-muted-foreground max-w-xl mx-auto mb-6 leading-relaxed">
-                Hacemos entrevistas en la calle con personas reales y transformamos esas reacciones en videos listos para contenido orgánico y ads, para viralizar tu marca.
+                {landing.hero.subtitle}
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                 <Button
@@ -1139,14 +1116,14 @@ const Landing = () => {
                   onClick={openLeadForm}
                   data-testid="open-lead-form-hero"
                 >
-                  Agendar llamada <ArrowRight className="ml-2 w-4 h-4" />
+                  {landing.hero.primaryCta} <ArrowRight className="ml-2 w-4 h-4" />
                 </Button>
                 <Button size="lg" variant="outline" className="text-base font-semibold px-8 h-12 border-foreground/15" asChild>
-                  <a href="#videos">Ver videos</a>
+                  <a href="#videos">{landing.hero.secondaryCta}</a>
                 </Button>
               </div>
-              <p className="text-xs text-muted-foreground mt-4">Para marcas que quieren contenido que realmente capte atención.</p>
-              <p className="text-sm font-semibold text-primary mt-1">+4M views en 1 mes</p>
+              <p className="text-xs text-muted-foreground mt-4">{landing.hero.note}</p>
+              <p className="text-sm font-semibold text-primary mt-1">{landing.hero.metric}</p>
             </motion.div>
           </div>
         </div>
@@ -1154,10 +1131,10 @@ const Landing = () => {
 
       {/* Videos destacados */}
       <section id="videos" className={FULL_SECTION_CLASS}>
-        <div className="w-full max-w-6xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-center mb-7 lg:mb-8">
+        <div className="w-full max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex items-center justify-center mb-10 lg:mb-12">
             <h2 className={`${SECTION_TITLE_CLASS} text-foreground text-center`} style={{ fontWeight: titleWeight }}>
-              Videos destacados de Charlando
+              {landing.videos.title}
             </h2>
           </div>
           <div
@@ -1175,13 +1152,13 @@ const Landing = () => {
                   {FEATURED_VIDEOS.map((video, i) => (
                     <div
                       key={`${video}-${copy}`}
-                      className="w-[66vw] max-w-[285px] shrink-0 sm:w-[225px] lg:w-[235px] xl:w-[245px] 2xl:w-[255px]"
+                      className="w-[72vw] max-w-[330px] shrink-0 sm:w-[260px] lg:w-[275px] xl:w-[290px] 2xl:w-[305px]"
                     >
                       <div className="group cursor-pointer">
                         <div className="relative rounded-2xl overflow-hidden bg-muted aspect-[9/16] shadow-sm transition-transform duration-300 group-hover:-translate-y-1">
                           <img
                             src={video}
-                            alt={copy === 1 ? "" : `Video destacado de Charlando ${i + 1}`}
+                            alt={copy === 1 ? "" : `${landing.videos.alt} ${i + 1}`}
                             className="h-full w-full object-cover"
                           />
                         </div>
@@ -1193,37 +1170,37 @@ const Landing = () => {
             </motion.div>
           </div>
 
-          <div className="mt-7 flex justify-center">
+          <div className="mt-9 flex justify-center">
             <Button
               size="lg"
-              className="h-12 bg-foreground px-7 text-base font-semibold text-background transition-transform hover:bg-primary hover:text-background active:scale-[0.96]"
+              className="h-14 bg-foreground px-8 text-lg font-semibold text-background transition-transform hover:bg-primary hover:text-background active:scale-[0.96]"
               asChild
             >
-              <Link to="/biblioteca">Mirá nuestros videos <ArrowRight className="ml-2 h-4 w-4" /></Link>
+              <Link to={localizedLibrary}>{landing.videos.cta} <ArrowRight className="ml-2 h-5 w-5" /></Link>
             </Button>
           </div>
 
           <motion.div
-            className="mt-8 text-center"
+            className="mt-12 text-center"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <h3 className="text-2xl sm:text-3xl font-display text-foreground tracking-[-0.02em] mb-4" style={{ fontWeight: titleWeight }}>
-              Resultados de empresas siguiendo esta estrategia
+            <h3 className="text-3xl sm:text-4xl font-display text-foreground tracking-[-0.02em] mb-5" style={{ fontWeight: titleWeight }}>
+              {locale === "en" ? "Results from companies using this strategy" : "Resultados de empresas siguiendo esta estrategia"}
             </h3>
-            <div className="grid grid-cols-3 gap-2 sm:gap-4 max-w-3xl mx-auto">
+            <div className="grid grid-cols-3 gap-3 sm:gap-5 max-w-4xl mx-auto">
               {[
-                { value: "2X", label: "View rate de 6 segundos" },
-                { value: "+50%", label: "hook rate" },
-                { value: "2X", label: "ROAS" },
+	                { value: "2X", label: locale === "en" ? "6-second view rate" : "View rate de 6 segundos" },
+	                { value: "+50%", label: locale === "en" ? "hook rate" : "hook rate" },
+	                { value: "2X", label: "ROAS" },
               ].map((result) => (
-                <div key={result.label} className="rounded-2xl sm:rounded-3xl bg-card px-2.5 py-4 min-[360px]:p-4 sm:p-5">
-                  <p className="font-display text-3xl min-[360px]:text-4xl sm:text-5xl text-primary tracking-[-0.03em] tabular-nums" style={{ fontWeight: titleWeight }}>
+                <div key={result.label} className="rounded-2xl sm:rounded-3xl bg-card px-3 py-5 min-[360px]:p-5 sm:p-7">
+                  <p className="font-display text-4xl min-[360px]:text-5xl sm:text-6xl text-primary tracking-[-0.03em] tabular-nums" style={{ fontWeight: titleWeight }}>
                     {result.value}
                   </p>
-                  <p className="text-[11px] min-[360px]:text-xs sm:text-base text-muted-foreground mt-1.5 sm:mt-2 leading-snug">{result.label}</p>
+                  <p className="text-xs min-[360px]:text-sm sm:text-lg text-muted-foreground mt-2 sm:mt-3 leading-snug">{result.label}</p>
                 </div>
               ))}
             </div>
@@ -1233,7 +1210,7 @@ const Landing = () => {
 
       {/* Proceso — moderno */}
       <section id="proceso" className={`${FULL_SECTION_CLASS} bg-card`}>
-        <div className="w-full max-w-6xl mx-auto px-6 lg:px-8">
+        <div className="w-full max-w-7xl mx-auto px-6 lg:px-8">
           <motion.div
             className={SECTION_HEADER_CLASS}
             initial={{ opacity: 0, y: 24 }}
@@ -1242,17 +1219,26 @@ const Landing = () => {
             transition={{ duration: 0.6 }}
           >
             <h2 className={`${SECTION_TITLE_CLASS} text-foreground`} style={{ fontWeight: titleWeight }}>
-              De la idea al video viral en 4 pasos.
+              {landing.process.title}
             </h2>
-            <p className="text-muted-foreground text-xl sm:text-2xl leading-relaxed max-w-3xl mx-auto text-balance">
-              <span className="block">Sin IA, sin guiones, sin actores pagos.</span>
-              <span className="block">Nuestros hosts. Tus productos. Reacciones auténticas.</span>
+            <p className="text-muted-foreground text-2xl sm:text-3xl leading-relaxed max-w-4xl mx-auto text-balance">
+              {locale === "es" ? (
+                <>
+                  <span className="block">Sin IA, sin guiones, sin actores pagos.</span>
+                  <span className="block">Nuestros hosts. Tus productos. Reacciones auténticas.</span>
+                </>
+              ) : (
+                <>
+                  <span className="block">No AI, no scripts, no paid actors.</span>
+                  <span className="block">Our hosts. Your products. Authentic reactions.</span>
+                </>
+              )}
             </p>
           </motion.div>
 
           <div className="relative">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-3">
-              {PROCESS_STEPS.map((step, i) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-5">
+              {processSteps.map((step, i) => (
                 <motion.div
                   key={step.n}
                   initial={{ opacity: 0, y: 24 }}
@@ -1262,17 +1248,17 @@ const Landing = () => {
                   className="group relative"
                   data-process-card={i}
                 >
-                  <div className={`relative ${currentPreset.cardBg} rounded-3xl p-6 lg:p-7 h-full min-h-[230px] transition-[background-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5 ${activeProcessStep === i ? "-translate-y-1 shadow-xl shadow-primary/5" : ""}`}>
-                    <div className="flex items-center justify-between mb-5">
-                      <div className={`w-16 h-16 rounded-2xl text-background flex items-center justify-center font-display font-bold text-2xl shadow-md tabular-nums transition-colors group-hover:bg-primary ${activeProcessStep === i ? "bg-primary" : "bg-foreground"}`}>
+                  <div className={`relative ${currentPreset.cardBg} rounded-3xl p-7 lg:p-8 h-full min-h-[285px] transition-[background-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5 ${activeProcessStep === i ? "-translate-y-1 shadow-xl shadow-primary/5" : ""}`}>
+                    <div className="flex items-center justify-between mb-7">
+                      <div className={`flex h-20 w-20 items-center justify-center rounded-3xl text-background font-display text-2xl font-bold tabular-nums shadow-md transition-colors group-hover:bg-primary ${activeProcessStep === i ? "bg-primary" : "bg-foreground"}`}>
                         {step.n}
                       </div>
-                      {i < PROCESS_STEPS.length - 1 && (
+                      {i < processSteps.length - 1 && (
                         <ArrowRight className="hidden lg:block w-5 h-5 text-primary/40 group-hover:text-primary transition-colors" />
                       )}
                     </div>
-                    <h3 className="font-display font-bold text-xl mb-3 text-foreground tracking-[-0.01em]">{step.title}</h3>
-                    <p className="text-base text-muted-foreground leading-relaxed">{step.text}</p>
+                    <h3 className="font-display font-bold text-2xl mb-4 text-foreground tracking-[-0.01em]">{step.title}</h3>
+                    <p className="text-lg text-muted-foreground leading-relaxed">{step.text}</p>
                   </div>
                 </motion.div>
               ))}
@@ -1280,14 +1266,14 @@ const Landing = () => {
           </div>
 
           <motion.div
-            className="mt-8 overflow-hidden lg:mt-10"
+            className="mt-12 overflow-hidden lg:mt-14"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <h3 className="mb-4 text-center font-display text-xl font-bold text-foreground text-balance sm:text-2xl">
-              Marcas que confían en nosotros
+            <h3 className="mb-6 text-center font-display text-2xl font-bold text-foreground text-balance sm:text-3xl">
+              {landing.brands.title}
             </h3>
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
               <div className="min-w-0 flex-1 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
@@ -1295,18 +1281,17 @@ const Landing = () => {
                   className="flex w-max items-center"
                   animate={{ x: ["0%", "-50%"] }}
                   transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
-                  aria-label="Marcas que colaboran con Charlando"
+                  aria-label={landing.brands.aria}
                 >
                   {[0, 1].map((copy) => (
-                    <div key={copy} className="flex shrink-0 items-center gap-7 pr-7 sm:gap-8 sm:pr-8" aria-hidden={copy === 1}>
+                    <div key={copy} className="flex shrink-0 items-center gap-14 pr-14 sm:gap-16 sm:pr-16" aria-hidden={copy === 1}>
                       {COLLABORATOR_BRANDS.map((brand) => (
-                        <div key={`${brand.name}-${copy}`} className="flex h-16 min-w-[145px] items-center justify-center sm:min-w-[165px]">
-                          <img
-                            src={brand.logo}
-                            alt={copy === 1 ? "" : brand.name}
-                            className="no-image-outline h-11 w-auto max-w-[135px] object-contain sm:h-12 sm:max-w-[150px]"
-                          />
-                        </div>
+                        <img
+                          key={`${brand.name}-${copy}`}
+                          src={brand.logo}
+                          alt={copy === 1 ? "" : brand.name}
+                          className="no-image-outline block h-12 w-auto max-w-[155px] shrink-0 object-contain sm:h-14 sm:max-w-[180px]"
+                        />
                       ))}
                     </div>
                   ))}
@@ -1315,69 +1300,89 @@ const Landing = () => {
               <Button
                 type="button"
                 size="lg"
-                className="h-12 shrink-0 bg-foreground px-5 text-sm font-semibold text-background hover:bg-primary hover:text-background sm:text-base lg:px-6"
+                className="h-14 shrink-0 bg-foreground px-6 text-base font-semibold text-background hover:bg-primary hover:text-background sm:text-lg lg:px-7"
                 onClick={openLeadForm}
               >
-                Agendar llamada <ArrowRight className="ml-1 h-4 w-4" />
+                {landing.brands.cta} <ArrowRight className="ml-1 h-5 w-5" />
               </Button>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Beneficios */}
-      <section
-        ref={benefitsSectionRef}
-        className={`relative bg-card ${benefitsStickyReleased ? "" : "md:min-h-[240vh]"}`}
-        data-benefits-section
-      >
-        <div className={`mx-auto flex w-full max-w-6xl flex-col justify-center px-6 py-12 lg:px-8 lg:py-16 ${benefitsStickyReleased ? "" : "md:sticky md:top-0 md:min-h-screen"}`}>
-          <motion.div
-            className={SECTION_HEADER_CLASS}
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className={`${SECTION_TITLE_CLASS} text-foreground`} style={{ fontWeight: titleWeight }}>
-              Por qué funciona
-            </h2>
-          </motion.div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {BENEFITS.map((b, i) => {
-              const isUnlocked = i < unlockedBenefitCount;
+      {/* Atención, confianza y acción */}
+      <section className="bg-foreground text-background" data-message-section>
+        <div className="mx-auto w-full max-w-7xl px-6 py-16 sm:py-20 lg:px-8 lg:py-24">
+          <div className="max-w-4xl">
+            <motion.h2
+              className="font-display text-[clamp(2.75rem,7vw,6rem)] font-bold leading-[0.92] tracking-[-0.035em] text-balance"
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.45 }}
+              transition={{ duration: 0.65, ease: [0.2, 0, 0, 1] }}
+            >
+              {locale === "en" ? <>Why it <span className="text-primary">works</span></> : <>Por qué <span className="text-primary">funciona</span></>}
+            </motion.h2>
+            <motion.p
+              className="mt-6 max-w-xl text-base leading-relaxed text-background/75 sm:text-lg"
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.45 }}
+              transition={{ duration: 0.55, delay: 0.1, ease: [0.2, 0, 0, 1] }}
+            >
+              {landing.why.subtitle}
+            </motion.p>
+          </div>
 
-              return (
-                <motion.div
-                  key={b.title}
-                  initial={false}
-                  animate={{
-                    opacity: isUnlocked ? 1 : 0.32,
-                    y: isUnlocked ? 0 : 16,
-                    scale: isUnlocked ? 1 : 0.98,
-                    filter: isUnlocked ? "grayscale(0) saturate(1)" : "grayscale(1) saturate(0.25)",
-                  }}
-                  transition={{ duration: 0.42, ease: [0.2, 0, 0, 1] }}
-                  className={`${currentPreset.cardBg} min-h-[230px] rounded-3xl p-6 shadow-[0_12px_40px_-28px_rgba(0,0,0,0.45)] lg:p-7`}
-                  data-benefit-card={i}
-                  data-benefit-unlocked={isUnlocked}
+          <div className="mt-12 border-y border-background/20 lg:mt-16">
+            <div className="grid md:grid-cols-3">
+              {messageStages.map((stage, index) => (
+                <motion.article
+                  key={stage.label}
+                  className={`group flex min-h-[300px] flex-col px-1 py-8 sm:min-h-[320px] sm:py-10 md:px-6 lg:min-h-[360px] lg:px-8 ${index > 0 ? "border-t border-background/20 md:border-l md:border-t-0" : ""}`}
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.35 }}
+                  transition={{ duration: 0.55, delay: index * 0.1, ease: [0.2, 0, 0, 1] }}
                 >
-                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-5 transition-colors duration-300 ${isUnlocked ? "bg-primary/10" : "bg-muted"}`}>
-                    <span className="text-primary font-display font-bold text-2xl tabular-nums">{i + 1}</span>
+                  <div className="flex items-center justify-between gap-4">
+                    <p className="font-display text-lg font-bold text-primary sm:text-xl">{stage.label}</p>
+                    <span className="font-display text-sm font-semibold tabular-nums text-background/45">0{index + 1}</span>
                   </div>
-                  <h3 className="font-display font-bold text-xl mb-3 text-foreground tracking-[-0.01em]">{b.title}</h3>
-                  <p className="text-muted-foreground text-base leading-relaxed">{b.text}</p>
-                </motion.div>
-              );
-            })}
+                  <div className="pt-12 sm:pt-14">
+                    <h3 className="max-w-sm font-display text-2xl font-bold leading-tight tracking-[-0.02em] text-background sm:text-3xl md:min-h-20">
+                      {stage.title}
+                    </h3>
+                    <p className="mt-4 max-w-md text-base leading-relaxed text-background/70">
+                      {stage.text}
+                    </p>
+                    {index === messageStages.length - 1 && (
+                      <Button
+                        type="button"
+                        size="lg"
+                        className="mt-7 h-12 bg-primary px-6 text-base font-semibold text-background hover:bg-background hover:text-foreground focus-visible:ring-background"
+                        onClick={openLeadForm}
+                        data-testid="open-lead-form-message"
+                      >
+                        {landing.why.cta} <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                      </Button>
+                    )}
+                  </div>
+                </motion.article>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2 pt-6 text-xs font-semibold uppercase tracking-[0.16em] text-background/55 sm:flex-row sm:items-center sm:justify-between">
+            <span>{landing.why.footerLeft}</span>
+            <span className="text-primary">{landing.why.footerRight}</span>
           </div>
         </div>
       </section>
 
-
       {/* Features */}
-      <section id="features" className={FULL_SECTION_CLASS}>
-        <div className="w-full max-w-6xl mx-auto px-6 lg:px-8">
+      <section id="features" className="flex items-center pb-10 pt-16 lg:pb-14 lg:pt-24">
+        <div className="w-full max-w-7xl mx-auto px-6 lg:px-8">
           <motion.div
             className={SECTION_HEADER_CLASS}
             initial={{ opacity: 0, y: 24 }}
@@ -1385,16 +1390,16 @@ const Landing = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className={`${SECTION_TITLE_CLASS} text-foreground`} style={{ fontWeight: titleWeight }}>
-              Todo lo que necesitás para viralizar tu producto
+            <h2 className="mx-auto mb-5 max-w-7xl text-balance font-display text-4xl text-foreground sm:text-5xl lg:text-6xl xl:whitespace-nowrap xl:text-[3.35rem]" style={{ fontWeight: titleWeight }}>
+              {landing.features.title}
             </h2>
-            <p className="text-muted-foreground text-xl sm:text-2xl leading-relaxed max-w-3xl mx-auto text-balance">
-              Desde la estrategia creativa hasta la edición final, nos ocupamos de transformar conversaciones espontáneas en piezas listas para publicar, pautar y testear.
+            <p className="mx-auto max-w-3xl text-balance text-lg leading-relaxed text-muted-foreground sm:text-xl lg:text-2xl">
+              {landing.features.subtitle}
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {features.map((feature, i) => {
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-7 lg:gap-8">
+            {featureItems.map((feature, i) => {
               const Illust = ILLUSTRATIONS[i];
               return (
                 <motion.div
@@ -1409,22 +1414,22 @@ const Landing = () => {
                       {i === 0 ? (
                         <img
                           src={CREATIVE_STRATEGY_IMAGE}
-                          alt="Estrategia creativa"
+                          alt={feature.title}
                           className="no-image-outline h-full w-full object-contain md:object-cover"
                         />
                       ) : i === 1 ? (
                         <img
                           src={STREET_RECORDING_IMAGE}
-                          alt="Grabación en la calle"
+                          alt={feature.title}
                           className="no-image-outline h-full w-full object-contain md:object-cover"
                         />
                       ) : (
                         <Illust accents={currentPreset.accents} />
                       )}
                     </div>
-                    <div className="p-6 lg:p-7 flex-1">
-                      <h3 className="font-display font-bold text-xl mb-3 text-foreground tracking-[-0.01em]">{feature.title}</h3>
-                      <p className="text-muted-foreground text-base leading-relaxed">{feature.description}</p>
+                    <div className="p-7 lg:p-9 flex-1">
+                      <h3 className="font-display font-bold text-2xl mb-4 text-foreground tracking-[-0.01em]">{feature.title}</h3>
+                      <p className="text-muted-foreground text-lg leading-relaxed">{feature.description}</p>
                     </div>
                   </div>
                 </motion.div>
@@ -1436,7 +1441,7 @@ const Landing = () => {
 
 
       {/* Hosts */}
-      <section className={FULL_SECTION_CLASS}>
+      <section className="flex items-center pb-16 pt-10 lg:pb-24 lg:pt-14">
         <div className="w-full max-w-7xl mx-auto px-6 lg:px-8">
           <motion.div
             className={SECTION_HEADER_CLASS}
@@ -1445,50 +1450,50 @@ const Landing = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-semibold text-primary">
               <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-              Hosts reales
+              {landing.hosts.badge}
             </div>
             <h2 className={`${SECTION_TITLE_CLASS} text-foreground text-balance`} style={{ fontWeight: titleWeight }}>
-              Conoce a los hosts
+              {landing.hosts.title}
             </h2>
-            <p className="mx-auto max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg">
-              Las caras que salen a la calle a buscar reacciones auténticas para tu marca.
+            <p className="mx-auto max-w-3xl text-pretty text-lg text-muted-foreground sm:text-xl">
+              {landing.hosts.subtitle}
             </p>
           </motion.div>
 
           <motion.div
-            className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4 [scrollbar-width:none] sm:mx-auto sm:grid sm:max-w-6xl sm:grid-cols-4 sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0 lg:gap-6 [&::-webkit-scrollbar]:hidden"
+            className="-mx-6 flex snap-x snap-mandatory gap-5 overflow-x-auto px-6 pb-4 [scrollbar-width:none] sm:mx-auto sm:grid sm:max-w-7xl sm:grid-cols-4 sm:gap-6 sm:overflow-visible sm:px-0 sm:pb-0 lg:gap-8 [&::-webkit-scrollbar]:hidden"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
             {HOST_PROFILES.map((host) => (
-              <div key={host.name} className="group relative aspect-[4/5] w-[78vw] max-w-[320px] shrink-0 snap-center overflow-hidden rounded-3xl bg-card shadow-xl shadow-foreground/10 outline outline-1 -outline-offset-1 outline-black/10 transition-[box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/10 sm:w-auto sm:max-w-none">
+              <div key={host.name} className="group relative aspect-[4/5] w-[82vw] max-w-[360px] shrink-0 snap-center overflow-hidden rounded-3xl bg-card shadow-xl shadow-foreground/10 outline outline-1 -outline-offset-1 outline-black/10 transition-[box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/10 sm:w-auto sm:max-w-none">
                 <img
                   src={host.image}
-                  alt={`${host.name}, host de Charlando`}
+                  alt={`${host.name}, ${landing.hosts.badge}`}
                   className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.03]"
                 />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-foreground/75 via-foreground/20 to-transparent px-5 pb-5 pt-20">
-                  <h3 className="font-display text-4xl font-bold leading-none tracking-tight text-background sm:text-5xl lg:text-[52px]">
+                  <h3 className="font-display text-5xl font-bold leading-none tracking-tight text-background sm:text-6xl lg:text-[64px]">
                     {host.name}
                   </h3>
                 </div>
               </div>
             ))}
-            <div className="group relative aspect-[4/5] w-[78vw] max-w-[320px] shrink-0 snap-center overflow-hidden rounded-3xl bg-foreground text-background shadow-xl shadow-foreground/10 outline outline-1 -outline-offset-1 outline-background/15 transition-[box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/10 sm:w-auto sm:max-w-none">
+            <div className="group relative aspect-[4/5] w-[82vw] max-w-[360px] shrink-0 snap-center overflow-hidden rounded-3xl bg-foreground text-background shadow-xl shadow-foreground/10 outline outline-1 -outline-offset-1 outline-background/15 transition-[box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/10 sm:w-auto sm:max-w-none">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,rgba(38,185,207,0.32),transparent_34%),linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0))]" />
               <Mic className="absolute bottom-14 left-1/2 h-56 w-56 -translate-x-1/2 text-background/5 transition-transform duration-500 group-hover:scale-105" strokeWidth={1.2} />
               <div className="relative flex h-full flex-col justify-between p-5 sm:p-6">
                 <span aria-hidden="true" />
                 <div className="mx-auto max-w-[220px] text-center">
-                  <p className="font-display text-5xl font-bold leading-none tracking-tight sm:text-6xl">
-                    Vos
+                  <p className="font-display text-6xl font-bold leading-none tracking-tight sm:text-7xl">
+                    {landing.hosts.you}
                   </p>
-                  <p className="mt-4 text-sm leading-relaxed text-background/72 sm:text-base">
-                    Postulate para ser host de entrevistas callejeras en tu ciudad.
+                  <p className="mt-5 text-base leading-relaxed text-background/72 sm:text-lg">
+                    {landing.hosts.applyText}
                   </p>
                 </div>
 
@@ -1497,7 +1502,7 @@ const Landing = () => {
                   className="w-full border border-background/20 bg-background text-foreground hover:bg-primary hover:text-background"
                   onClick={openHostApplicationForm}
                 >
-                  Postularme <UserPlus className="ml-1 h-4 w-4" />
+                  {landing.hosts.applyCta} <UserPlus className="ml-1 h-4 w-4" />
                 </Button>
               </div>
             </div>
@@ -1508,7 +1513,7 @@ const Landing = () => {
 
       {/* FAQ */}
       <section id="faq" className={FULL_SECTION_CLASS}>
-        <div className="w-full max-w-6xl mx-auto px-6 lg:px-8">
+        <div className="w-full max-w-7xl mx-auto px-6 lg:px-8">
           <motion.div
             className={SECTION_HEADER_CLASS}
             initial={{ opacity: 0, y: 24 }}
@@ -1517,24 +1522,24 @@ const Landing = () => {
             transition={{ duration: 0.6 }}
           >
             <h2 className={`${SECTION_TITLE_CLASS} text-foreground`} style={{ fontWeight: titleWeight }}>
-              Preguntas frecuentes
+              {landing.faq.title}
             </h2>
           </motion.div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-4">
-            {[FAQS.slice(0, 4), FAQS.slice(4)].map((column, columnIndex) => (
-              <div key={columnIndex} className="space-y-2.5">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-5">
+            {[faqItems.slice(0, 4), faqItems.slice(4)].map((column, columnIndex) => (
+              <div key={columnIndex} className="space-y-4">
                 {column.map((faq, i) => {
                   const faqIndex = columnIndex * 4 + i;
                   const open = openFaq === faqIndex;
                   return (
-                    <div key={faq.q} className="rounded-2xl bg-card overflow-hidden">
+                    <div key={faq.q} className="rounded-3xl bg-card overflow-hidden">
                       <button
                         onClick={() => setOpenFaq(open ? null : faqIndex)}
-                        className="w-full flex items-center justify-between text-left p-4 gap-4"
+                        className="w-full flex items-center justify-between text-left p-5 gap-5 sm:p-6"
                       >
-                        <span className="font-display font-semibold text-foreground text-base">{faq.q}</span>
-                        <span className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
-                          {open ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+                        <span className="font-display font-semibold text-foreground text-lg sm:text-xl">{faq.q}</span>
+                        <span className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
+                          {open ? <Minus className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
                         </span>
                       </button>
                       <AnimatePresence initial={false}>
@@ -1545,7 +1550,7 @@ const Landing = () => {
                             exit={{ height: 0, opacity: 0 }}
                             transition={{ duration: 0.25 }}
                           >
-                            <div className="px-4 pb-4 text-sm text-muted-foreground leading-relaxed">{faq.a}</div>
+                            <div className="px-5 pb-5 text-base text-muted-foreground leading-relaxed sm:px-6 sm:pb-6 sm:text-lg">{faq.a}</div>
                           </motion.div>
                         )}
                       </AnimatePresence>
@@ -1560,8 +1565,8 @@ const Landing = () => {
 
       {/* CTA */}
       <section id="cta" className={`${FULL_SECTION_CLASS} relative`}>
-        <div className="w-full max-w-4xl mx-auto px-6 lg:px-8">
-          <div className="relative pt-12 lg:pt-14">
+        <div className="w-full max-w-5xl mx-auto px-6 lg:px-8">
+          <div className="relative pt-14 lg:pt-16">
             <div className="absolute inset-x-0 top-0 z-20 flex justify-center pointer-events-none" aria-hidden="true">
               <motion.div
                 initial={{ opacity: 0, y: 16, scale: 0.85 }}
@@ -1570,15 +1575,15 @@ const Landing = () => {
                 transition={{ duration: 0.6, type: "spring", stiffness: 220, damping: 18 }}
                 className="drop-shadow-[0_18px_40px_rgba(0,0,0,0.18)]"
               >
-                <div className="w-[112px] h-[120px] flex items-center justify-center">
-                  <div className="w-[96px] h-[96px] rounded-full bg-primary flex items-center justify-center shadow-xl">
-                    <Mic className="w-12 h-12 text-white" strokeWidth={2.5} />
+                <div className="w-[128px] h-[136px] flex items-center justify-center">
+                  <div className="w-[112px] h-[112px] rounded-full bg-primary flex items-center justify-center shadow-xl">
+                    <Mic className="w-14 h-14 text-white" strokeWidth={2.5} />
                   </div>
                 </div>
               </motion.div>
             </div>
 
-            <div className="bg-foreground rounded-[2rem] relative overflow-hidden px-6 pt-20 pb-12 lg:px-10 lg:pt-24 lg:pb-14">
+            <div className="bg-foreground rounded-[2.5rem] relative overflow-hidden px-7 pt-24 pb-14 sm:px-10 lg:px-14 lg:pt-28 lg:pb-16">
               <div className="absolute inset-x-0 top-5 flex justify-center pointer-events-none" aria-hidden="true">
                 {[
                   { x: -110, y: 20, size: 14, color: "hsl(189 70% 48%)", shape: "circle", rot: 0 },
@@ -1626,23 +1631,23 @@ const Landing = () => {
                   transition={{ duration: 0.6 }}
                 >
                   <h2 className={`${SECTION_TITLE_CLASS} text-background`} style={{ fontWeight: titleWeight }}>
-                    ¿Listo para crear contenido que la gente sí quiera mirar?
+                    {landing.cta.title}
                   </h2>
-                  <p className="text-background/70 text-lg mb-8 max-w-lg mx-auto text-balance">
-                    Agendemos una llamada y veamos cómo convertir tu producto, servicio o campaña en entrevistas reales para redes y pauta.
+                  <p className="text-background/70 text-xl mb-9 max-w-2xl mx-auto text-balance sm:text-2xl">
+                    {landing.cta.subtitle}
                   </p>
-                  <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                     <Button
                       size="lg"
-                      className="text-base font-semibold px-8 h-12 bg-primary text-white hover:bg-primary/90"
+                      className="text-lg font-semibold px-9 h-14 bg-primary text-white hover:bg-primary/90"
                       type="button"
                       onClick={openLeadForm}
                       data-testid="open-lead-form-cta"
                     >
-                      Agendar llamada <ArrowRight className="ml-2 w-4 h-4" />
+                      {landing.cta.primary} <ArrowRight className="ml-2 w-5 h-5" />
                     </Button>
-                    <Button size="lg" variant="outline" className="text-base font-semibold px-8 h-12 bg-transparent text-background border-background/30 hover:bg-background/10 hover:text-background" asChild>
-                      <Link to="/biblioteca">Ver ejemplos</Link>
+                    <Button size="lg" variant="outline" className="text-lg font-semibold px-9 h-14 bg-transparent text-background border-background/30 hover:bg-background/10 hover:text-background" asChild>
+                      <Link to={localizedLibrary}>{landing.cta.secondary}</Link>
                     </Button>
                   </div>
                 </motion.div>
@@ -1659,34 +1664,34 @@ const Landing = () => {
             <div className="md:col-span-2">
               <Logo size="md" />
               <p className="text-sm text-muted-foreground mt-4 max-w-xs leading-relaxed">
-                Entrevistas callejeras para marcas que quieren generar atención, confianza y conversación real.
+                {landing.footer.description}
               </p>
             </div>
             <div>
-              <h4 className="font-display font-bold text-sm mb-4 text-foreground">Compañía</h4>
+              <h4 className="font-display font-bold text-sm mb-4 text-foreground">{landing.footer.company}</h4>
               <ul className="space-y-0.5 text-sm text-muted-foreground">
-                <li><a href="#top" className={FOOTER_LINK_CLASS}>Inicio</a></li>
-                <li><a href="#proceso" className={FOOTER_LINK_CLASS}>Proceso</a></li>
-                <li><a href="#features" className={FOOTER_LINK_CLASS}>Servicios</a></li>
-                <li><a href="#cta" className={FOOTER_LINK_CLASS}>Contacto</a></li>
+                <li><a href={localizePath("/#top", locale)} className={FOOTER_LINK_CLASS}>{t.common.nav.home}</a></li>
+                <li><a href={localizePath("/#proceso", locale)} className={FOOTER_LINK_CLASS}>{t.common.nav.process}</a></li>
+                <li><a href={localizePath("/#features", locale)} className={FOOTER_LINK_CLASS}>{t.common.nav.services}</a></li>
+                <li><a href={localizePath("/#cta", locale)} className={FOOTER_LINK_CLASS}>{t.common.nav.contact}</a></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-display font-bold text-sm mb-4 text-foreground">Redes</h4>
+              <h4 className="font-display font-bold text-sm mb-4 text-foreground">{landing.footer.social}</h4>
               <ul className="space-y-0.5 text-sm text-muted-foreground">
                 <li><a href="https://www.instagram.com/charlando.com.ar?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noreferrer" className={FOOTER_LINK_CLASS}>Instagram</a></li>
                 <li><a href="https://x.com/charlando_ar?s=20" target="_blank" rel="noreferrer" className={FOOTER_LINK_CLASS}>X</a></li>
               </ul>
-              <h4 className="font-display font-bold text-sm mb-3 mt-6 text-foreground">Legal</h4>
+              <h4 className="font-display font-bold text-sm mb-3 mt-6 text-foreground">{landing.footer.legal}</h4>
               <ul className="space-y-0.5 text-sm text-muted-foreground">
-                <li><Link to="/terminos-y-condiciones" className={FOOTER_LINK_CLASS}>Términos y condiciones</Link></li>
-                <li><Link to="/politica-de-privacidad" className={FOOTER_LINK_CLASS}>Política de privacidad</Link></li>
+                <li><Link to={localizedTerms} className={FOOTER_LINK_CLASS}>{landing.footer.terms}</Link></li>
+                <li><Link to={localizedPrivacy} className={FOOTER_LINK_CLASS}>{landing.footer.privacy}</Link></li>
               </ul>
             </div>
           </div>
           <div className="pt-6 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-muted-foreground">© 2026 Charlando. Todos los derechos reservados.</p>
-            <p className="text-xs text-muted-foreground">De la calle a la pantalla.</p>
+            <p className="text-sm text-muted-foreground">{landing.footer.rights}</p>
+            <p className="text-xs text-muted-foreground">{landing.footer.tagline}</p>
           </div>
         </div>
       </footer>

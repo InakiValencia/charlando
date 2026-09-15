@@ -25,14 +25,22 @@ export type BlogPostSummary = {
   title: string;
   slug: string;
   excerpt: string;
+  language?: "es" | "en";
+  titleEn?: string;
+  slugEn?: string;
+  excerptEn?: string;
   coverImage?: SanityImage;
   category?: string;
+  categoryEn?: string;
   author?: string;
   publishedAt?: string;
   seoTitle?: string;
   seoDescription?: string;
+  seoTitleEn?: string;
+  seoDescriptionEn?: string;
   ogImage?: SanityImage;
   body?: unknown[];
+  bodyEn?: unknown[];
 };
 
 export type BlogPost = BlogPostSummary;

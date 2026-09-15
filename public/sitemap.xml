@@ -1,19 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://www.charlando.com.ar/</loc>
+    <xhtml:link rel="alternate" hreflang="es-AR" href="https://www.charlando.com.ar/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.charlando.com.ar/en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.charlando.com.ar/" />
+  </url>
+  <url>
+    <loc>https://www.charlando.com.ar/en</loc>
+    <xhtml:link rel="alternate" hreflang="es-AR" href="https://www.charlando.com.ar/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.charlando.com.ar/en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.charlando.com.ar/" />
   </url>
   <url>
     <loc>https://www.charlando.com.ar/biblioteca</loc>
+    <xhtml:link rel="alternate" hreflang="es-AR" href="https://www.charlando.com.ar/biblioteca" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.charlando.com.ar/en/library" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.charlando.com.ar/biblioteca" />
+  </url>
+  <url>
+    <loc>https://www.charlando.com.ar/en/library</loc>
+    <xhtml:link rel="alternate" hreflang="es-AR" href="https://www.charlando.com.ar/biblioteca" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.charlando.com.ar/en/library" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.charlando.com.ar/biblioteca" />
   </url>
   <url>
     <loc>https://www.charlando.com.ar/blog</loc>
+    <xhtml:link rel="alternate" hreflang="es-AR" href="https://www.charlando.com.ar/blog" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.charlando.com.ar/en/blog" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.charlando.com.ar/blog" />
+  </url>
+  <url>
+    <loc>https://www.charlando.com.ar/en/blog</loc>
+    <xhtml:link rel="alternate" hreflang="es-AR" href="https://www.charlando.com.ar/blog" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.charlando.com.ar/en/blog" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.charlando.com.ar/blog" />
   </url>
   <url>
     <loc>https://www.charlando.com.ar/terminos-y-condiciones</loc>
+    <xhtml:link rel="alternate" hreflang="es-AR" href="https://www.charlando.com.ar/terminos-y-condiciones" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.charlando.com.ar/en/terms-and-conditions" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.charlando.com.ar/terminos-y-condiciones" />
+  </url>
+  <url>
+    <loc>https://www.charlando.com.ar/en/terms-and-conditions</loc>
+    <xhtml:link rel="alternate" hreflang="es-AR" href="https://www.charlando.com.ar/terminos-y-condiciones" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.charlando.com.ar/en/terms-and-conditions" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.charlando.com.ar/terminos-y-condiciones" />
   </url>
   <url>
     <loc>https://www.charlando.com.ar/politica-de-privacidad</loc>
+    <xhtml:link rel="alternate" hreflang="es-AR" href="https://www.charlando.com.ar/politica-de-privacidad" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.charlando.com.ar/en/privacy-policy" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.charlando.com.ar/politica-de-privacidad" />
+  </url>
+  <url>
+    <loc>https://www.charlando.com.ar/en/privacy-policy</loc>
+    <xhtml:link rel="alternate" hreflang="es-AR" href="https://www.charlando.com.ar/politica-de-privacidad" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.charlando.com.ar/en/privacy-policy" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.charlando.com.ar/politica-de-privacidad" />
+  </url>
+  <url>
+    <loc>https://www.charlando.com.ar/auth</loc>
+    <xhtml:link rel="alternate" hreflang="es-AR" href="https://www.charlando.com.ar/auth" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.charlando.com.ar/en/auth" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.charlando.com.ar/auth" />
+  </url>
+  <url>
+    <loc>https://www.charlando.com.ar/en/auth</loc>
+    <xhtml:link rel="alternate" hreflang="es-AR" href="https://www.charlando.com.ar/auth" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.charlando.com.ar/en/auth" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.charlando.com.ar/auth" />
   </url>
   <url>
     <loc>https://www.charlando.com.ar/blog/que-es-el-marketing-de-entrevistas-callejeras</loc>

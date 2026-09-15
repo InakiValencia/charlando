@@ -6,6 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Calendar, MapPin, Users, Globe, ExternalLink, Mail, ArrowRight, LayoutGrid, List } from "lucide-react";
 import { format } from "date-fns";
+import { localizePath } from "@/i18n/routes";
+import { useTranslation } from "@/i18n/useTranslation";
+import { usePageSeo } from "@/lib/seo";
+import type { Locale } from "@/i18n/locales";
 
 const SOCIAL_ICONS: Record<string, string> = {
   "Twitter / X": "https://cdn.simpleicons.org/x/ffffff",
@@ -20,12 +24,20 @@ const SOCIAL_ICONS: Record<string, string> = {
 type SocialLink = { platform: string; url: string };
 
 const CompanyPage = () => {
+  const { locale, t } = useTranslation();
   const { companySlug } = useParams<{ companySlug: string }>();
   const { data: company, isLoading, error } = useCompanyBySlug(companySlug);
   const { data: events } = usePublicEventsByUser(company?.id);
   const eventIds = events?.map((e) => e.id) ?? [];
   const { data: regCounts } = usePublicRegistrationCounts(eventIds);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+
+  usePageSeo({
+    title: company?.company ? `${company.company} | Charlando` : "Charlando",
+    description: company?.company_description || t.seo.defaultDescription,
+    canonicalPath: localizePath(`/company/${companySlug || ""}`, locale),
+    locale,
+  });
 
   if (isLoading) {
     return (
@@ -44,9 +56,9 @@ const CompanyPage = () => {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center space-y-4">
-          <h1 className="text-4xl font-bold text-foreground">Company not found</h1>
-          <p className="text-muted-foreground">This company page doesn't exist or hasn't been set up yet.</p>
-          <Link to="/"><Button variant="outline">Go Home</Button></Link>
+          <h1 className="text-4xl font-bold text-foreground">{t.publicPages.companyNotFound}</h1>
+          <p className="text-muted-foreground">{t.publicPages.companyNotFoundText}</p>
+          <Link to={localizePath("/", locale)}><Button variant="outline">{t.publicPages.goHome}</Button></Link>
         </div>
       </div>
     );
@@ -121,7 +133,7 @@ const CompanyPage = () => {
       {upcomingEvents.length > 0 && (
         <section className="max-w-6xl mx-auto px-4 sm:px-6 mt-10">
           <div className="flex items-center justify-between mb-5">
-            <h2 className="text-2xl font-display font-bold text-foreground">Upcoming Events</h2>
+            <h2 className="text-2xl font-display font-bold text-foreground">{t.publicPages.upcomingEvents}</h2>
             <div className="flex border border-border rounded-md overflow-hidden">
               <button onClick={() => setViewMode("list")}
                 className={`p-2.5 transition-colors ${viewMode === "list" ? "bg-primary text-primary-foreground" : "bg-card text-muted-foreground hover:bg-muted"}`}>
@@ -136,13 +148,13 @@ const CompanyPage = () => {
           {viewMode === "grid" ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {upcomingEvents.map((event) => (
-                <EventCard key={event.id} event={event} regCount={regCounts?.[event.id]} />
+                <EventCard key={event.id} event={event} regCount={regCounts?.[event.id]} locale={locale} registerLabel={t.publicPages.register} />
               ))}
             </div>
           ) : (
             <div className="space-y-4">
               {upcomingEvents.map((event) => (
-                <EventListItem key={event.id} event={event} regCount={regCounts?.[event.id]} />
+                <EventListItem key={event.id} event={event} regCount={regCounts?.[event.id]} locale={locale} registerLabel={t.publicPages.register} attendingLabel={t.publicPages.attending} />
               ))}
             </div>
           )}
@@ -152,17 +164,17 @@ const CompanyPage = () => {
       {/* ========== PAST EVENTS ========== */}
       {pastEvents.length > 0 && (
         <section className="max-w-6xl mx-auto px-4 sm:px-6 mt-12 pb-16">
-          <h2 className="text-2xl font-display font-bold text-foreground mb-5">Past Events</h2>
+          <h2 className="text-2xl font-display font-bold text-foreground mb-5">{t.publicPages.pastEvents}</h2>
           {viewMode === "grid" ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {pastEvents.map((event) => (
-                <EventCard key={event.id} event={event} regCount={regCounts?.[event.id]} />
+                <EventCard key={event.id} event={event} regCount={regCounts?.[event.id]} locale={locale} registerLabel={t.publicPages.register} />
               ))}
             </div>
           ) : (
             <div className="space-y-4">
               {pastEvents.map((event) => (
-                <EventListItem key={event.id} event={event} regCount={regCounts?.[event.id]} />
+                <EventListItem key={event.id} event={event} regCount={regCounts?.[event.id]} locale={locale} registerLabel={t.publicPages.register} attendingLabel={t.publicPages.attending} />
               ))}
             </div>
           )}
@@ -172,8 +184,8 @@ const CompanyPage = () => {
       {(!events || events.length === 0) && (
         <div className="max-w-6xl mx-auto px-6 py-20 text-center">
           <Calendar className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-foreground mb-2">No events yet</h3>
-          <p className="text-muted-foreground">Check back soon for upcoming events.</p>
+          <h3 className="text-lg font-semibold text-foreground mb-2">{t.publicPages.noEvents}</h3>
+          <p className="text-muted-foreground">{t.publicPages.checkBack}</p>
         </div>
       )}
     </div>
@@ -181,9 +193,9 @@ const CompanyPage = () => {
 };
 
 /* ========== GRID CARD ========== */
-function EventCard({ event, regCount }: { event: any; regCount?: number }) {
+function EventCard({ event, regCount, locale, registerLabel }: { event: any; regCount?: number; locale: Locale; registerLabel: string }) {
   return (
-    <Link to={`/register/${event.slug}`}>
+    <Link to={localizePath(`/register/${event.slug}`, locale)}>
       <Card className="overflow-hidden group hover:shadow-xl transition-all hover:-translate-y-1 border-border/50 h-full">
         <div className="h-44 overflow-hidden relative">
           {event.background_image_url ? (
@@ -213,7 +225,7 @@ function EventCard({ event, regCount }: { event: any; regCount?: number }) {
               <span className="inline-flex items-center gap-1"><Users className="w-3.5 h-3.5" />{regCount}</span>
             )}
           </div>
-          <Button className="w-full mt-1 bg-primary" size="sm">Register <ArrowRight className="ml-1 w-3.5 h-3.5" /></Button>
+          <Button className="w-full mt-1 bg-primary" size="sm">{registerLabel} <ArrowRight className="ml-1 w-3.5 h-3.5" /></Button>
         </CardContent>
       </Card>
     </Link>
@@ -221,13 +233,13 @@ function EventCard({ event, regCount }: { event: any; regCount?: number }) {
 }
 
 /* ========== LIST ITEM ========== */
-function EventListItem({ event, regCount }: { event: any; regCount?: number }) {
+function EventListItem({ event, regCount, locale, registerLabel, attendingLabel }: { event: any; regCount?: number; locale: Locale; registerLabel: string; attendingLabel: string }) {
   const shortDesc = event.description
     ? event.description.replace(/[*#_~`>]/g, "").split(/(?<=\.)\s+/).filter(Boolean).slice(0, 2).join(" ").slice(0, 200)
     : "";
 
   return (
-    <Link to={`/register/${event.slug}`}>
+    <Link to={localizePath(`/register/${event.slug}`, locale)}>
       <Card className="overflow-hidden hover:shadow-lg transition-all hover:-translate-y-0.5 border-border/50">
         <div className="flex flex-col sm:flex-row">
           <div className="sm:w-52 sm:min-h-[140px] h-40 sm:h-auto bg-muted flex-shrink-0 overflow-hidden">
@@ -255,10 +267,10 @@ function EventListItem({ event, regCount }: { event: any; regCount?: number }) {
                   <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" />{event.location_value}</span>
                 )}
                 {regCount !== undefined && (
-                  <span className="flex items-center gap-1"><Users className="w-3.5 h-3.5" />{regCount} attending</span>
+                  <span className="flex items-center gap-1"><Users className="w-3.5 h-3.5" />{regCount} {attendingLabel}</span>
                 )}
               </div>
-              <Button className="bg-primary" size="sm">Register <ArrowRight className="ml-1 w-3.5 h-3.5" /></Button>
+              <Button className="bg-primary" size="sm">{registerLabel} <ArrowRight className="ml-1 w-3.5 h-3.5" /></Button>
             </div>
           </CardContent>
         </div>
