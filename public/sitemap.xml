@@ -74,10 +74,30 @@
   </url>
   <url>
     <loc>https://www.charlando.com.ar/blog/que-es-el-marketing-de-entrevistas-callejeras</loc>
+    <xhtml:link rel="alternate" hreflang="es-AR" href="https://www.charlando.com.ar/blog/que-es-el-marketing-de-entrevistas-callejeras" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.charlando.com.ar/en/blog/what-is-street-interview-marketing" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.charlando.com.ar/blog/que-es-el-marketing-de-entrevistas-callejeras" />
+    <lastmod>2026-06-28T13:27:46.735Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.charlando.com.ar/en/blog/what-is-street-interview-marketing</loc>
+    <xhtml:link rel="alternate" hreflang="es-AR" href="https://www.charlando.com.ar/blog/que-es-el-marketing-de-entrevistas-callejeras" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.charlando.com.ar/en/blog/what-is-street-interview-marketing" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.charlando.com.ar/blog/que-es-el-marketing-de-entrevistas-callejeras" />
     <lastmod>2026-06-28T13:27:46.735Z</lastmod>
   </url>
   <url>
     <loc>https://www.charlando.com.ar/blog/la-publicidad-tradicional-ya-no-alcanza</loc>
+    <xhtml:link rel="alternate" hreflang="es-AR" href="https://www.charlando.com.ar/blog/la-publicidad-tradicional-ya-no-alcanza" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.charlando.com.ar/en/blog/traditional-advertising-isnt-enough-real-reactions" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.charlando.com.ar/blog/la-publicidad-tradicional-ya-no-alcanza" />
+    <lastmod>2026-06-27T22:46:30.109Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.charlando.com.ar/en/blog/traditional-advertising-isnt-enough-real-reactions</loc>
+    <xhtml:link rel="alternate" hreflang="es-AR" href="https://www.charlando.com.ar/blog/la-publicidad-tradicional-ya-no-alcanza" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.charlando.com.ar/en/blog/traditional-advertising-isnt-enough-real-reactions" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.charlando.com.ar/blog/la-publicidad-tradicional-ya-no-alcanza" />
     <lastmod>2026-06-27T22:46:30.109Z</lastmod>
   </url>
 </urlset>
