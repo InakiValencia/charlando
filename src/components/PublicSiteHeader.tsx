@@ -3,21 +3,15 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { MobileSiteMenu } from "@/components/MobileSiteMenu";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-
-const NAV_LINKS = [
-  { label: "Inicio", href: "/" },
-  { label: "Biblioteca", href: "/biblioteca" },
-  { label: "Proceso", href: "/#proceso" },
-  { label: "Servicios", href: "/#features" },
-  { label: "Contacto", href: "/#cta" },
-  { label: "Blog", href: "/blog" },
-];
+import { useTranslation } from "@/i18n/useTranslation";
+import { localizePath } from "@/i18n/routes";
 
 const CALENDAR_BOOKING_URL = "https://calendar.app.google/UqwA28tsXsQCnchF6";
 const EMPTY_LEAD_FORM = {
@@ -40,10 +34,20 @@ const normalizeWebsiteUrl = (value: string) => {
 };
 
 export const PublicSiteHeader = ({ source = "site" }: PublicSiteHeaderProps) => {
+  const { locale, t } = useTranslation();
   const [leadFormOpen, setLeadFormOpen] = useState(false);
   const [leadForm, setLeadForm] = useState(EMPTY_LEAD_FORM);
   const [leadSubmitting, setLeadSubmitting] = useState(false);
   const [leadError, setLeadError] = useState("");
+
+  const navLinks = [
+    { label: t.common.nav.home, href: localizePath("/", locale) },
+    { label: t.common.nav.library, href: localizePath("/biblioteca", locale) },
+    { label: t.common.nav.process, href: localizePath("/#proceso", locale) },
+    { label: t.common.nav.services, href: localizePath("/#features", locale) },
+    { label: t.common.nav.contact, href: localizePath("/#cta", locale) },
+    { label: t.common.nav.blog, href: localizePath("/blog", locale) },
+  ];
 
   const openLeadForm = () => {
     setLeadError("");
@@ -64,14 +68,14 @@ export const PublicSiteHeader = ({ source = "site" }: PublicSiteHeaderProps) => 
     const websiteUrl = normalizeWebsiteUrl(leadForm.websiteUrl);
 
     if (!email || !fullName || !brandName || !websiteUrl) {
-      setLeadError("Completá todos los campos para agendar la llamada.");
+      setLeadError(t.leadForm.requiredError);
       return;
     }
 
     try {
       new URL(websiteUrl);
     } catch {
-      setLeadError("Ingresá una URL válida para tu página.");
+      setLeadError(t.leadForm.urlError);
       return;
     }
 
@@ -92,19 +96,19 @@ export const PublicSiteHeader = ({ source = "site" }: PublicSiteHeaderProps) => 
       });
 
       if (error) {
-        setLeadError("No pudimos guardar tus datos. Probá de nuevo en unos segundos.");
-        toast.error(error.message || "No pudimos guardar tus datos");
+        setLeadError(t.leadForm.submitError);
+        toast.error(error.message || t.leadForm.submitError);
         return;
       }
     } catch {
-      setLeadError("No pudimos guardar tus datos. Probá de nuevo en unos segundos.");
-      toast.error("No pudimos guardar tus datos");
+      setLeadError(t.leadForm.submitError);
+      toast.error(t.leadForm.submitError);
       return;
     } finally {
       setLeadSubmitting(false);
     }
 
-    toast.success("Datos guardados. Te llevamos al calendario.");
+    toast.success(t.leadForm.success);
     setLeadForm(EMPTY_LEAD_FORM);
     setLeadFormOpen(false);
     window.location.assign(CALENDAR_BOOKING_URL);
@@ -116,11 +120,11 @@ export const PublicSiteHeader = ({ source = "site" }: PublicSiteHeaderProps) => 
     <>
       <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur-md">
         <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between gap-4 px-6 lg:px-8">
-          <Link to="/" className="shrink-0">
+          <Link to={localizePath("/", locale)} className="shrink-0">
             <Logo size="md" />
           </Link>
           <nav className="hidden items-center gap-1 lg:flex">
-            {NAV_LINKS.map((link) => (
+            {navLinks.map((link) => (
               <Link key={link.label} to={link.href} className="rounded-full px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:text-primary">
                 {link.label}
               </Link>
@@ -133,9 +137,10 @@ export const PublicSiteHeader = ({ source = "site" }: PublicSiteHeaderProps) => 
               onClick={openLeadForm}
               data-testid={`open-lead-form-${source}-nav`}
             >
-              Agendar llamada
+              {t.common.bookCall}
             </Button>
-            <MobileSiteMenu links={NAV_LINKS} onLeadClick={openLeadForm} />
+            <LanguageSwitcher className="hidden lg:inline-flex" />
+            <MobileSiteMenu links={navLinks} onLeadClick={openLeadForm} />
           </div>
         </div>
       </header>
@@ -145,10 +150,10 @@ export const PublicSiteHeader = ({ source = "site" }: PublicSiteHeaderProps) => 
           <DialogHeader>
             <div className="px-6 pt-6 sm:px-7 sm:pt-7">
               <DialogTitle className="font-display text-2xl text-foreground">
-                Agendar llamada
+                {t.leadForm.title}
               </DialogTitle>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
-                Dejanos tus datos y avanzamos con una conversación concreta sobre tu marca.
+                {t.leadForm.description}
               </p>
             </div>
           </DialogHeader>
@@ -156,13 +161,13 @@ export const PublicSiteHeader = ({ source = "site" }: PublicSiteHeaderProps) => 
           <form className="space-y-4 px-6 pb-6 sm:px-7 sm:pb-7" onSubmit={handleLeadSubmit}>
             <div className="grid gap-3">
               <div className="space-y-2">
-                <Label htmlFor={`${fieldPrefix}-email`}>Cuál es tu mail</Label>
+                <Label htmlFor={`${fieldPrefix}-email`}>{t.leadForm.email}</Label>
                 <Input
                   id={`${fieldPrefix}-email`}
                   name="email"
                   type="email"
                   autoComplete="email"
-                  placeholder="tu@mail.com"
+                  placeholder={t.leadForm.emailPlaceholder}
                   value={leadForm.email}
                   onChange={(event) => updateLeadField("email", event.target.value)}
                   required
@@ -170,13 +175,13 @@ export const PublicSiteHeader = ({ source = "site" }: PublicSiteHeaderProps) => 
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor={`${fieldPrefix}-name`}>Cómo es tu nombre</Label>
+                <Label htmlFor={`${fieldPrefix}-name`}>{t.leadForm.name}</Label>
                 <Input
                   id={`${fieldPrefix}-name`}
                   name="name"
                   type="text"
                   autoComplete="name"
-                  placeholder="Tu nombre"
+                  placeholder={t.leadForm.namePlaceholder}
                   value={leadForm.fullName}
                   onChange={(event) => updateLeadField("fullName", event.target.value)}
                   required
@@ -184,13 +189,13 @@ export const PublicSiteHeader = ({ source = "site" }: PublicSiteHeaderProps) => 
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor={`${fieldPrefix}-brand`}>Cómo se llama tu marca</Label>
+                <Label htmlFor={`${fieldPrefix}-brand`}>{t.leadForm.brand}</Label>
                 <Input
                   id={`${fieldPrefix}-brand`}
                   name="brand"
                   type="text"
                   autoComplete="organization"
-                  placeholder="Nombre de tu marca"
+                  placeholder={t.leadForm.brandPlaceholder}
                   value={leadForm.brandName}
                   onChange={(event) => updateLeadField("brandName", event.target.value)}
                   required
@@ -198,14 +203,14 @@ export const PublicSiteHeader = ({ source = "site" }: PublicSiteHeaderProps) => 
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor={`${fieldPrefix}-website`}>Cuál es la URL de tu página</Label>
+                <Label htmlFor={`${fieldPrefix}-website`}>{t.leadForm.website}</Label>
                 <Input
                   id={`${fieldPrefix}-website`}
                   name="website"
                   type="text"
                   inputMode="url"
                   autoComplete="url"
-                  placeholder="https://tumarca.com"
+                  placeholder={t.leadForm.websitePlaceholder}
                   value={leadForm.websiteUrl}
                   onChange={(event) => updateLeadField("websiteUrl", event.target.value)}
                   required
@@ -221,7 +226,7 @@ export const PublicSiteHeader = ({ source = "site" }: PublicSiteHeaderProps) => 
 
             <DialogFooter>
               <Button type="submit" className="w-full bg-foreground text-background hover:bg-primary hover:text-background" disabled={leadSubmitting}>
-                {leadSubmitting ? "Guardando..." : "Continuar"} <ArrowRight className="ml-1 h-4 w-4" />
+                {leadSubmitting ? t.common.saving : t.common.continue} <ArrowRight className="ml-1 h-4 w-4" />
               </Button>
             </DialogFooter>
           </form>

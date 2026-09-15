@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Logo } from "@/components/Logo";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { MobileSiteMenu } from "@/components/MobileSiteMenu";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -10,12 +11,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { alternatePathsFor, localizePath } from "@/i18n/routes";
+import { useTranslation } from "@/i18n/useTranslation";
+import { usePageSeo } from "@/lib/seo";
 
 type LibraryVideo = {
   id: string;
+  brand: "AIRTM" | "Takenos" | "Wallbit";
   title: string;
   videoUrl: string;
-  poster: string;
+  poster?: string;
 };
 
 const NAV_LINKS = [
@@ -37,7 +42,88 @@ const EMPTY_LEAD_FORM = {
 
 type LeadFormField = keyof typeof EMPTY_LEAD_FORM;
 
-const LIBRARY_VIDEO_NUMBERS = [1, 2, 3, 4, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+const LIBRARY_VIDEO_NUMBERS = [10, 11, 12, 16, 17, 18, 19, 20];
+const TAKENOS_VIDEOS: LibraryVideo[] = [
+  { id: "takenos-01", brand: "Takenos", title: "Mashup 1", videoUrl: "/videos/takenos/takenos-01.mp4" },
+  {
+    id: "takenos-02",
+    brand: "Takenos",
+    title: "¿Sabés cómo pagar cuando viajás?",
+    videoUrl: "/videos/takenos/takenos-02.mp4",
+  },
+  {
+    id: "takenos-03",
+    brand: "Takenos",
+    title: "¿Te molesta que las billeteras te cobren por recibir plata de afuera?",
+    videoUrl: "/videos/takenos/takenos-03.mp4",
+  },
+  {
+    id: "takenos-04",
+    brand: "Takenos",
+    title: "¿Ganás guita jugando al FIFA?",
+    videoUrl: "/videos/takenos/takenos-04.mp4",
+  },
+  {
+    id: "takenos-05",
+    brand: "Takenos",
+    title: "¿Invertís? Contame en qué",
+    videoUrl: "/videos/takenos/takenos-05.mp4",
+  },
+  {
+    id: "takenos-06",
+    brand: "Takenos",
+    title: "Decime algún lujo que te des en tu día a día",
+    videoUrl: "/videos/takenos/takenos-06.mp4",
+  },
+  {
+    id: "takenos-07",
+    brand: "Takenos",
+    title: "¿Sabés cómo cobrar de afuera?",
+    videoUrl: "/videos/takenos/takenos-07.mp4",
+  },
+  {
+    id: "takenos-08",
+    brand: "Takenos",
+    title: "¿Cuánto ganás y a qué te dedicás?",
+    videoUrl: "/videos/takenos/takenos-08.mp4",
+  },
+  { id: "takenos-09", brand: "Takenos", title: "Mashup 2", videoUrl: "/videos/takenos/takenos-09.mp4" },
+];
+const WALLBIT_VIDEOS: LibraryVideo[] = [
+  { id: "wallbit-01", brand: "Wallbit", title: "Mashup 1", videoUrl: "/videos/wallbit/wallbit-01.mp4" },
+  {
+    id: "wallbit-02",
+    brand: "Wallbit",
+    title: "¿Cuánto ahorrás por mes?",
+    videoUrl: "/videos/wallbit/wallbit-02.mp4",
+  },
+  {
+    id: "wallbit-03",
+    brand: "Wallbit",
+    title: "¿Cuánto ganás y a qué te dedicás?",
+    videoUrl: "/videos/wallbit/wallbit-03.mp4",
+  },
+  { id: "wallbit-04", brand: "Wallbit", title: "S&P 100 USD", videoUrl: "/videos/wallbit/wallbit-04.mp4" },
+  { id: "wallbit-05", brand: "Wallbit", title: "Mashup 2", videoUrl: "/videos/wallbit/wallbit-05.mp4" },
+  {
+    id: "wallbit-06",
+    brand: "Wallbit",
+    title: "¿Cuánto cuesta una cuenta en el exterior?",
+    videoUrl: "/videos/wallbit/wallbit-06.mp4",
+  },
+  {
+    id: "wallbit-07",
+    brand: "Wallbit",
+    title: "¿Cobrar en pesos o en dólares?",
+    videoUrl: "/videos/wallbit/wallbit-07.mp4",
+  },
+  {
+    id: "wallbit-08",
+    brand: "Wallbit",
+    title: "¿Invertís? Contame en qué",
+    videoUrl: "/videos/wallbit/wallbit-08.mp4",
+  },
+];
 const LIBRARY_STORAGE_BUCKET = "charlando-library";
 const SUPABASE_PUBLIC_URL = (
   import.meta.env.VITE_SUPABASE_URL || "https://ltgklogmxvqezlpcrghr.supabase.co"
@@ -51,16 +137,19 @@ const getLibraryAssetUrl = (storagePath: string) => {
   return `${LIBRARY_ASSET_BASE_URL}/${storagePath}`;
 };
 
-const LIBRARY_VIDEOS: LibraryVideo[] = LIBRARY_VIDEO_NUMBERS.map((number) => {
+const AIRTM_VIDEOS: LibraryVideo[] = LIBRARY_VIDEO_NUMBERS.map((number) => {
   const paddedNumber = String(number).padStart(2, "0");
 
   return {
     id: `charlando-video-${paddedNumber}`,
+    brand: "AIRTM",
     title: `Video ${paddedNumber}`,
     videoUrl: getLibraryAssetUrl(`videos/charlando-video-${paddedNumber}.mp4`),
     poster: getLibraryAssetUrl(`posters/charlando-video-${paddedNumber}.png`),
   };
 });
+
+const LIBRARY_VIDEOS: LibraryVideo[] = [...AIRTM_VIDEOS, ...TAKENOS_VIDEOS, ...WALLBIT_VIDEOS];
 
 const normalizeWebsiteUrl = (value: string) => {
   const trimmed = value.trim();
@@ -69,6 +158,16 @@ const normalizeWebsiteUrl = (value: string) => {
 };
 
 const Library = () => {
+  const { locale, t } = useTranslation();
+  const leadCopy = t.leadForm;
+  const navLinks = [
+    { label: t.common.nav.home, href: localizePath("/", locale) },
+    { label: t.common.nav.library, href: localizePath("/biblioteca", locale) },
+    { label: t.common.nav.process, href: localizePath("/#proceso", locale) },
+    { label: t.common.nav.services, href: localizePath("/#features", locale) },
+    { label: t.common.nav.contact, href: localizePath("/#cta", locale) },
+    { label: t.common.nav.blog, href: localizePath("/blog", locale) },
+  ];
   const [selectedVideo, setSelectedVideo] = useState<LibraryVideo | null>(null);
   const [leadFormOpen, setLeadFormOpen] = useState(false);
   const [leadForm, setLeadForm] = useState(EMPTY_LEAD_FORM);
@@ -79,6 +178,14 @@ const Library = () => {
     setLeadError("");
     setLeadFormOpen(true);
   };
+
+  usePageSeo({
+    title: t.seo.libraryTitle,
+    description: t.seo.libraryDescription,
+    canonicalPath: localizePath("/biblioteca", locale),
+    locale,
+    alternatePaths: alternatePathsFor("/biblioteca"),
+  });
 
   const updateLeadField = (field: LeadFormField, value: string) => {
     setLeadForm((current) => ({ ...current, [field]: value }));
@@ -94,14 +201,14 @@ const Library = () => {
     const websiteUrl = normalizeWebsiteUrl(leadForm.websiteUrl);
 
     if (!email || !fullName || !brandName || !websiteUrl) {
-      setLeadError("Completá todos los campos para agendar la llamada.");
+      setLeadError(leadCopy.requiredError);
       return;
     }
 
     try {
       new URL(websiteUrl);
     } catch {
-      setLeadError("Ingresá una URL válida para tu página.");
+      setLeadError(leadCopy.urlError);
       return;
     }
 
@@ -123,19 +230,19 @@ const Library = () => {
       });
 
       if (error) {
-        setLeadError("No pudimos guardar tus datos. Probá de nuevo en unos segundos.");
-        toast.error(error.message || "No pudimos guardar tus datos");
+        setLeadError(leadCopy.submitError);
+        toast.error(error.message || leadCopy.submitError);
         return;
       }
     } catch {
-      setLeadError("No pudimos guardar tus datos. Probá de nuevo en unos segundos.");
-      toast.error("No pudimos guardar tus datos");
+      setLeadError(leadCopy.submitError);
+      toast.error(leadCopy.submitError);
       return;
     } finally {
       setLeadSubmitting(false);
     }
 
-    toast.success("Datos guardados. Te llevamos al calendario.");
+    toast.success(leadCopy.success);
     setLeadForm(EMPTY_LEAD_FORM);
     setLeadFormOpen(false);
     window.location.assign(CALENDAR_BOOKING_URL);
@@ -159,11 +266,11 @@ const Library = () => {
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur-md">
         <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between gap-4 px-6 lg:px-8">
-          <Link to="/" className="shrink-0">
+          <Link to={localizePath("/", locale)} className="shrink-0">
             <Logo size="md" />
           </Link>
           <div className="hidden lg:flex items-center gap-1">
-            {NAV_LINKS.map((link) => (
+            {navLinks.map((link) => (
               <Link key={link.label} to={link.href} className="text-sm font-medium text-foreground/80 hover:text-primary px-3 py-2 rounded-full transition-colors">
                 {link.label}
               </Link>
@@ -176,9 +283,10 @@ const Library = () => {
               onClick={openLeadForm}
               data-testid="open-lead-form-library-nav"
             >
-              Agendar llamada
+              {t.common.bookCall}
             </Button>
-            <MobileSiteMenu links={NAV_LINKS} onLeadClick={openLeadForm} />
+            <LanguageSwitcher className="hidden lg:inline-flex" />
+            <MobileSiteMenu links={navLinks} onLeadClick={openLeadForm} />
           </div>
         </div>
       </header>
@@ -188,10 +296,10 @@ const Library = () => {
           <DialogHeader>
             <div className="px-6 pt-6 sm:px-7 sm:pt-7">
               <DialogTitle className="font-display text-2xl text-foreground">
-                Agendar llamada
+                {leadCopy.title}
               </DialogTitle>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
-                Dejanos tus datos y avanzamos con una conversación concreta sobre tu marca.
+                {leadCopy.description}
               </p>
             </div>
           </DialogHeader>
@@ -199,13 +307,13 @@ const Library = () => {
           <form className="space-y-4 px-6 pb-6 sm:px-7 sm:pb-7" onSubmit={handleLeadSubmit}>
             <div className="grid gap-3">
               <div className="space-y-2">
-                <Label htmlFor="library-lead-email">Cuál es tu mail</Label>
+                <Label htmlFor="library-lead-email">{leadCopy.email}</Label>
                 <Input
                   id="library-lead-email"
                   name="email"
                   type="email"
                   autoComplete="email"
-                  placeholder="tu@mail.com"
+                  placeholder={leadCopy.emailPlaceholder}
                   value={leadForm.email}
                   onChange={(event) => updateLeadField("email", event.target.value)}
                   required
@@ -213,13 +321,13 @@ const Library = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="library-lead-name">Cómo es tu nombre</Label>
+                <Label htmlFor="library-lead-name">{leadCopy.name}</Label>
                 <Input
                   id="library-lead-name"
                   name="name"
                   type="text"
                   autoComplete="name"
-                  placeholder="Tu nombre"
+                  placeholder={leadCopy.namePlaceholder}
                   value={leadForm.fullName}
                   onChange={(event) => updateLeadField("fullName", event.target.value)}
                   required
@@ -227,13 +335,13 @@ const Library = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="library-lead-brand">Cómo se llama tu marca</Label>
+                <Label htmlFor="library-lead-brand">{leadCopy.brand}</Label>
                 <Input
                   id="library-lead-brand"
                   name="brand"
                   type="text"
                   autoComplete="organization"
-                  placeholder="Nombre de tu marca"
+                  placeholder={leadCopy.brandPlaceholder}
                   value={leadForm.brandName}
                   onChange={(event) => updateLeadField("brandName", event.target.value)}
                   required
@@ -241,14 +349,14 @@ const Library = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="library-lead-website">Cuál es la URL de tu página</Label>
+                <Label htmlFor="library-lead-website">{leadCopy.website}</Label>
                 <Input
                   id="library-lead-website"
                   name="website"
                   type="text"
                   inputMode="url"
                   autoComplete="url"
-                  placeholder="https://tumarca.com"
+                  placeholder={leadCopy.websitePlaceholder}
                   value={leadForm.websiteUrl}
                   onChange={(event) => updateLeadField("websiteUrl", event.target.value)}
                   required
@@ -264,7 +372,7 @@ const Library = () => {
 
             <DialogFooter>
               <Button type="submit" className="w-full bg-foreground text-background hover:bg-primary hover:text-background" disabled={leadSubmitting}>
-                {leadSubmitting ? "Guardando..." : "Continuar"} <ArrowRight className="ml-1 h-4 w-4" />
+                {leadSubmitting ? t.common.saving : t.common.continue} <ArrowRight className="ml-1 h-4 w-4" />
               </Button>
             </DialogFooter>
           </form>
@@ -279,10 +387,10 @@ const Library = () => {
           transition={{ duration: 0.6 }}
         >
           <h1 className="mb-4 font-display text-4xl font-bold text-foreground text-balance sm:text-5xl lg:text-6xl">
-            Biblioteca
+            {t.library.title}
           </h1>
           <p className="mx-auto max-w-3xl text-balance text-xl leading-relaxed text-muted-foreground sm:text-2xl">
-            Videos reales de Charlando para ver el formato, el ritmo y las reacciones.
+            {t.library.subtitle}
           </p>
         </motion.div>
 
@@ -313,7 +421,7 @@ const Library = () => {
                 <video
                   src={video.videoUrl}
                   poster={video.poster}
-                  aria-label={`Preview de ${video.title}`}
+                  aria-label={`${t.library.preview} ${video.title}`}
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                   muted
                   loop
@@ -321,8 +429,11 @@ const Library = () => {
                   preload="metadata"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                <div className="absolute left-3 top-3 rounded-full bg-background/90 px-3 py-1 text-[0.65rem] font-bold uppercase tracking-[0.14em] text-foreground shadow-sm backdrop-blur-sm">
+                  {video.brand}
+                </div>
                 <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4">
-                  <p className="text-xs font-medium leading-snug text-white/75 sm:text-sm">Click para abrir con audio</p>
+                  <p className="text-xs font-medium leading-snug text-white/75 sm:text-sm">{t.library.click}</p>
                 </div>
               </div>
             </motion.button>
@@ -333,7 +444,7 @@ const Library = () => {
       <Dialog open={Boolean(selectedVideo)} onOpenChange={(open) => !open && setSelectedVideo(null)}>
         <DialogContent className="max-w-[calc(100vw-2rem)] overflow-hidden rounded-3xl border-0 bg-foreground p-0 shadow-2xl sm:max-w-[430px]">
           <DialogHeader className="sr-only">
-            <DialogTitle>{selectedVideo?.title ?? "Video de Charlando"}</DialogTitle>
+            <DialogTitle>{selectedVideo?.title ?? t.library.modalTitle}</DialogTitle>
           </DialogHeader>
           <div className="aspect-[9/16] w-full bg-black">
             {selectedVideo && (

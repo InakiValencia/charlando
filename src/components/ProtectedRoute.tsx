@@ -1,7 +1,10 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate } from "react-router-dom";
+import { localizePath } from "@/i18n/routes";
+import { useLocale } from "@/i18n/useTranslation";
 
 export function ProtectedRoute({ children }: { children: React.ReactNode }) {
+  const locale = useLocale();
   const { user, loading } = useAuth();
 
   if (loading) {
@@ -13,7 +16,7 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
   }
 
   if (!user) {
-    return <Navigate to="/auth" replace />;
+    return <Navigate to={localizePath("/auth", locale)} replace />;
   }
 
   return <>{children}</>;

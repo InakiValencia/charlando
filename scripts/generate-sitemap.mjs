@@ -25,7 +25,14 @@ const projectId = process.env.VITE_SANITY_PROJECT_ID || "irdg3uqh";
 const dataset = process.env.VITE_SANITY_DATASET || "production";
 const apiVersion = process.env.VITE_SANITY_API_VERSION || "2026-06-26";
 
-const staticPaths = ["/", "/biblioteca", "/blog", "/terminos-y-condiciones", "/politica-de-privacidad"];
+const staticPathPairs = [
+  { es: "/", en: "/en" },
+  { es: "/biblioteca", en: "/en/library" },
+  { es: "/blog", en: "/en/blog" },
+  { es: "/terminos-y-condiciones", en: "/en/terms-and-conditions" },
+  { es: "/politica-de-privacidad", en: "/en/privacy-policy" },
+  { es: "/auth", en: "/en/auth" },
+];
 
 const publishedPostSlugsQuery = `
 *[
@@ -34,10 +41,11 @@ const publishedPostSlugsQuery = `
   defined(publishedAt) &&
   publishedAt <= now() &&
   !(_id in path("drafts.**"))
-] | order(publishedAt desc) {
-  "slug": slug.current,
-  publishedAt
-}`;
+	] | order(publishedAt desc) {
+	  "slug": slug.current,
+	  "slugEn": slugEn.current,
+	  publishedAt
+	}`;
 
 const escapeXml = (value) =>
   value
@@ -72,25 +80,48 @@ async function getBlogPaths() {
     clearTimeout(timeout);
   }
 
-  return posts.map((post) => ({
-    path: `/blog/${post.slug}`,
-    lastmod: post.publishedAt,
-  }));
+  return posts.flatMap((post) => {
+    const entries = [
+      {
+        path: `/blog/${post.slug}`,
+        lastmod: post.publishedAt,
+        alternates: post.slugEn
+          ? { es: `/blog/${post.slug}`, en: `/en/blog/${post.slugEn}`, xDefault: `/blog/${post.slug}` }
+          : undefined,
+      },
+    ];
+
+    if (post.slugEn) {
+      entries.push({
+        path: `/en/blog/${post.slugEn}`,
+        lastmod: post.publishedAt,
+        alternates: { es: `/blog/${post.slug}`, en: `/en/blog/${post.slugEn}`, xDefault: `/blog/${post.slug}` },
+      });
+    }
+
+    return entries;
+  });
 }
 
 const blogPaths = await getBlogPaths();
 const entries = [
-  ...staticPaths.map((path) => ({ path })),
+  ...staticPathPairs.flatMap((pair) => [
+    { path: pair.es, alternates: { es: pair.es, en: pair.en, xDefault: pair.es } },
+    { path: pair.en, alternates: { es: pair.es, en: pair.en, xDefault: pair.es } },
+  ]),
   ...blogPaths,
 ];
 
 const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${entries
   .map((entry) => {
     const loc = `${SITE_URL}${entry.path}`;
     const lastmod = entry.lastmod ? `\n    <lastmod>${new Date(entry.lastmod).toISOString()}</lastmod>` : "";
-    return `  <url>\n    <loc>${escapeXml(loc)}</loc>${lastmod}\n  </url>`;
+    const alternates = entry.alternates
+      ? `\n    <xhtml:link rel="alternate" hreflang="es-AR" href="${escapeXml(`${SITE_URL}${entry.alternates.es}`)}" />\n    <xhtml:link rel="alternate" hreflang="en" href="${escapeXml(`${SITE_URL}${entry.alternates.en}`)}" />\n    <xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(`${SITE_URL}${entry.alternates.xDefault}`)}" />`
+      : "";
+    return `  <url>\n    <loc>${escapeXml(loc)}</loc>${alternates}${lastmod}\n  </url>`;
   })
   .join("\n")}
 </urlset>

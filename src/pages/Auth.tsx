@@ -9,11 +9,17 @@ import { lovable } from "@/integrations/lovable/index";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import { Logo } from "@/components/Logo";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { motion } from "framer-motion";
+import { alternatePathsFor, localizePath } from "@/i18n/routes";
+import { useTranslation } from "@/i18n/useTranslation";
+import { usePageSeo } from "@/lib/seo";
 
 const Auth = () => {
+  const { locale, t } = useTranslation();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const dashboardPath = localizePath("/dashboard/events", locale);
   const [loading, setLoading] = useState(false);
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
@@ -22,8 +28,16 @@ const Auth = () => {
   const [signupPassword, setSignupPassword] = useState("");
 
   useEffect(() => {
-    if (user) navigate("/dashboard/events", { replace: true });
-  }, [user, navigate]);
+    if (user) navigate(dashboardPath, { replace: true });
+  }, [user, navigate, dashboardPath]);
+
+  usePageSeo({
+    title: `${t.auth.login} | Charlando`,
+    description: t.auth.tagline,
+    canonicalPath: localizePath("/auth", locale),
+    locale,
+    alternatePaths: alternatePathsFor("/auth"),
+  });
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,8 +50,8 @@ const Auth = () => {
     if (error) {
       toast.error(error.message);
     } else {
-      toast.success("Welcome back!");
-      navigate("/dashboard/events");
+      toast.success(t.auth.welcome);
+      navigate(dashboardPath);
     }
   };
 
@@ -56,8 +70,8 @@ const Auth = () => {
     if (error) {
       toast.error(error.message);
     } else {
-      toast.success("Account created! Check your email to confirm, or you may be logged in automatically.");
-      navigate("/dashboard/events");
+      toast.success(t.auth.created);
+      navigate(dashboardPath);
     }
   };
 
@@ -81,11 +95,14 @@ const Auth = () => {
       >
         {/* Logo */}
         <div className="text-center mb-8">
-          <Link to="/" className="inline-block">
+          <div className="absolute right-0 top-0">
+            <LanguageSwitcher />
+          </div>
+          <Link to={localizePath("/", locale)} className="inline-block">
             <Logo size="lg" />
           </Link>
           <p className="text-muted-foreground mt-2 text-sm font-body">
-            Create events people actually want to attend
+            {t.auth.tagline}
           </p>
         </div>
 
@@ -94,17 +111,17 @@ const Auth = () => {
           <Tabs defaultValue="login">
             <TabsList className="grid w-full grid-cols-2 rounded-full bg-muted p-1 mb-6">
               <TabsTrigger value="login" className="rounded-full data-[state=active]:bg-card data-[state=active]:shadow-sm text-sm font-medium">
-                Log in
+                {t.auth.login}
               </TabsTrigger>
               <TabsTrigger value="signup" className="rounded-full data-[state=active]:bg-card data-[state=active]:shadow-sm text-sm font-medium">
-                Sign up
+                {t.auth.signup}
               </TabsTrigger>
             </TabsList>
 
             <TabsContent value="login" className="mt-0">
               <form onSubmit={handleLogin} className="space-y-4">
                 <div className="space-y-1.5">
-                  <Label htmlFor="email-login" className="text-sm font-medium text-foreground">Email</Label>
+                  <Label htmlFor="email-login" className="text-sm font-medium text-foreground">{t.auth.email}</Label>
                   <Input
                     id="email-login"
                     type="email"
@@ -116,7 +133,7 @@ const Auth = () => {
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label htmlFor="password-login" className="text-sm font-medium text-foreground">Password</Label>
+                  <Label htmlFor="password-login" className="text-sm font-medium text-foreground">{t.auth.password}</Label>
                   <Input
                     id="password-login"
                     type="password"
@@ -128,13 +145,13 @@ const Auth = () => {
                   />
                 </div>
                 <Button type="submit" className="w-full rounded-full h-11 bg-foreground text-background hover:bg-foreground/90 font-medium" disabled={loading}>
-                  {loading ? "Signing in…" : "Sign in"}
+                  {loading ? t.auth.signingIn : t.auth.signIn}
                 </Button>
               </form>
 
               <div className="mt-5 relative">
                 <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-border" /></div>
-                <div className="relative flex justify-center text-xs uppercase"><span className="bg-card px-3 text-muted-foreground">Or</span></div>
+                <div className="relative flex justify-center text-xs uppercase"><span className="bg-card px-3 text-muted-foreground">{t.auth.or}</span></div>
               </div>
 
               <Button
@@ -151,14 +168,14 @@ const Auth = () => {
                   <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
                   <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                 </svg>
-                Continue with Google
+	                {t.auth.google}
               </Button>
             </TabsContent>
 
             <TabsContent value="signup" className="mt-0">
               <form onSubmit={handleSignup} className="space-y-4">
                 <div className="space-y-1.5">
-                  <Label htmlFor="name-signup" className="text-sm font-medium text-foreground">Full name</Label>
+	                  <Label htmlFor="name-signup" className="text-sm font-medium text-foreground">{t.auth.fullName}</Label>
                   <Input
                     id="name-signup"
                     placeholder="Jane Doe"
@@ -169,7 +186,7 @@ const Auth = () => {
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label htmlFor="email-signup" className="text-sm font-medium text-foreground">Email</Label>
+	                  <Label htmlFor="email-signup" className="text-sm font-medium text-foreground">{t.auth.email}</Label>
                   <Input
                     id="email-signup"
                     type="email"
@@ -181,7 +198,7 @@ const Auth = () => {
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label htmlFor="password-signup" className="text-sm font-medium text-foreground">Password</Label>
+	                  <Label htmlFor="password-signup" className="text-sm font-medium text-foreground">{t.auth.password}</Label>
                   <Input
                     id="password-signup"
                     type="password"
@@ -193,13 +210,13 @@ const Auth = () => {
                   />
                 </div>
                 <Button type="submit" className="w-full rounded-full h-11 bg-foreground text-background hover:bg-foreground/90 font-medium" disabled={loading}>
-                  {loading ? "Creating account…" : "Create account"}
+                  {loading ? t.auth.creatingAccount : t.auth.createAccount}
                 </Button>
               </form>
 
               <div className="mt-5 relative">
                 <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-border" /></div>
-                <div className="relative flex justify-center text-xs uppercase"><span className="bg-card px-3 text-muted-foreground">Or</span></div>
+                <div className="relative flex justify-center text-xs uppercase"><span className="bg-card px-3 text-muted-foreground">{t.auth.or}</span></div>
               </div>
 
               <Button
@@ -216,14 +233,14 @@ const Auth = () => {
                   <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
                   <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                 </svg>
-                Continue with Google
+	                {t.auth.google}
               </Button>
             </TabsContent>
           </Tabs>
         </div>
 
         <p className="text-center text-xs text-muted-foreground mt-6">
-          By continuing, you agree to our Terms of Service and Privacy Policy.
+	          {t.auth.terms}
         </p>
       </motion.div>
     </div>
