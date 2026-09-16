@@ -390,7 +390,7 @@ const COLLABORATOR_BRANDS = [
 
 const FULL_SECTION_CLASS = "flex items-center py-20 sm:py-24 lg:py-32";
 const SECTION_HEADER_CLASS = "text-center mb-12 lg:mb-16";
-const SECTION_TITLE_CLASS = "text-5xl sm:text-6xl lg:text-7xl font-display mb-6";
+const SECTION_TITLE_CLASS = "mb-5 font-display text-[2.55rem] leading-[0.98] tracking-[-0.03em] sm:mb-6 sm:text-[3.25rem] lg:text-[3.85rem]";
 const FOOTER_LINK_CLASS = "inline-flex min-h-10 min-w-10 items-center transition-colors hover:text-primary";
 const CALENDAR_BOOKING_URL = "https://calendar.app.google/UqwA28tsXsQCnchF6";
 const EMPTY_LEAD_FORM = {
@@ -1130,7 +1130,7 @@ const Landing = () => {
       </section>
 
       {/* Videos destacados */}
-      <section id="videos" className={FULL_SECTION_CLASS}>
+      <section id="videos" className="flex items-center pb-0 pt-20 sm:pb-0 sm:pt-24 lg:pb-2 lg:pt-32">
         <div className="w-full max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-center mb-10 lg:mb-12">
             <h2 className={`${SECTION_TITLE_CLASS} text-foreground text-center`} style={{ fontWeight: titleWeight }}>
@@ -1170,7 +1170,7 @@ const Landing = () => {
             </motion.div>
           </div>
 
-          <div className="mt-9 flex justify-center">
+          <div className="mt-6 flex justify-center lg:mt-7">
             <Button
               size="lg"
               className="h-14 bg-foreground px-8 text-lg font-semibold text-background transition-transform hover:bg-primary hover:text-background active:scale-[0.96]"
@@ -1181,26 +1181,26 @@ const Landing = () => {
           </div>
 
           <motion.div
-            className="mt-12 text-center"
+            className="mt-7 text-center lg:mt-8"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-	            <h3 className="text-4xl sm:text-5xl font-display text-foreground tracking-[-0.025em] mb-6" style={{ fontWeight: titleWeight }}>
+	            <h3 className="mb-4 font-display text-[1.55rem] tracking-[-0.025em] text-foreground sm:text-[1.95rem]" style={{ fontWeight: titleWeight }}>
               {locale === "en" ? "Results from companies using this strategy" : "Resultados de empresas siguiendo esta estrategia"}
             </h3>
-            <div className="grid grid-cols-3 gap-3 sm:gap-5 max-w-4xl mx-auto">
+            <div className="mx-auto grid max-w-4xl grid-cols-3 gap-3 sm:gap-5">
               {[
 	                { value: "2X", label: locale === "en" ? "6-second view rate" : "View rate de 6 segundos" },
 	                { value: "+50%", label: locale === "en" ? "hook rate" : "hook rate" },
 	                { value: "2X", label: "ROAS" },
               ].map((result) => (
-	                <div key={result.label} className="rounded-2xl sm:rounded-3xl bg-card px-3 py-6 min-[360px]:p-6 sm:p-8">
-	                  <p className="font-display text-5xl min-[360px]:text-6xl sm:text-7xl text-primary tracking-[-0.035em] tabular-nums" style={{ fontWeight: titleWeight }}>
+	                <div key={result.label} className="rounded-2xl bg-card px-3 py-4 min-[360px]:p-5 sm:rounded-3xl sm:px-6 sm:py-6">
+                  <p className="font-display text-[2.45rem] tracking-[-0.035em] text-primary tabular-nums sm:text-[3rem]" style={{ fontWeight: titleWeight }}>
                     {result.value}
                   </p>
-	                  <p className="text-sm min-[360px]:text-base sm:text-xl text-muted-foreground mt-3 sm:mt-4 leading-snug">{result.label}</p>
+	                  <p className="mt-2 text-sm leading-snug text-muted-foreground min-[360px]:text-base sm:mt-2.5">{result.label}</p>
                 </div>
               ))}
             </div>
@@ -1209,10 +1209,10 @@ const Landing = () => {
       </section>
 
       {/* Proceso — moderno */}
-      <section id="proceso" className={`${FULL_SECTION_CLASS} bg-card`}>
+      <section id="proceso" className="flex items-center bg-card pb-[4.5rem] pt-16 sm:pb-24 sm:pt-20 lg:pb-28 lg:pt-24">
         <div className="w-full max-w-7xl mx-auto px-6 lg:px-8">
           <motion.div
-            className={SECTION_HEADER_CLASS}
+            className="mb-9 text-center lg:mb-12"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -1221,7 +1221,7 @@ const Landing = () => {
             <h2 className={`${SECTION_TITLE_CLASS} text-foreground`} style={{ fontWeight: titleWeight }}>
               {landing.process.title}
             </h2>
-            <p className="text-muted-foreground text-2xl sm:text-3xl leading-relaxed max-w-4xl mx-auto text-balance">
+            <p className="mx-auto max-w-4xl text-balance text-lg leading-relaxed text-muted-foreground sm:text-xl lg:text-[1.45rem]">
               {locale === "es" ? (
                 <>
                   <span className="block">Sin IA, sin guiones, sin actores pagos.</span>
@@ -1237,7 +1237,7 @@ const Landing = () => {
           </motion.div>
 
           <div className="relative">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-5">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
               {processSteps.map((step, i) => (
                 <motion.div
                   key={step.n}
@@ -1248,17 +1248,17 @@ const Landing = () => {
                   className="group relative"
                   data-process-card={i}
                 >
-	                  <div className={`relative ${currentPreset.cardBg} rounded-3xl p-8 lg:p-10 h-full min-h-[335px] transition-[background-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5 ${activeProcessStep === i ? "-translate-y-1 shadow-xl shadow-primary/5" : ""}`}>
-	                    <div className="flex items-center justify-between mb-8">
-	                      <div className={`flex h-[5.5rem] w-[5.5rem] shrink-0 items-center justify-center rounded-3xl text-background font-display text-3xl font-bold tabular-nums shadow-md transition-colors group-hover:bg-primary ${activeProcessStep === i ? "bg-primary" : "bg-foreground"}`}>
+	                  <div className={`relative h-full min-h-[270px] rounded-[1.75rem] ${currentPreset.cardBg} p-6 transition-[background-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5 sm:p-7 lg:min-h-[305px] ${activeProcessStep === i ? "-translate-y-1 shadow-xl shadow-primary/5" : ""}`}>
+	                    <div className="mb-6 flex items-center justify-between">
+	                      <div className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-[1.15rem] text-background font-display text-2xl font-bold tabular-nums shadow-md transition-colors group-hover:bg-primary lg:h-[4.5rem] lg:w-[4.5rem] lg:text-[1.6rem] ${activeProcessStep === i ? "bg-primary" : "bg-foreground"}`}>
                         {step.n}
                       </div>
                       {i < processSteps.length - 1 && (
                         <ArrowRight className="hidden lg:block w-5 h-5 text-primary/40 group-hover:text-primary transition-colors" />
                       )}
                     </div>
-	                    <h3 className="font-display font-bold text-3xl mb-5 text-foreground tracking-[-0.02em]">{step.title}</h3>
-	                    <p className="text-xl text-muted-foreground leading-relaxed">{step.text}</p>
+	                    <h3 className="mb-3 font-display text-[1.55rem] font-bold tracking-[-0.02em] text-foreground lg:text-[1.7rem]">{step.title}</h3>
+	                    <p className="text-[1.05rem] leading-[1.58] text-muted-foreground">{step.text}</p>
                   </div>
                 </motion.div>
               ))}
@@ -1315,7 +1315,7 @@ const Landing = () => {
         <div className="mx-auto w-full max-w-7xl px-6 py-16 sm:py-20 lg:px-8 lg:py-24">
           <div className="max-w-4xl">
             <motion.h2
-              className="font-display text-[clamp(2.75rem,7vw,6rem)] font-bold leading-[0.92] tracking-[-0.035em] text-balance"
+              className="font-display text-[clamp(2.5rem,5.4vw,4.3rem)] font-bold leading-[0.96] tracking-[-0.035em] text-balance"
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.45 }}
@@ -1324,7 +1324,7 @@ const Landing = () => {
               {locale === "en" ? <>Why it <span className="text-primary">works</span></> : <>Por qué <span className="text-primary">funciona</span></>}
             </motion.h2>
             <motion.p
-              className="mt-6 max-w-xl text-base leading-relaxed text-background/75 sm:text-lg"
+              className="mt-5 max-w-xl text-base leading-relaxed text-background/75 sm:text-lg"
               initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.45 }}
@@ -1334,12 +1334,12 @@ const Landing = () => {
             </motion.p>
           </div>
 
-          <div className="mt-12 border-y border-background/20 lg:mt-16">
+          <div className="mt-11 border-y border-background/20 lg:mt-14">
             <div className="grid md:grid-cols-3">
               {messageStages.map((stage, index) => (
                 <motion.article
                   key={stage.label}
-                  className={`group flex min-h-[300px] flex-col px-1 py-8 sm:min-h-[320px] sm:py-10 md:px-6 lg:min-h-[360px] lg:px-8 ${index > 0 ? "border-t border-background/20 md:border-l md:border-t-0" : ""}`}
+                  className={`group flex min-h-[270px] flex-col px-1 py-8 sm:min-h-[290px] sm:py-9 md:px-7 lg:min-h-[325px] lg:px-8 ${index > 0 ? "border-t border-background/20 md:border-l md:border-t-0" : ""}`}
                   initial={{ opacity: 0, y: 24 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.35 }}
@@ -1349,18 +1349,18 @@ const Landing = () => {
                     <p className="font-display text-lg font-bold text-primary sm:text-xl">{stage.label}</p>
                     <span className="font-display text-sm font-semibold tabular-nums text-background/45">0{index + 1}</span>
                   </div>
-                  <div className="pt-12 sm:pt-14">
-                    <h3 className="max-w-sm font-display text-2xl font-bold leading-tight tracking-[-0.02em] text-background sm:text-3xl md:min-h-20">
+                  <div className="pt-9 sm:pt-11">
+                    <h3 className="max-w-sm font-display text-[1.55rem] font-bold leading-tight tracking-[-0.02em] text-background sm:text-[1.7rem] md:min-h-16">
                       {stage.title}
                     </h3>
-                    <p className="mt-4 max-w-md text-base leading-relaxed text-background/70">
+                    <p className="mt-3.5 max-w-md text-[1.05rem] leading-relaxed text-background/70">
                       {stage.text}
                     </p>
                     {index === messageStages.length - 1 && (
                       <Button
                         type="button"
                         size="lg"
-                        className="mt-7 h-12 bg-primary px-6 text-base font-semibold text-background hover:bg-background hover:text-foreground focus-visible:ring-background"
+                        className="mt-6 h-12 bg-primary px-6 text-base font-semibold text-background hover:bg-background hover:text-foreground focus-visible:ring-background"
                         onClick={openLeadForm}
                         data-testid="open-lead-form-message"
                       >
@@ -1381,7 +1381,7 @@ const Landing = () => {
       </section>
 
       {/* Features */}
-      <section id="features" className="flex items-center pb-12 pt-20 sm:pt-24 lg:pb-16 lg:pt-32">
+      <section id="features" className="flex items-center pb-12 pt-20 sm:pt-24 lg:pb-16 lg:pt-28">
         <div className="w-full max-w-7xl mx-auto px-6 lg:px-8">
           <motion.div
             className={SECTION_HEADER_CLASS}
@@ -1390,15 +1390,15 @@ const Landing = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className={`mx-auto mb-6 max-w-7xl text-balance font-display text-5xl text-foreground sm:text-6xl lg:text-7xl xl:whitespace-nowrap ${locale === "en" ? "xl:text-[3.35rem]" : "xl:text-[4.15rem]"}`} style={{ fontWeight: titleWeight }}>
+            <h2 className="mx-auto mb-5 max-w-7xl text-balance font-display text-[2.55rem] leading-[0.98] tracking-[-0.035em] text-foreground sm:mb-6 sm:text-[3.25rem] lg:text-[3.55rem] xl:whitespace-nowrap xl:text-[3.25rem] 2xl:text-[3.6rem]" style={{ fontWeight: titleWeight }}>
               {landing.features.title}
             </h2>
-            <p className="mx-auto max-w-4xl text-balance text-xl leading-relaxed text-muted-foreground sm:text-2xl lg:text-[1.7rem]">
+            <p className="mx-auto max-w-4xl text-balance text-lg leading-relaxed text-muted-foreground sm:text-xl lg:text-[1.45rem]">
               {landing.features.subtitle}
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
+          <div className="mx-auto grid max-w-6xl grid-cols-1 gap-5 md:grid-cols-3 lg:gap-6">
             {featureItems.map((feature, i) => {
               const Illust = ILLUSTRATIONS[i];
               return (
@@ -1410,7 +1410,7 @@ const Landing = () => {
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: i * 0.1 }}
                 >
-	                  <div className={`grid h-full min-h-[34rem] grid-rows-[14rem_1fr] overflow-hidden rounded-[2rem] ${currentPreset.cardBg} md:min-h-[36rem] md:grid-rows-[16rem_1fr] lg:min-h-[37rem] lg:grid-rows-[17rem_1fr]`}>
+	                  <div className={`grid h-full min-h-[21.5rem] grid-rows-[9rem_1fr] overflow-hidden rounded-[1.5rem] ${currentPreset.cardBg} md:min-h-[25rem] md:grid-rows-[10.5rem_1fr] lg:min-h-[26rem] lg:grid-rows-[11rem_1fr]`}>
 	                    <div className={`${currentPreset.colors[i]} flex items-center justify-center overflow-hidden`}>
                       {i === 0 ? (
                         <img
@@ -1428,9 +1428,9 @@ const Landing = () => {
                         <Illust accents={currentPreset.accents} />
                       )}
                     </div>
-	                    <div className="flex flex-col p-8 lg:p-10">
-	                      <h3 className="mb-3 min-h-[2.35em] font-display text-3xl font-bold leading-[1.12] tracking-[-0.02em] text-foreground">{feature.title}</h3>
-	                      <p className="text-muted-foreground text-xl leading-relaxed">{feature.description}</p>
+	                    <div className="flex flex-col p-5 sm:p-6">
+	                      <h3 className="mb-2.5 font-display text-[1.35rem] font-bold leading-[1.12] tracking-[-0.02em] text-foreground md:min-h-[2.15em] lg:text-[1.5rem]">{feature.title}</h3>
+	                      <p className="text-base leading-relaxed text-muted-foreground">{feature.description}</p>
                     </div>
                   </div>
                 </motion.div>
@@ -1442,7 +1442,7 @@ const Landing = () => {
 
 
       {/* Hosts */}
-      <section className="flex items-center pb-20 pt-12 sm:pb-24 lg:pb-32 lg:pt-16">
+      <section className="flex items-center pb-20 pt-12 sm:pb-24 lg:pb-28 lg:pt-14">
         <div className="w-full max-w-7xl mx-auto px-6 lg:px-8">
           <motion.div
             className={SECTION_HEADER_CLASS}
@@ -1458,42 +1458,42 @@ const Landing = () => {
             <h2 className={`${SECTION_TITLE_CLASS} text-foreground text-balance`} style={{ fontWeight: titleWeight }}>
               {landing.hosts.title}
             </h2>
-            <p className="mx-auto max-w-4xl text-pretty text-xl text-muted-foreground sm:text-2xl">
+            <p className="mx-auto max-w-4xl text-pretty text-lg leading-relaxed text-muted-foreground sm:text-xl lg:text-[1.35rem]">
               {landing.hosts.subtitle}
             </p>
           </motion.div>
 
           <motion.div
-            className="-mx-6 flex snap-x snap-mandatory gap-5 overflow-x-auto px-6 pb-4 [scrollbar-width:none] sm:mx-auto sm:grid sm:max-w-7xl sm:grid-cols-4 sm:gap-6 sm:overflow-visible sm:px-0 sm:pb-0 lg:gap-8 [&::-webkit-scrollbar]:hidden"
+            className="-mx-6 flex snap-x snap-mandatory gap-5 overflow-x-auto px-6 pb-4 [scrollbar-width:none] md:mx-auto md:grid md:max-w-7xl md:grid-cols-4 md:gap-6 md:overflow-visible md:px-0 md:pb-0 lg:gap-8 [&::-webkit-scrollbar]:hidden"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
             {HOST_PROFILES.map((host) => (
-              <div key={host.name} className="group relative aspect-[4/5] w-[82vw] max-w-[360px] shrink-0 snap-center overflow-hidden rounded-3xl bg-card shadow-xl shadow-foreground/10 outline outline-1 -outline-offset-1 outline-black/10 transition-[box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/10 sm:w-auto sm:max-w-none">
+              <div key={host.name} className="group relative aspect-[4/5] w-[82vw] max-w-[360px] shrink-0 snap-center overflow-hidden rounded-3xl bg-card shadow-xl shadow-foreground/10 outline outline-1 -outline-offset-1 outline-black/10 transition-[box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/10 md:w-auto md:max-w-none">
                 <img
                   src={host.image}
                   alt={`${host.name}, ${landing.hosts.badge}`}
                   className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.03]"
                 />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-foreground/75 via-foreground/20 to-transparent px-5 pb-5 pt-20">
-                  <h3 className="font-display text-5xl font-bold leading-none tracking-tight text-background sm:text-6xl lg:text-[64px]">
+                  <h3 className="font-display text-[2.6rem] font-bold leading-none tracking-tight text-background md:text-[2.65rem] lg:text-[52px]">
                     {host.name}
                   </h3>
                 </div>
               </div>
             ))}
-            <div className="group relative aspect-[4/5] w-[82vw] max-w-[360px] shrink-0 snap-center overflow-hidden rounded-3xl bg-foreground text-background shadow-xl shadow-foreground/10 outline outline-1 -outline-offset-1 outline-background/15 transition-[box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/10 sm:w-auto sm:max-w-none">
+            <div className="group relative aspect-[4/5] w-[82vw] max-w-[360px] shrink-0 snap-center overflow-hidden rounded-3xl bg-foreground text-background shadow-xl shadow-foreground/10 outline outline-1 -outline-offset-1 outline-background/15 transition-[box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/10 md:w-auto md:max-w-none">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,rgba(38,185,207,0.32),transparent_34%),linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0))]" />
-              <Mic className="absolute bottom-14 left-1/2 h-56 w-56 -translate-x-1/2 text-background/5 transition-transform duration-500 group-hover:scale-105" strokeWidth={1.2} />
+              <Mic className="absolute bottom-14 left-1/2 h-52 w-52 -translate-x-1/2 text-background/5 transition-transform duration-500 group-hover:scale-105" strokeWidth={1.2} />
               <div className="relative flex h-full flex-col justify-between p-6 sm:p-7">
                 <span aria-hidden="true" />
                 <div className="mx-auto max-w-[220px] text-center">
-                  <p className="font-display text-6xl font-bold leading-none tracking-tight sm:text-7xl">
+                  <p className="font-display text-[2.65rem] font-bold leading-none tracking-tight sm:text-[3.35rem]">
                     {landing.hosts.you}
                   </p>
-                  <p className="mt-5 text-lg leading-relaxed text-background/72 sm:text-xl">
+                  <p className="mt-5 text-[1.05rem] leading-relaxed text-background/72 sm:text-xl">
                     {landing.hosts.applyText}
                   </p>
                 </div>
@@ -1538,7 +1538,7 @@ const Landing = () => {
                         onClick={() => setOpenFaq(open ? null : faqIndex)}
                         className="w-full flex items-center justify-between text-left p-5 gap-5 sm:p-6"
                       >
-                        <span className="font-display font-semibold text-foreground text-xl sm:text-2xl">{faq.q}</span>
+                        <span className="font-display text-xl font-semibold text-foreground sm:text-[1.35rem]">{faq.q}</span>
                         <span className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
                           {open ? <Minus className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
                         </span>
@@ -1551,7 +1551,7 @@ const Landing = () => {
                             exit={{ height: 0, opacity: 0 }}
                             transition={{ duration: 0.25 }}
                           >
-	                            <div className="px-5 pb-5 text-lg text-muted-foreground leading-relaxed sm:px-6 sm:pb-6 sm:text-xl">{faq.a}</div>
+	                            <div className="px-5 pb-5 text-lg leading-relaxed text-muted-foreground sm:px-6 sm:pb-6 sm:text-xl">{faq.a}</div>
                           </motion.div>
                         )}
                       </AnimatePresence>
@@ -1634,7 +1634,7 @@ const Landing = () => {
                   <h2 className={`${SECTION_TITLE_CLASS} text-background`} style={{ fontWeight: titleWeight }}>
                     {landing.cta.title}
                   </h2>
-                  <p className="text-background/70 text-xl mb-9 max-w-2xl mx-auto text-balance sm:text-2xl">
+                  <p className="mx-auto mb-9 max-w-2xl text-balance text-xl text-background/70 sm:text-[1.35rem]">
                     {landing.cta.subtitle}
                   </p>
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

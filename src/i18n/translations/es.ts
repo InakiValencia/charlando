@@ -75,7 +75,7 @@ export const es = {
       ],
     },
     brands: {
-      title: "Marcas que ya confiaron en Charlando",
+      title: "Marcas que confían en nosotros",
       subtitle: "Creamos conversaciones reales para productos, apps, moda, fintech, gastronomía y experiencias.",
       cta: "Agendar llamada",
       aria: "Marcas que colaboran con Charlando",

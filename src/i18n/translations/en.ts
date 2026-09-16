@@ -77,7 +77,7 @@ export const en: typeof es = {
       ],
     },
     brands: {
-      title: "Brands that already trusted Charlando",
+      title: "Brands that trust us",
       subtitle: "We create real conversations for products, apps, fashion, fintech, food, and experiences.",
       cta: "Book a call",
       aria: "Brands that collaborate with Charlando",
