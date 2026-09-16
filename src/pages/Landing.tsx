@@ -1513,34 +1513,34 @@ const Landing = () => {
 
 
       {/* FAQ */}
-      <section id="faq" className={FULL_SECTION_CLASS}>
+      <section id="faq" className="flex items-center py-10 sm:py-12 lg:py-16">
         <div className="w-full max-w-7xl mx-auto px-6 lg:px-8">
           <motion.div
-            className={SECTION_HEADER_CLASS}
+            className="mb-6 text-center lg:mb-8"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className={`${SECTION_TITLE_CLASS} text-foreground`} style={{ fontWeight: titleWeight }}>
+            <h2 className="mb-4 font-display text-[2.25rem] leading-[0.98] tracking-[-0.03em] text-foreground sm:text-[2.8rem] lg:text-[3.25rem]" style={{ fontWeight: titleWeight }}>
               {landing.faq.title}
             </h2>
           </motion.div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-5">
+          <div className="grid grid-cols-1 gap-2.5 lg:grid-cols-2 lg:gap-3">
             {[faqItems.slice(0, 4), faqItems.slice(4)].map((column, columnIndex) => (
-              <div key={columnIndex} className="space-y-4">
+              <div key={columnIndex} className="space-y-2.5">
                 {column.map((faq, i) => {
                   const faqIndex = columnIndex * 4 + i;
                   const open = openFaq === faqIndex;
                   return (
-                    <div key={faq.q} className="rounded-3xl bg-card overflow-hidden">
+                    <div key={faq.q} className="overflow-hidden rounded-[1.15rem] bg-card">
                       <button
                         onClick={() => setOpenFaq(open ? null : faqIndex)}
-                        className="w-full flex items-center justify-between text-left p-5 gap-5 sm:p-6"
+                        className="flex w-full items-center justify-between gap-3 p-3.5 text-left sm:p-4"
                       >
-                        <span className="font-display text-xl font-semibold text-foreground sm:text-[1.35rem]">{faq.q}</span>
-                        <span className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
-                          {open ? <Minus className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
+                        <span className="font-display text-base font-semibold text-foreground sm:text-lg">{faq.q}</span>
+                        <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                          {open ? <Minus className="h-3.5 w-3.5" /> : <Plus className="h-3.5 w-3.5" />}
                         </span>
                       </button>
                       <AnimatePresence initial={false}>
@@ -1551,7 +1551,7 @@ const Landing = () => {
                             exit={{ height: 0, opacity: 0 }}
                             transition={{ duration: 0.25 }}
                           >
-	                            <div className="px-5 pb-5 text-lg leading-relaxed text-muted-foreground sm:px-6 sm:pb-6 sm:text-xl">{faq.a}</div>
+	                            <div className="px-3.5 pb-3.5 text-sm leading-relaxed text-muted-foreground sm:px-4 sm:pb-4 sm:text-base">{faq.a}</div>
                           </motion.div>
                         )}
                       </AnimatePresence>
