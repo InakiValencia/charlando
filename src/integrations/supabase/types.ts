@@ -190,6 +190,7 @@ export type Database = {
           created_at: string
           email: string
           full_name: string
+          how_heard: string | null
           id: string
           page_path: string | null
           source: string
@@ -203,6 +204,7 @@ export type Database = {
           created_at?: string
           email: string
           full_name: string
+          how_heard?: string | null
           id?: string
           page_path?: string | null
           source?: string
@@ -216,6 +218,7 @@ export type Database = {
           created_at?: string
           email?: string
           full_name?: string
+          how_heard?: string | null
           id?: string
           page_path?: string | null
           source?: string

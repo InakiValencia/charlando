@@ -1,0 +1,4 @@
+interface:
+  display_name: "Charlando Prospecting"
+  short_description: "Verifies B2C companies and marketing contacts"
+  default_prompt: "Use $charlando-prospecting as a read-only specialist. Require the coordinator's run ID, accepted reconciliation handoff, remaining capacity, and deduplication set; then return only a validated charlando-agent-handoff/v1 payload."

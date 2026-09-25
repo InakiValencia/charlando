@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { alternatePathsFor, localizePath } from "@/i18n/routes";
@@ -38,6 +39,7 @@ const EMPTY_LEAD_FORM = {
   fullName: "",
   brandName: "",
   websiteUrl: "",
+  howHeard: "",
 };
 
 type LeadFormField = keyof typeof EMPTY_LEAD_FORM;
@@ -199,6 +201,7 @@ const Library = () => {
     const fullName = leadForm.fullName.trim();
     const brandName = leadForm.brandName.trim();
     const websiteUrl = normalizeWebsiteUrl(leadForm.websiteUrl);
+    const howHeard = leadForm.howHeard.trim() || null;
 
     if (!email || !fullName || !brandName || !websiteUrl) {
       setLeadError(leadCopy.requiredError);
@@ -222,6 +225,7 @@ const Library = () => {
         full_name: fullName,
         brand_name: brandName,
         website_url: websiteUrl,
+        how_heard: howHeard,
         source: "library",
         page_path: `${window.location.pathname}${window.location.search}`,
         utm_source: searchParams.get("utm_source"),
@@ -292,7 +296,7 @@ const Library = () => {
       </header>
 
       <Dialog open={leadFormOpen} onOpenChange={setLeadFormOpen}>
-        <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-lg rounded-2xl border-border p-0 overflow-hidden">
+        <DialogContent className="max-h-[calc(100svh-2rem)] max-w-[calc(100vw-2rem)] overflow-y-auto rounded-2xl border-border p-0 sm:max-w-lg">
           <DialogHeader>
             <div className="px-6 pt-6 sm:px-7 sm:pt-7">
               <DialogTitle className="font-display text-2xl text-foreground">
@@ -361,6 +365,22 @@ const Library = () => {
                   onChange={(event) => updateLeadField("websiteUrl", event.target.value)}
                   required
                 />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="library-lead-how-heard">{leadCopy.howHeard}</Label>
+                <Select value={leadForm.howHeard || undefined} onValueChange={(value) => updateLeadField("howHeard", value)}>
+                  <SelectTrigger id="library-lead-how-heard" name="howHeard">
+                    <SelectValue placeholder={leadCopy.howHeardPlaceholder} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {leadCopy.howHeardOptions.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 

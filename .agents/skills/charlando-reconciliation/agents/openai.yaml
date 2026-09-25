@@ -1,0 +1,4 @@
+interface:
+  display_name: "Charlando Reconciliation"
+  short_description: "Read-only LinkedIn and CRM reconciliation specialist"
+  default_prompt: "Use $charlando-reconciliation with the supplied run ID and return only a validated reconciliation handoff. Do not write or send."
