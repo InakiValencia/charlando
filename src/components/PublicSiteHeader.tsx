@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "@/i18n/useTranslation";
@@ -19,6 +20,7 @@ const EMPTY_LEAD_FORM = {
   fullName: "",
   brandName: "",
   websiteUrl: "",
+  howHeard: "",
 };
 
 type LeadFormField = keyof typeof EMPTY_LEAD_FORM;
@@ -66,6 +68,7 @@ export const PublicSiteHeader = ({ source = "site" }: PublicSiteHeaderProps) => 
     const fullName = leadForm.fullName.trim();
     const brandName = leadForm.brandName.trim();
     const websiteUrl = normalizeWebsiteUrl(leadForm.websiteUrl);
+    const howHeard = leadForm.howHeard.trim() || null;
 
     if (!email || !fullName || !brandName || !websiteUrl) {
       setLeadError(t.leadForm.requiredError);
@@ -88,6 +91,7 @@ export const PublicSiteHeader = ({ source = "site" }: PublicSiteHeaderProps) => 
         full_name: fullName,
         brand_name: brandName,
         website_url: websiteUrl,
+        how_heard: howHeard,
         source,
         page_path: `${window.location.pathname}${window.location.search}`,
         utm_source: searchParams.get("utm_source"),
@@ -146,7 +150,7 @@ export const PublicSiteHeader = ({ source = "site" }: PublicSiteHeaderProps) => 
       </header>
 
       <Dialog open={leadFormOpen} onOpenChange={setLeadFormOpen}>
-        <DialogContent className="max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl border-border p-0 sm:max-w-lg">
+        <DialogContent className="max-h-[calc(100svh-2rem)] max-w-[calc(100vw-2rem)] overflow-y-auto rounded-2xl border-border p-0 sm:max-w-lg">
           <DialogHeader>
             <div className="px-6 pt-6 sm:px-7 sm:pt-7">
               <DialogTitle className="font-display text-2xl text-foreground">
@@ -215,6 +219,22 @@ export const PublicSiteHeader = ({ source = "site" }: PublicSiteHeaderProps) => 
                   onChange={(event) => updateLeadField("websiteUrl", event.target.value)}
                   required
                 />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor={`${fieldPrefix}-how-heard`}>{t.leadForm.howHeard}</Label>
+                <Select value={leadForm.howHeard || undefined} onValueChange={(value) => updateLeadField("howHeard", value)}>
+                  <SelectTrigger id={`${fieldPrefix}-how-heard`} name="howHeard">
+                    <SelectValue placeholder={t.leadForm.howHeardPlaceholder} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {t.leadForm.howHeardOptions.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 

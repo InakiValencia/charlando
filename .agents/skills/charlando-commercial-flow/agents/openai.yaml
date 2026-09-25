@@ -1,0 +1,4 @@
+interface:
+  display_name: "Charlando Commercial Flow"
+  short_description: "Coordinates Charlando's guarded multi-agent flow"
+  default_prompt: "Use $charlando-commercial-flow as the sole coordinator. Own Control and confirmation, delegate the sequential reconciliation, prospecting, preparation, and execution stages to their specialist skills, validate every charlando-agent-handoff/v1 envelope, and never create an independent workflow."

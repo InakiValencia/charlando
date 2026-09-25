@@ -1,0 +1,4 @@
+interface:
+  display_name: "Charlando Outreach Crm"
+  short_description: "Prepares, sends, and reconciles approved outreach"
+  default_prompt: "Use $charlando-outreach-crm only inside a coordinator-owned run. Operate in the supplied outreach_prepare or outreach_execute mode, enforce durable approval and idempotency, and return a charlando-agent-handoff/v1 payload."
