@@ -386,6 +386,7 @@ const COLLABORATOR_BRANDS = [
   { name: "Wallbit", logo: "/wallbit-logo.png" },
   { name: "Takenos", logo: "/takenos-logo.png" },
   { name: "John Foos", logo: "/john-foos-logo.jpg" },
+  { name: "MOB", logo: "/mob-logo.png" },
 ];
 
 const FULL_SECTION_CLASS = "flex items-center py-20 sm:py-24 lg:py-32";
